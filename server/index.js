@@ -14,7 +14,7 @@ app.use('/api/logs', logs);
 // Handle production
 if (process.env.NODE_ENV === 'production') {
   // Static folder
-  app.use(express.static(__dirname + '/'))
+  //app.use(express.static(__dirname + '/'))
 
   // Handle SPA
   //app.get('/', (req, res) => res.sendFile(__dirname + '/client/dist/index.html'))
