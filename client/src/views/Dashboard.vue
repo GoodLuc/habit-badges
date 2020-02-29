@@ -3,7 +3,7 @@
     <div class="container dash">
       <div class="main">
         <div>
-          <h1>Welcome {{ user.name }}</h1>
+          <h1>Welcome back {{ user.name }}</h1>
           <p>Today you earned <strong>{{ today.points }} improvement points.</strong> 
             &nbsp; <a href="#" @click="router.push('/history')" >See improvement history.</a>
           </p>
