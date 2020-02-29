@@ -23,7 +23,7 @@
 
       <hr>
       <h2>Last 7 days</h2>
-      <div class="week">
+      <!--<div class="week">
         <div v-for="day in week" :key="day">
           <h3>{{ day.name + " " + day.number }}</h3>
           <ul>
@@ -35,7 +35,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div>-->
 
     </div>
   

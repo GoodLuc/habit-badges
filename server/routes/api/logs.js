@@ -19,6 +19,19 @@ router.post('/', async (req, res) => {
   res.status(201).send();
 })
 
+// Add logs
+router.post("/update/:user/", async (req, res) => {
+  const logs = await getLogs();
+  await logs.updateOne(
+    // Filter
+    { user: req.params.user, month: req.params.today.month },
+    { $set: { days: { [req.params.today.day]: req.body.load } } },
+		{ upsert: true }
+	);
+	res.status(201).send();
+});
+
+
 // Delete logs
 router.delete('/:id', async (req, res) => {
   const logs = await getLogs();

@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import PostService from '../PostService'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-	state: {
+  state: {
+    user: 'Luke',
 		today: {
-			points: 13,
+      points: 13,
+      month: () => { let mo = new Date(); return mo.getMonth(); },
+      day: () => { let day = new Date(); return day.getDate();},
 			badges: [
 				{
 					id: 1,
@@ -56,7 +60,10 @@ export default new Vuex.Store({
 	},
 	actions: {
 		toggleBadge({ commit }, badgeTo) {
-			commit("toggleBadge", badgeTo);
+      commit("toggleBadge", badgeTo);
+      let today = Object.assign({}, this.state.today);
+      let username = this.user
+      PostService.updateLog(username, today);
 		},
 	},
 	modules: {},
