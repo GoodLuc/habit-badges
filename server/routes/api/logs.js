@@ -9,6 +9,13 @@ router.get('/', async (req, res) => {
   res.send(await logs.find({}).toArray());
 });
 
+// Get logs
+router.get('/:user/:month/:day', async (req, res) => {
+  console.log("Month is "+req.params.month)
+  const today = await getToday(req.params.user, req.params.month);
+  res.send(await today.toArray());
+});
+
 // Add logs
 router.post('/', async (req, res) => {
   const logs = await getLogs();
@@ -21,14 +28,18 @@ router.post('/', async (req, res) => {
 
 // Add logs
 router.post("/update/:user/", async (req, res) => {
-  const logs = await getLogs();
-  await logs.updateOne(
-    // Filter
-    { user: req.params.user, month: req.params.today.month },
-    { $set: { days: { [req.params.today.day]: req.body.load } } },
-		{ upsert: true }
-	);
-	res.status(201).send();
+  try {
+    const logs = await getLogs();
+    await logs.updateOne(
+      // Filter
+      { user: req.params.user, month: req.body.load.month },
+      { $set: { days: { [req.body.load.day]: req.body.load } } },
+      { upsert: true }
+    );
+    res.status(201).send();
+  } catch (error) {
+    console.error(error)
+  }
 });
 
 
@@ -46,6 +57,16 @@ async function getLogs() {
     });
   
   return client.db('HeroBadge').collection('logs')
+}
+
+async function getToday(user, month) {
+  console.log("Getting today for " + user + " on " + month)
+  const client = await mongodb.MongoClient.connect
+    ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
+      useNewUrlParser: true
+    });
+  
+  return client.db('HeroBadge').collection('logs').find({ "user": user, "month": parseInt(month)})
 }
 
 
