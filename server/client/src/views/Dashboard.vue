@@ -3,7 +3,7 @@
     <div class="container dash">
       <div class="main">
         <div v-if="today">
-          <h1>Welcome back user.name</h1>
+          <h1 v-if="user">Welcome back {{ user }}</h1>
           <p>Today you earned <strong>{{ today.points }} improvement points.</strong> 
             &nbsp; <a href="#" @click="router.push('/history')" >See improvement history.</a>
           </p>
@@ -17,15 +17,13 @@
         </div>
       </div>
   
-      <hr>
       
       <Badges />
 
-      <hr>
       <h2>Last 7 days</h2>
-      <!--<div class="week">
-        <div v-for="day in week" :key="day">
-          <h3>{{ day.name + " " + day.number }}</h3>
+      <div class="week" v-if="currentMonth">
+        <div v-for="day in currentMonth.days" :key="day.day">
+          <h3>{{ day.day + "/" + day.month }}</h3>
           <ul>
             <li v-for="badge in day.badges" :key="badge.id">
               <figure class="badge" v-if="badge.figure.type == 'default'">
@@ -35,7 +33,7 @@
             </li>
           </ul>
         </div>
-      </div>-->
+      </div>
 
     </div>
   
@@ -55,7 +53,7 @@ export default {
       badgeSelector: false,
     }
   },
-  computed: mapGetters(["currentMonth","today"]),
+  computed: mapGetters(["currentMonth","today","user"]),
   methods: {
     addBadge: function() { this.badgeSelector = true },
     closeBadgeSelector: function() { this.badgeSelector = false}
@@ -87,6 +85,45 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+}
+
+.week {
+  h3 {
+    margin-bottom: 0;
+    color: white;
+  }
+  div {
+    background: #1f4287;
+    padding: 20px 30px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+  }
+  ul {
+    margin-top: 0px;
+    margin-bottom: 30px;
+    display: flex;
+    list-style: none;
+    padding: 0;
+    align-items: flex-end;
+  }
+  li {
+    color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-right: 10px;
+    margin-top: 10px;
+    width: calc(10% - 10px);
+    text-align: center;
+    &:nth-of-type(5n) {
+      margin-right: 0
+    }
+    img {
+      filter: invert(1)
+    }
+  
+  }
 }
 
 </style>

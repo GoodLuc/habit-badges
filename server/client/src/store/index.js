@@ -11,7 +11,6 @@ export default new Vuex.Store({
     month: 0,
 		currentMonth: {
       days: {
-        0: {}
       },
 		},
 		badges: [
@@ -33,6 +32,7 @@ export default new Vuex.Store({
 		],
 	},
 	getters: {
+    user: state => state.user,
 		currentMonth: state => state.currentMonth,
     badges: state => state.badges,
     today: state => { try { return state.currentMonth.days[state.day] } catch { return false } }
@@ -48,16 +48,18 @@ export default new Vuex.Store({
       if (data != undefined) {
         state.currentMonth = data
         console.log('setting data')
-      } else {
-        console.log('today is empty')
-        console.log(data)
-        //state.currentMonth.days[state.day] = {}
-        Vue.set(state.currentMonth.days, state.day, {
-          points: 0,
-          month: state.month,
-          day: state.day,
-          badges: []
-        })
+      
+        if (state.currentMonth.days[state.day] == undefined) {
+          console.log('today is empty')
+          console.log(data)
+          //state.currentMonth.days[state.day] = {}
+          Vue.set(state.currentMonth.days, state.day, {
+            points: 0,
+            month: state.month,
+            day: state.day,
+            badges: []
+          })
+        }
       }
     },
     toggleBadge: (state, badgeTo) => {

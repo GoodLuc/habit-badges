@@ -43,14 +43,19 @@ export default {
   div {
     border: 1px solid #dbdbdb;
     border-radius: 20px;
+    background: #1f4287;
     padding: 10px;
     box-sizing: border-box;
     margin-right: 10px;
     margin-top: 10px;
     width: calc(25% - 10px);
     text-align: center;
+    color: white;
     &:nth-of-type(4n) {
       margin-right: 0
+    }
+    img {
+      filter: invert(1)
     }
   }
 }
