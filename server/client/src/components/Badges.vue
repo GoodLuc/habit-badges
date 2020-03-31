@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Earned Badges for Today:</h2>
-    <div class="badges">
+    <div v-if="today" class="badges">
       <div v-for="badge in today.badges" :key="badge.id">
         <figure class="badge" v-if="badge.figure.type == 'default'">
           <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
@@ -21,14 +21,14 @@ export default {
     return {
     }
   },
-  computed: mapGetters(["today"]),
+  computed: mapGetters(["currentMonth","today"]),
   props: {
     msg: String
   },
   mounted() {
     console.log('mounted')
     //mapActions(["setToday"])
-    this.$store.dispatch('setToday')
+    this.$store.dispatch('getMonth')
   }
 }
 </script>

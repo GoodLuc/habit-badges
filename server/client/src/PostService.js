@@ -17,16 +17,17 @@ class PostService {
       }
   }
 
-  static async getToday(user, month, day) {
-    console.log('Getting..' + url + user + '/' + month + '/' + day)
-    const res = await axios.get(url+user+'/'+month+'/'+day)
+  static async getMonth(user, month) {
+    console.log('Getting..' + url + user + '/' + month)
+    const res = await axios.get(url+user+'/'+month)
     try {
       const data = res.data
-      //console.log(data)
+      console.log(data)
       return data.map(post => ({
-        ...post.days[day]
+        ...post
       }))
     } catch (err) {
+      console.log('failed')
       return err
     }
   }
@@ -36,8 +37,8 @@ class PostService {
     return axios.post(url, { text })
   }
 
-  static updateLog(user, load) {
-    return axios.post(url+'update/'+user, {load})
+  static updateLog(user, load, month) {
+    return axios.post(url+'update/'+user+'/'+month, {load})
   }
 
   // Delete Posts

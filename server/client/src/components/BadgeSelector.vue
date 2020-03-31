@@ -1,6 +1,6 @@
 <template>
   <div :class="['overlay', { show: status}]" id="badgesSelector">
-    <div class="container">
+    <div v-if="today" class="container">
       <h1>What have you done to improve yourself today?</h1>
       <ul>
         <li v-for="badge in badges" :key="badge.id">

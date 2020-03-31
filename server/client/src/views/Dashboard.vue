@@ -2,8 +2,8 @@
   <div>
     <div class="container dash">
       <div class="main">
-        <div>
-          <h1>Welcome back {{ user.name }}</h1>
+        <div v-if="today">
+          <h1>Welcome back user.name</h1>
           <p>Today you earned <strong>{{ today.points }} improvement points.</strong> 
             &nbsp; <a href="#" @click="router.push('/history')" >See improvement history.</a>
           </p>
@@ -53,10 +53,9 @@ export default {
   data() {
     return {
       badgeSelector: false,
-      user: { name: 'Lucas' },
     }
   },
-  computed: mapGetters(["today"]),
+  computed: mapGetters(["currentMonth","today"]),
   methods: {
     addBadge: function() { this.badgeSelector = true },
     closeBadgeSelector: function() { this.badgeSelector = false}

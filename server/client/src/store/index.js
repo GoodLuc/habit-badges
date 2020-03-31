@@ -7,23 +7,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: 'Luke',
-		today: {
-      points: 13,
-      month: '',
-      day: '',
-			badges: [
-				{
-					id: 1,
-					name: "Clean House",
-					figure: { type: "default", id: "cleanHouse" },
-				},
-				{
-					id: 2,
-					name: "Excercise",
-					figure: { type: "default", id: "excercise" },
-				},
-				//{ id: 3, name: 'Meditation', figure: { type: 'default', id: 'meditation' } }
-			],
+    day: 0,
+    month: 0,
+		currentMonth: {
+      days: {
+        0: {}
+      },
 		},
 		badges: [
 			{
@@ -44,43 +33,57 @@ export default new Vuex.Store({
 		],
 	},
 	getters: {
-		today: state => state.today,
-		badges: state => state.badges,
+		currentMonth: state => state.currentMonth,
+    badges: state => state.badges,
+    today: state => { try { return state.currentMonth.days[state.day] } catch { return false } }
 	},
   mutations: {
     setMonth: (state, month) => {
-      state.today.month = month
+      state.month = month
     },
     setDay: (state, day) => {
-      state.today.day = day
+      state.day = day
+    },
+    setCurrentMonthData: (state, data) => {
+      if (data != undefined) {
+        state.currentMonth = data
+        console.log('setting data')
+      } else {
+        console.log('today is empty')
+        console.log(data)
+        //state.currentMonth.days[state.day] = {}
+        Vue.set(state.currentMonth.days, state.day, {
+          points: 0,
+          month: state.month,
+          day: state.day,
+          badges: []
+        })
+      }
     },
     toggleBadge: (state, badgeTo) => {
-      let mo = new Date(); state.today.month = mo.getMonth();
-      let day = new Date(); state.today.day = day.getDate();
-			if (state.today.badges.find(badge => badge.name === badgeTo.name)) {
-				state.today.badges = state.today.badges.filter(
+      //let mo = new Date(); state.month = mo.getMonth();
+      //let day = new Date(); state.day = day.getDate();
+      if (state.currentMonth.days[state.day].badges.find(badge => badge.name === badgeTo.name)) {
+        state.currentMonth.days[state.day].badges = state.currentMonth.days[state.day].badges.filter(
 					badge => badge.name !== badgeTo.name
 				);
 			} else {
-				state.today.badges.push(badgeTo);
-			}
+        state.currentMonth.days[state.day].badges.push(badgeTo);
+      }
     },
-    setToday: (state, today) => {
-      state.today = today
-    }
 	},
 	actions: {
 		toggleBadge({ commit }, badgeTo) {
       commit("toggleBadge", badgeTo);
-      let today = {...this.state.today}
-      PostService.updateLog(this.state.user, today);
+      let month = {...this.state.currentMonth}
+      PostService.updateLog(this.state.user, month, this.state.month);
     },
-    async setToday ({ commit }) {
+    async getMonth ({ commit }) {
       let mo = new Date(); commit("setMonth", mo.getMonth())
       let day = new Date(); commit("setDay", day.getDate())
-      let today = await PostService.getToday(this.state.user, this.state.today.month, this.state.today.day)
-      console.log(today[0])
-      commit("setToday", today[0]);
+      let month = await PostService.getMonth(this.state.user, this.state.month)
+      console.log(month[0])
+      commit("setCurrentMonthData", month[0]);
     }
 	},
 	modules: {},
