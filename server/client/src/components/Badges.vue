@@ -25,11 +25,6 @@ export default {
   props: {
     msg: String
   },
-  mounted() {
-    console.log('mounted')
-    //mapActions(["setToday"])
-    this.$store.dispatch('getMonth')
-  }
 }
 </script>
 

@@ -9,10 +9,8 @@ export default new Vuex.Store({
     user: 'Luke',
     day: 0,
     month: 0,
-		currentMonth: {
-      days: {
-      },
-		},
+		currentMonth: { days: {} },
+    lastMonth: { days:{} },
 		badges: [
 			{
 				id: 1,
@@ -33,7 +31,8 @@ export default new Vuex.Store({
 	},
 	getters: {
     user: state => state.user,
-		currentMonth: state => state.currentMonth,
+    currentMonth: state => state.currentMonth,
+    lastMonth: state => state.lastMonth,
     badges: state => state.badges,
     today: state => { try { return state.currentMonth.days[state.day] } catch { return false } }
 	},
@@ -44,27 +43,24 @@ export default new Vuex.Store({
     setDay: (state, day) => {
       state.day = day
     },
+    setLastMonthData: (state, data) => {
+      if (Object.keys(data).length) {
+        state.lastMonth = data
+      }
+    },
     setCurrentMonthData: (state, data) => {
-      if (data != undefined) {
+      if ((data !== undefined) && Object.keys(data).length) {
         state.currentMonth = data
-        console.log('setting data')
-      
-        if (state.currentMonth.days[state.day] == undefined) {
-          console.log('today is empty')
-          console.log(data)
-          //state.currentMonth.days[state.day] = {}
-          Vue.set(state.currentMonth.days, state.day, {
-            points: 0,
-            month: state.month,
-            day: state.day,
-            badges: []
-          })
+        if (state.currentMonth.days[state.day] === undefined) {
+          Vue.set(state.currentMonth.days, state.day, { points: 0, month: state.month, day: state.day, badges: [] })
+        }
+      } else {
+        if (state.currentMonth.days[state.day] === undefined) {
+          Vue.set(state.currentMonth.days, state.day, { points: 0, month: state.month, day: state.day, badges: [] })
         }
       }
     },
     toggleBadge: (state, badgeTo) => {
-      //let mo = new Date(); state.month = mo.getMonth();
-      //let day = new Date(); state.day = day.getDate();
       if (state.currentMonth.days[state.day].badges.find(badge => badge.name === badgeTo.name)) {
         state.currentMonth.days[state.day].badges = state.currentMonth.days[state.day].badges.filter(
 					badge => badge.name !== badgeTo.name
@@ -74,18 +70,23 @@ export default new Vuex.Store({
       }
     },
 	},
-	actions: {
+  actions: {
+    setCurrentDate({ commit }) {
+      let mo = new Date(); commit("setMonth", (mo.getMonth()+1))
+      let day = new Date(); commit("setDay", day.getDate())
+    },
 		toggleBadge({ commit }, badgeTo) {
       commit("toggleBadge", badgeTo);
       let month = {...this.state.currentMonth}
       PostService.updateLog(this.state.user, month, this.state.month);
     },
-    async getMonth ({ commit }) {
-      let mo = new Date(); commit("setMonth", mo.getMonth())
-      let day = new Date(); commit("setDay", day.getDate())
-      let month = await PostService.getMonth(this.state.user, this.state.month)
-      console.log(month[0])
-      commit("setCurrentMonthData", month[0]);
+    async getMonth({ commit }) {
+      let monthData = await PostService.getMonth(this.state.user, this.state.month)
+      commit("setCurrentMonthData", monthData[0]);
+      if (this.state.day < 7) {
+        let monthData = await PostService.getMonth(this.state.user, (this.state.month - 1))
+        commit("setLastMonthData", monthData[0]);
+      }
     }
 	},
 	modules: {},

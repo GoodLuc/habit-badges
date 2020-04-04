@@ -21,8 +21,8 @@
       <Badges />
 
       <h2>Last 7 days</h2>
-      <div class="week" v-if="currentMonth">
-        <div v-for="day in currentMonth.days" :key="day.day">
+      <div class="week" v-if="week">
+        <div v-for="day in week" :key="day.day">
           <h3>{{ day.day + "/" + day.month }}</h3>
           <ul>
             <li v-for="badge in day.badges" :key="badge.id">
@@ -44,7 +44,7 @@
 <script>
 import Badges from '@/components/Badges.vue'
 import BadgeSelector from '@/components/BadgeSelector.vue'
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: 'Dashboard',
@@ -53,14 +53,40 @@ export default {
       badgeSelector: false,
     }
   },
-  computed: mapGetters(["currentMonth","today","user"]),
+  computed: {
+    ...mapGetters(["lastMonth", "currentMonth", "today", "user"]),
+    ...mapState(["day", "month"]),
+    week: function () {
+      var week = {};
+      for (var i=1; i<8; i++) {
+          var d = new Date();
+          d.setDate(d.getDate() - i);
+          if ((d.getMonth()+1) == this.month) {
+            if (this.currentMonth.days[d.getDate()] !== undefined){ week[i] = this.currentMonth.days[d.getDate()] }
+            else { week[i] = { day: d.getDate(), month: d.getMonth()+1, badges: {} } }
+          } else if ((d.getMonth()+1) == (this.month - 1)) {
+            if (this.lastMonth.days[d.getDate()] !== undefined){ week[i] = this.lastMonth.days[d.getDate()] }
+            else { week[i] = { day: d.getDate(), month: d.getMonth()+1, badges: {} } }
+          }
+      }
+      console.log('week is')
+      console.log(week)
+      return week;
+    }
+  },
   methods: {
     addBadge: function() { this.badgeSelector = true },
     closeBadgeSelector: function() { this.badgeSelector = false}
+
   },
   components: {
     Badges,
     BadgeSelector
+  },
+  mounted() {
+    this.$store.dispatch('setCurrentDate')
+    this.$store.dispatch('getMonth')
+    
   }
 }
 </script>

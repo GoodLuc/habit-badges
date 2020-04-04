@@ -20,7 +20,7 @@ export default {
     return {
       loggedIn: true
     }
-  }
+  },
 }
 </script>
 
