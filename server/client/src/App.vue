@@ -30,9 +30,10 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #000;
+  color: #f2f2f2;
   font-size: 14px;
   padding-bottom: 30px;
+  background: #0F191A;
 }
 a { color: #42b983; }
 h1 { font-size: 3.2em; margin-bottom: .2em }
