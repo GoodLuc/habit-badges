@@ -4,8 +4,8 @@
       <div id="nav">
         <div class="container">
           <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure>
-          <router-link to="/">Dashboard</router-link> |
-          <router-link to="/today">Today</router-link> | 
+          <router-link to="/">Dashboard</router-link> 
+          <router-link to="/today">Today</router-link> 
           <router-link to="/habits">Habits</router-link>
         </div>
       </div>

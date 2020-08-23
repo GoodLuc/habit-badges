@@ -29,6 +29,10 @@ export default {
 </script>
 <style scoped lang="scss">
 
+h1 { 
+  color: #42b983;
+  margin-bottom: 20px;
+}
 #badgesSelector ul {
   display: flex;
   .added {
@@ -39,6 +43,7 @@ export default {
     }
    }
   li {
+    color: black;
     display: flex;
     margin-right: 10px;
     text-align: center;

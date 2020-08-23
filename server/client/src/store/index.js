@@ -27,6 +27,11 @@ export default new Vuex.Store({
 				name: "Meditation",
 				figure: { type: "default", id: "meditation" },
 			},
+			{
+				id: 4,
+				name: "Music making",
+				figure: { type: "default", id: "musicMaking" },
+			},
 		],
 	},
 	getters: {

@@ -19,12 +19,13 @@
             <figure v-if="badge.figure.type == 'default'">
               <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
               <figcaption>{{ badge.name }}</figcaption>
-              <span><strong></strong></span>
+              <!--<span><strong></strong></span>-->
             </figure>
           </div>
           <div class="badge-add" @click="addBadge">
             <figure>
               <img src="/assets/badges/default/add.svg" alt="Add new">
+              <figcaption>Add new</figcaption>
             </figure>
           </div>
         </div>
