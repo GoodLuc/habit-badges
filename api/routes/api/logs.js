@@ -10,9 +10,9 @@ router.get('/', async (req, res) => {
 });
 
 // Get logs
-router.get('/:user/:month', async (req, res) => {
-  console.log("Month is "+req.params.month)
-  const month = await getMonth(req.params.user, req.params.month);
+router.get('/:user/:year/:month', async (req, res) => {
+  console.log("Year: " + req.params.year + ", Month: " + req.params.month)
+  const month = await getMonth(req.params.user, req.params.year, req.params.month);
   res.send(await month.toArray());
 });
 
@@ -27,13 +27,14 @@ router.post('/', async (req, res) => {
 })
 
 // Add logs
-router.post("/update/:user/:month", async (req, res) => {
+router.post("/update/:user/:year/:month", async (req, res) => {
+  console.log('Params are:')
   console.log(req.params)
   try {
     const logs = await getLogs();
     await logs.updateOne(
       // Filter
-      { user: req.params.user, month: req.params.month },
+      { user: req.params.user, year: req.params.year, month: req.params.month },
       { $set: { days: req.body.load.days } },
       { upsert: true }
     );
@@ -60,14 +61,14 @@ async function getLogs() {
   return client.db('HeroBadge').collection('logs')
 }
 
-async function getMonth(user, month) {
-  console.log("Getting month for " + user + " on " + month)
+async function getMonth(user, year, month) {
+  console.log("Getting month for " + user + " on " + month + " on year " + year)
   const client = await mongodb.MongoClient.connect
     ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
       useNewUrlParser: true
     });
   
-  return client.db('HeroBadge').collection('logs').find({ "user": user, "month": month})
+  return client.db('HeroBadge').collection('logs').find({ "user": user, "year": year, "month": month})
 }
 
 

@@ -1,11 +1,11 @@
 <template>
   <div :class="['overlay', { show: status}]" id="badgesSelector">
-    <div v-if="today" class="container">
-      <h1>What have you done to improve yourself today?</h1>
+    <div v-if="getDayLoad" class="container">
+      <h1>What have you done to improve yourself today? {{ day }}</h1>
       <ul>
         <li v-for="badge in badges" :key="badge.id">
           <figure @click="toggleBadge(badge)"
-            :class="['badge', { added: today.badges.find((tbadge) => badge.name === tbadge.name )}]" 
+            :class="['badge', { added: getDayLoad.badges.find((tbadge) => badge.name === tbadge.name )}]" 
             v-if="badge.figure.type == 'default'">
             <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
             <figcaption>{{ badge.name }}</figcaption>
@@ -20,8 +20,8 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  props: ['status'],
-  computed: mapGetters(["badges","today"]),
+  props: ['status','day'],
+  computed: mapGetters(["badges","getDayLoad"]),
   methods: {
     ...mapActions(['toggleBadge'])
   }

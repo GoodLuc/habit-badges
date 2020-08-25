@@ -17,9 +17,9 @@ class PostService {
       }
   }
 
-  static async getMonth(user, month) {
-    console.log('Getting..' + url + user + '/' + month)
-    const res = await axios.get(url+user+'/'+month)
+  static async getMonth(user, year, month) {
+    console.log('Getting..' + url + user + '/' + year + '/' + month)
+    const res = await axios.get(url+user+'/'+year+'/'+month)
     try {
       const data = res.data
       console.log(data)
@@ -37,8 +37,8 @@ class PostService {
     return axios.post(url, { text })
   }
 
-  static updateLog(user, load, month) {
-    return axios.post(url+'update/'+user+'/'+month, {load})
+  static updateLog(user, year, month, load) {
+    return axios.post(url+'update/'+user+'/'+year+'/'+month, {load})
   }
 
   // Delete Posts

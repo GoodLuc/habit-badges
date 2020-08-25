@@ -20,8 +20,8 @@ if (process.env.NODE_ENV === 'production') {
   //app.get('/', (req, res) => res.sendFile(__dirname + '/client/dist/index.html'))
   //app.get('/server/', (req, res) => res.sendFile(__dirname + '/public/index.html'))
 
-  app.use('/', express.static(__dirname + '/client/dist/'));
-  app.use('/server', express.static(__dirname + '/public/'));
+  //app.use('/', express.static(__dirname + '/client/dist/'));
+  app.use('/', express.static(__dirname + '/public/'));
 }
 
 const port = process.env.PORT || 5000;

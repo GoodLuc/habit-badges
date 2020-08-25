@@ -2,9 +2,9 @@
   <div>
     <div class="container dash">
       <div class="main">
-        <div v-if="today">
+        <div v-if="getDayLoad">
           <h1 v-if="user">Welcome back {{ user }}</h1>
-          <p>Today you earned <strong>{{ today.points }} improvement points.</strong> 
+          <p>Today you earned <strong>{{ getDayLoad.points }} improvement points.</strong> 
             &nbsp; <a href="#" @click="router.push('/history')" >See improvement history.</a>
           </p>
         </div>
@@ -14,8 +14,8 @@
       <div class="today">
         <h2>Earned Badges for Today:</h2>
         
-        <div v-if="today" class="badges">
-          <div class="badge" v-for="badge in today.badges" :key="badge.id">
+        <div v-if="getDayLoad" class="badges">
+          <div class="badge" v-for="badge in getDayLoad.badges" :key="badge.id">
             <figure v-if="badge.figure.type == 'default'">
               <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
               <figcaption>{{ badge.name }}</figcaption>
@@ -43,12 +43,13 @@
               </figure>
             </li>
           </ul>
+          <button @click="editDay(day.day, day.month)">Edit</button>
         </div>
       </div>
 
     </div>
   
-    <BadgeSelector v-if="badgeSelector" @close="badgeSelector = false" />
+    <BadgeSelector v-if="badgeSelector" @close="badgeSelector = false" :day="dayToEdit" />
   </div>
 </template>
 
@@ -61,29 +62,35 @@ export default {
   data() {
     return {
       badgeSelector: false,
+      dayToEdit: 'today'
     }
   },
   computed: {
-    ...mapGetters(["lastMonth", "currentMonth", "today", "user"]),
-    ...mapState(["day", "month"]),
+    ...mapState(["user"]),
+    ...mapGetters(["getDayLoad", "getMonthLoad"]),
     week: function () {
       var week = {};
       for (var i=1; i<8; i++) {
           var d = new Date();
           d.setDate(d.getDate() - i);
           if ((d.getMonth()+1) == this.month) {
-            if (this.currentMonth.days[d.getDate()] !== undefined){ week[i] = this.currentMonth.days[d.getDate()] }
+            if (this.monthLoad.days[d.getDate()] !== undefined){ week[i] = this.monthLoad.days[d.getDate()] }
             //else { week[i] = { day: d.getDate(), month: d.getMonth()+1, badges: {} } }
-          } else if ((d.getMonth()+1) == (this.month - 1)) {
+          }/* else if ((d.getMonth()+1) == (this.month - 1)) {
             if (this.lastMonth.days[d.getDate()] !== undefined){ week[i] = this.lastMonth.days[d.getDate()] }
             //else { week[i] = { day: d.getDate(), month: d.getMonth()+1, badges: {} } }
-          }
+          }*/
       }
       return week;
     }
   },
   methods: {
     addBadge: function() { this.badgeSelector = true },
+    editDay: function(day, month) { 
+      this.dayToEdit = day
+      this.monthToEdit = month
+      this.badgeSelector = true 
+    },
     closeBadgeSelector: function() { this.badgeSelector = false}
   },
   components: {
