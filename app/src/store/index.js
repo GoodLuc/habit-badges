@@ -7,11 +7,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: 'Luke',
-    day: 0,
-    month: 0,
-    year: new Date().getFullYear(),
+    date: {},
 		monthLoad: { days: {} },
-    //lastMonth: { days:{} },
+    lastMonthLoad: { days:{} },
 		badges: [
 			{
 				id: 1,
@@ -38,65 +36,63 @@ export default new Vuex.Store({
 	getters: {
     user: state => state.user,
     getMonthLoad: state => state.monthLoad,
-    //lastMonth: state => state.lastMonth,
+    getLastMonthLoad: state => state.lastMonthLoad,
     badges: state => state.badges,
-    getDayLoad: state => { try { return state.monthLoad.days[state.day] } catch { return false } }
+    getDayLoad: state => { try { return state.monthLoad.days[state.date.day] } catch { return false } }
 	},
   mutations: {
-    setYear: (state, year) => {
-      state.year = year
+    setDate: (state, date) => {
+      state.date = { year: date.year, month: date.month, day: date.day }
     },
-    setMonth: (state, month) => {
-      state.month = month
-    },
-    setDay: (state, day) => {
-      state.day = day
-    },
-    /*setLastMonthData: (state, data) => {
+    setLastMonthLoad: (state, data) => {
       if (Object.keys(data).length) {
-        state.lastMonth = data
+        state.lastMonthLoad = data
       }
-    },*/
+    },
     setMonthLoad: (state, data) => {
       if ((data !== undefined) && Object.keys(data).length) {
         state.monthLoad = data
-        if (state.monthLoad.days[state.day] === undefined) {
-          Vue.set(state.monthLoad.days, state.day, { points: 0, month: state.month, day: state.day, badges: [] })
+        if (state.monthLoad.days[state.date.day] === undefined) {
+          Vue.set(state.monthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] })
         }
       } else {
-        if (state.monthLoad.days[state.day] === undefined) {
-          Vue.set(state.monthLoad.days, state.day, { points: 0, month: state.month, day: state.day, badges: [] })
+        if (state.monthLoad.days[state.date.day] === undefined) {
+          Vue.set(state.monthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] })
         }
       }
     },
     toggleBadge: (state, badgeTo) => {
-      if (state.monthLoad.days[state.day].badges.find(badge => badge.name === badgeTo.name)) {
-        state.monthLoad.days[state.day].badges = state.monthLoad.days[state.day].badges.filter(
+      if (state.monthLoad.days[state.date.day].badges.find(badge => badge.name === badgeTo.name)) {
+        state.monthLoad.days[state.date.day].badges = state.monthLoad.days[state.date.day].badges.filter(
 					badge => badge.name !== badgeTo.name
 				);
 			} else {
-        state.monthLoad.days[state.day].badges.push(badgeTo);
+        state.monthLoad.days[state.date.day].badges.push(badgeTo);
       }
     },
 	},
   actions: {
     setCurrentDate({ commit }) {
-      let yr = new Date().getFullYear(); commit("setYear", yr)
-      let mo = new Date(); commit("setMonth", (mo.getMonth()+1))
-      let day = new Date(); commit("setDay", day.getDate())
+      let year = new Date().getFullYear()
+      let month = new Date(); month = month.getMonth()+1
+      let day = new Date(); day = day.getDate()
+      commit("setDate", {year: year, month: month, day: day} )
+    },
+    setDate({ commit }, date) {
+      commit("setDate", date )
     },
 		toggleBadge({ commit }, badgeTo) {
       commit("toggleBadge", badgeTo);
       let monthLoad = {...this.state.monthLoad}
-      PostService.updateLog(this.state.user, this.state.year, this.state.month, monthLoad);
+      PostService.updateLog(this.state.user, this.state.date.year, this.state.date.month, monthLoad);
     },
     async getMonth({ commit }) {
-      let monthLoad = await PostService.getMonth(this.state.user, this.state.year, this.state.month)
+      let monthLoad = await PostService.getMonth(this.state.user, this.state.date.year, this.state.date.month)
       commit("setMonthLoad", monthLoad[0]);
-      /*if (this.state.day < 7) {
-        let monthLoad = await PostService.getMonth(this.state.user, this.state.year, (this.state.month - 1))
-        commit("setLastMonthData", monthLoad[0]);
-      }*/
+      if (this.state.date.day < 7) {
+        let lastMonthLoad = await PostService.getMonth(this.state.user, this.state.date.year, (this.state.date.month - 1))
+        commit("setLastMonthLoad", lastMonthLoad[0]);
+      }
     }
 	},
 	modules: {},
