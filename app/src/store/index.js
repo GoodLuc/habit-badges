@@ -38,11 +38,28 @@ export default new Vuex.Store({
     getMonthLoad: state => state.monthLoad,
     getLastMonthLoad: state => state.lastMonthLoad,
     badges: state => state.badges,
-    getDayLoad: state => { try { return state.monthLoad.days[state.date.day] } catch { return false } }
+    getDayLoad: state => {
+      try { return state.monthLoad.days[state.date.day] } catch { return false }
+    } 
 	},
   mutations: {
     setDate: (state, date) => {
       state.date = { year: date.year, month: date.month, day: date.day }
+      if (state.monthLoad.month == state.date.month) { 
+        if (state.monthLoad.days[state.date.day] === undefined) {
+          Vue.set(state.monthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] })
+        }
+      } else if (state.lastMonthLoad.month == state.date.month) { 
+        if (state.lastMonthLoad.days[state.date.day] === undefined) { 
+          Vue.set(state.lastMonthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }) 
+        }
+      }
+    },
+    setCurrentDate( state ) {
+      let year = new Date().getFullYear()
+      let month = new Date(); month = month.getMonth()+1
+      let day = new Date(); day = day.getDate()
+      state.date = {year: year, month: month, day: day}
     },
     setLastMonthLoad: (state, data) => {
       if (Object.keys(data).length) {
@@ -73,10 +90,7 @@ export default new Vuex.Store({
 	},
   actions: {
     setCurrentDate({ commit }) {
-      let year = new Date().getFullYear()
-      let month = new Date(); month = month.getMonth()+1
-      let day = new Date(); day = day.getDate()
-      commit("setDate", {year: year, month: month, day: day} )
+      commit("setCurrentDate")
     },
     setDate({ commit }, date) {
       commit("setDate", date )

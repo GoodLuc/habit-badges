@@ -1,7 +1,7 @@
 <template>
   <div :class="['overlay', { show: status}]" id="badgesSelector">
     <div v-if="getDayLoad" class="container">
-      <h1>What have you done to improve yourself today? {{ day }}</h1>
+      <h1>What have you done to improve yourself today?</h1>
       <ul>
         <li v-for="badge in badges" :key="badge.id">
           <figure @click="toggleBadge(badge)"
@@ -20,7 +20,7 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  props: ['status','day'],
+  props: ['status'],
   computed: mapGetters(["badges","getDayLoad"]),
   methods: {
     ...mapActions(['toggleBadge'])

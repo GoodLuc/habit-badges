@@ -43,13 +43,13 @@
               </figure>
             </li>
           </ul>
-          <button @click="editDay(day.year, day.month, day.day)">Edit</button>
+          <button @click="editDay(day.year, day.month, day.day)">Edit {{day.year}} {{day.month}} {{day.day}}</button>
         </div>
       </div>
 
     </div>
   
-    <BadgeSelector v-if="badgeSelector" @close="badgeSelector = false" :day="dateToEdit" />
+    <BadgeSelector v-if="badgeSelector" @close="closeBadgeSelector" :day="dateToEdit" />
   </div>
 </template>
 
@@ -75,10 +75,10 @@ export default {
           d.setDate(d.getDate() - i);
           if ((d.getMonth()+1) == this.date.month) {
             if (this.getMonthLoad.days[d.getDate()] !== undefined){ week[i] = this.getMonthLoad.days[d.getDate()] }
-            else { week[i] = { day: d.getDate(), month: d.getMonth()+1, badges: {} } }
+            else { week[i] = { year: d.getFullYear(), month: d.getMonth()+1, day: d.getDate(), badges: {} } }
           } else if ((d.getMonth()+1) == (this.date.month - 1)) {
             if (this.getLastMonthLoad.days[d.getDate()] !== undefined){ week[i] = this.getLastMonthLoad.days[d.getDate()] }
-            else { week[i] = { day: d.getDate(), month: d.getMonth()+1, badges: {} } }
+            else { week[i] = { year: d.getFullYear(), month: d.getMonth()+1, day: d.getDate(), badges: {} } }
           }
       }
       return week;
