@@ -3,7 +3,7 @@
     <div v-if="loggedIn">
       <div id="nav">
         <div class="container">
-          <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure>
+          <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
           <router-link to="/">Dashboard</router-link> 
           <router-link to="/today">Today</router-link> 
           <router-link to="/habits">Habits</router-link>
@@ -25,41 +25,45 @@ export default {
 </script>
 
 <style lang="scss">
+html {
+  font-size: 14px;
+}
 body { 
   margin: 0;
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #f2f2f2;
-  font-size: 14px;
-  padding-bottom: 30px;
-  background: #0F191A;
+  color: $foreground;
+  padding-bottom: 2.14rem;
+  background: $darkbg;
 }
-a { color: #42b983; }
-h1 { font-size: 3.2em; margin-bottom: .2em }
-h2 { font-size: 2.2em; font-weight: lighter }
+a { color: $highlight; }
+h1 { font-size: 3.2rem; margin-bottom: .2rem }
+h2 { font-size: 2.2rem; font-weight: lighter }
 img { max-width: 100%; }
 ul { padding: 0; }
 .container  {
   max-width: 1100px;
   margin: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 1.42rem;
+  padding-right: 1.42rem;
 }
 figure { margin: 0; padding: 0 }
 
 #logo {
   filter: invert(1);
-  width: 50px;
-  margin-right: 10px;
+  width: 3.57rem;
+  margin-right: 0.714rem;
 }
 #nav {
-  background: black;
+  background: $navbg;
+  h1 { font-size: 1rem; margin: 0 2rem 0 0; }
   a {
     font-weight: bold;
-    margin-right: 10px;
+    margin-right: 0.714rem;
     &.router-link-exact-active {
-      color: #fff;
+      color: $foreground;
     }
   }
   .container {
@@ -75,25 +79,37 @@ figure { margin: 0; padding: 0 }
   z-index: 3;
   width: 100vw;
   min-height: 100vh;
-  padding-top: 100px;
+  padding-top: 7.14rem;
   flex-direction: column;
-  background: #f2f2f2;
+  background: $foreground;
   &.show {
     display: flex;
   }
   .close {
-    background: black;
+    background: $background;
     position: fixed;
     top: 0;
     right: 0;
-    width: 80px;
-    height: 80px;
+    width: 5.71rem;
+    height: 5.71rem;
     cursor: pointer;
-    padding: 15px;
+    padding: 1rem;
     box-sizing: border-box;
     img {
       filter: invert(1);
     }
   }
+}
+
+button {
+  text-align: center;
+  padding: .5rem;
+  border-radius: .35rem;
+  background: $ellis;
+  color: $foreground;
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
 }
 </style>

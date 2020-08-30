@@ -11,39 +11,45 @@
       </div>
   
       
+      <h2>Earned Badges for Today:</h2>
       <div class="today">
-        <h2>Earned Badges for Today:</h2>
         
         <div v-if="getDayLoad" class="badges">
           <div class="badge" v-for="badge in getDayLoad.badges" :key="badge.id">
             <figure v-if="badge.figure.type == 'default'">
               <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
-              <figcaption>{{ badge.name }}</figcaption>
-              <!--<span><strong></strong></span>-->
             </figure>
+            <figcaption>{{ badge.name }}</figcaption>
           </div>
-          <div class="badge-add" @click="addBadge">
+          <button class="badge-add" @click="addBadge">
             <figure>
               <img src="/assets/badges/default/add.svg" alt="Add new">
               <figcaption>Add new</figcaption>
             </figure>
-          </div>
+          </button>
         </div>
       </div>
 
-      <h2>Last 7 days</h2>
+      <h2>Last 7 days:</h2>
       <div class="week" v-if="week">
         <div v-for="day in week" :key="day.day">
-          <h3>{{ day.day + "/" + day.month }}</h3>
-          <ul>
-            <li v-for="badge in day.badges" :key="badge.id">
-              <figure class="badge" v-if="badge.figure.type == 'default'">
-                <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
+          <h3>{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
+          <div>
+            <div class="badges">
+              <div class="badge" v-for="badge in day.badges" :key="badge.id">
+                <figure v-if="badge.figure.type == 'default'">
+                  <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
+                </figure>
                 <figcaption>{{ badge.name }}</figcaption>
+              </div>
+            </div>
+            <button class="edit" @click="editDay(day.year, day.month, day.day)">
+              <figure>
+                <img src="/assets/badges/default/edit.svg" alt="Edit">
+                <figcaption>Edit</figcaption>
               </figure>
-            </li>
-          </ul>
-          <button @click="editDay(day.year, day.month, day.day)">Edit {{day.year}} {{day.month}} {{day.day}}</button>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -93,6 +99,10 @@ export default {
     closeBadgeSelector: function() { 
       this.badgeSelector = false
       this.$store.dispatch('setCurrentDate')  
+    },
+    dayName: function(day) {
+      var date = new Date(day.month+'/'+day.day+'/'+day.year);
+      return date.toLocaleDateString("en-EN", { weekday: 'long' });
     }
   },
   components: {
@@ -105,118 +115,86 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.today {
-  background: #0b1111;
-  padding: 30px;
-  border-radius: 10px;
+<style lang="scss">
 
-  h2 {
-    font-size: 21px; margin: 0 0 10px;
-  }
+.dash {
+  h2 { margin: 2rem 0 1rem; text-transform: uppercase; font-weight: 200; }
 }
 
-.dash .main {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+.today {
+  background: $lightgrad;
+  padding: 1rem;
+  border-radius: .714rem;
+  margin-bottom: 3rem;
 }
 
 .badges {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  //justify-content: center;
-
-  .badge {
-    border-radius: 15px;
-    background: #3c6164;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-right: 10px;
-    width: calc(20% - 10px);
-    text-align: center;
-    color: white;
-    span {
-      display: block;
-      width: 100%;
-      height: 10px;
-      background: gray;
-      margin-top: 10px;
-      strong {
-        display: block;
-        width: 55%;
-        height: 10px;
-        background: #3cbdd5;
-      }
-    }
-    &:nth-of-type(4n) {
-      margin-right: 0
-    }
-    img {
-      filter: invert(1)
-    }
+}
+.badge, .badge-add, .edit {
+  border-radius: .35rem;
+  background: $shine;
+  padding: .714rem;
+  box-sizing: border-box;
+  margin-right: 1rem;
+  width: 8rem;
+  height: 11.5rem;
+  text-align: center;
+  color: $foreground;
+  box-shadow: $glow;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  figure { 
+    border-radius: 50%; 
+    background: white; 
+    width: 6rem; height: 6rem;
   }
-
-  .badge-add {
-    width: 80px;
-    text-align: center;
-    padding: 5px;
-    border-radius: 10px;
-    background: #EFC30B;;
-    color: white;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    figure img {
-      filter: invert(1)
-    }
+  figcaption {
+    padding: .5rem;
   }
 }
+.badge-add, .edit {
+  background: $ellis2;
+  cursor: pointer;
+  figure { background: none; }
+  img { filter: invert(1) }
+}
+.edit {
+  margin-right: 0;
+  padding: 1rem;
+}
+
+.edit { margin-left: auto; }
 
 .week {
-  background: #0b1111;
-  padding: 30px;
-  border-radius: 15px;
   h3 {
-    margin: 0 20px 0 0;
-    color: white;
+    color: $foreground;
     text-align: center;
     display: flex;
     align-items: center;
-    width: 30px;
+    margin: 1rem 0;
   }
-  div {
-    margin-bottom: 15px;
-    display: flex;
-    background: #2620a2;
-    padding: 0 30px;
-    border-radius: 15px;
-  }
-  ul {
-    margin-top: 0px;
-    display: flex;
-    list-style: none;
-    padding: 0;
-    align-items: flex-end;
-  }
-  li {
-    color: white;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-right: 10px;
-    margin-top: 10px;
-    width: calc(10% - 10px);
-    text-align: center;
-    &:nth-of-type(5n) {
-      margin-right: 0
+  > div {
+    margin-bottom: 2rem;
+    border-radius: .314rem;
+    padding: 1rem;
+    background: $lightbg;
+    > div {
+      display: flex;
+      align-items: center;
     }
-    img {
-      filter: invert(1)
-    }
-  
   }
+  /*div > div {
+    background: $lightgrad;
+    margin-bottom: 1rem;
+    background: $lightgrad;
+    padding: .1rem;
+    border-radius: .314rem;
+  }*/
 }
 
 </style>
