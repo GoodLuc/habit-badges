@@ -41,10 +41,12 @@ export default new Vuex.Store({
     badges: state => state.badges,
     getDayLoad: state => {
       if (state.today.month == state.date.month) {
-        try { return state.monthLoad.days[state.date.day] } catch { return false }
+        if (state.monthLoad.days[state.date.day] !== undefined) { console.log('this'); return state.monthLoad.days[state.date.day] }
       } else if (parseInt(state.today.month) === parseInt(state.date.month)+1) {
-        try { return state.lastMonthLoad.days[state.date.day] } catch { return false }
-      } 
+        if (state.lastMonthLoad.days[state.date.day] !== undefined) { console.log('then'); return state.lastMonthLoad.days[state.date.day] }
+      } else {
+        console.log('none foudn')
+      }
     } 
 	},
   mutations: {
@@ -105,15 +107,24 @@ export default new Vuex.Store({
     },
 		toggleBadge({ commit }, badgeTo) {
       commit("toggleBadge", badgeTo);
-      let monthLoad = {...this.state.monthLoad}
-      PostService.updateLog(this.state.user, this.state.date.year, this.state.date.month, monthLoad);
+      let monthToEdit;
+      if (this.state.date.month === this.state.today.month) {
+        monthToEdit = {...this.state.monthLoad}
+      } else if (parseInt(this.state.today.month) === parseInt(this.state.date.month)+1) {
+        monthToEdit = {...this.state.lastMonthLoad}
+      }
+      PostService.updateLog(this.state.user, this.state.date.year, this.state.date.month, monthToEdit);
     },
     async getMonth({ commit }) {
       let monthLoad = await PostService.getMonth(this.state.user, this.state.date.year, this.state.date.month)
       commit("setMonthLoad", monthLoad[0]);
       if (this.state.date.day < 7) {
-        let lastMonthLoad = await PostService.getMonth(this.state.user, this.state.date.year, (this.state.date.month - 1))
-        commit("setLastMonthLoad", lastMonthLoad[0]);
+        let lastMonthLoad = await PostService.getMonth(this.state.user, this.state.date.year, (parseInt(this.state.date.month) - 1))
+        if (lastMonthLoad[0] === undefined) {
+          commit("setLastMonthLoad", { days:{}, year: this.state.date.year, month: (parseInt(this.state.date.month) - 1) });
+        } else {
+          commit("setLastMonthLoad", lastMonthLoad[0]);
+        }
       }
     }
 	},
