@@ -81,7 +81,7 @@ figure { margin: 0; padding: 0 }
   min-height: 100vh;
   padding-top: 7.14rem;
   flex-direction: column;
-  background: $foreground;
+  background: $lightbg;
   &.show {
     display: flex;
   }

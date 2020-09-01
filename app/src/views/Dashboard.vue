@@ -34,8 +34,8 @@
       <div class="week" v-if="week">
         <div v-for="day in week" :key="day.day">
           <h3>{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
-          <div>
-            <div class="badges">
+          <div :class="[{ isEmpty: !day.badges.length }]" >
+            <div class="badges" >
               <div class="badge" v-for="badge in day.badges" :key="badge.id">
                 <figure v-if="badge.figure.type == 'default'">
                   <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
@@ -129,6 +129,7 @@ export default {
 }
 
 .badges {
+  color: white;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -142,7 +143,7 @@ export default {
   width: 8rem;
   height: 11.5rem;
   text-align: center;
-  color: $foreground;
+  color: white;
   box-shadow: $glow;
   font-size: 1.1rem;
   display: flex;
@@ -176,16 +177,27 @@ export default {
     text-align: center;
     display: flex;
     align-items: center;
-    margin: 1rem 0;
+    margin: .5rem 0 0;
+    background: $lightgrad;
+    padding: .8rem 2rem;
+    border-radius: .314rem .314rem 0 0;
   }
   > div {
     margin-bottom: 2rem;
     border-radius: .314rem;
-    padding: 1rem;
     background: $lightbg;
     > div {
+      padding: 2rem;
       display: flex;
       align-items: center;
+    }
+  }
+  .isEmpty { 
+    .edit { 
+      height: 3rem; width: 3rem;
+      padding: .1rem;
+      figure, img { max-width: 100%; }
+      figcaption { display: none; }
     }
   }
   /*div > div {

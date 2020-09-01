@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: 'Luke',
+    today: {},
     date: {},
 		monthLoad: { days: {} },
     lastMonthLoad: { days:{} },
@@ -39,7 +40,11 @@ export default new Vuex.Store({
     getLastMonthLoad: state => state.lastMonthLoad,
     badges: state => state.badges,
     getDayLoad: state => {
-      try { return state.monthLoad.days[state.date.day] } catch { return false }
+      if (state.today.month == state.date.month) {
+        try { return state.monthLoad.days[state.date.day] } catch { return false }
+      } else if (parseInt(state.today.month) === parseInt(state.date.month)+1) {
+        try { return state.lastMonthLoad.days[state.date.day] } catch { return false }
+      } 
     } 
 	},
   mutations: {
@@ -60,6 +65,7 @@ export default new Vuex.Store({
       let month = new Date(); month = month.getMonth()+1
       let day = new Date(); day = day.getDate()
       state.date = {year: year, month: month, day: day}
+      state.today = {year: year, month: month, day: day}
     },
     setLastMonthLoad: (state, data) => {
       if (Object.keys(data).length) {
@@ -78,13 +84,15 @@ export default new Vuex.Store({
         }
       }
     },
-    toggleBadge: (state, badgeTo) => {
-      if (state.monthLoad.days[state.date.day].badges.find(badge => badge.name === badgeTo.name)) {
-        state.monthLoad.days[state.date.day].badges = state.monthLoad.days[state.date.day].badges.filter(
+    toggleBadge: (state, badgeTo) => { let monthToEdit
+      if (state.today.month == state.date.month) { monthToEdit = 'monthLoad'; } 
+      else if (parseInt(state.today.month) === parseInt(state.date.month)+1) { monthToEdit = 'lastMonthLoad'; }
+      if (state[monthToEdit].days[state.date.day].badges.find(badge => badge.name === badgeTo.name)) {
+        state[monthToEdit].days[state.date.day].badges = state[monthToEdit].days[state.date.day].badges.filter(
 					badge => badge.name !== badgeTo.name
 				);
 			} else {
-        state.monthLoad.days[state.date.day].badges.push(badgeTo);
+        state[monthToEdit].days[state.date.day].badges.push(badgeTo);
       }
     },
 	},

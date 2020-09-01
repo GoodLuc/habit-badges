@@ -2,16 +2,16 @@
   <div :class="['overlay', { show: status}]" id="badgesSelector">
     <div v-if="getDayLoad" class="container">
       <h1>What have you done to improve yourself today?</h1>
-      <ul>
-        <li v-for="badge in badges" :key="badge.id">
+      <div class="badges">
+        <div class="badge" v-for="badge in badges" :key="badge.id" 
+            :class="['badge', { toAdd: !getDayLoad.badges.find((tbadge) => badge.name === tbadge.name )}]" >
           <figure @click="toggleBadge(badge)"
-            :class="['badge', { added: getDayLoad.badges.find((tbadge) => badge.name === tbadge.name )}]" 
             v-if="badge.figure.type == 'default'">
             <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
-            <figcaption>{{ badge.name }}</figcaption>
           </figure>
-        </li>
-      </ul>
+          <figcaption>{{ badge.name }}</figcaption>
+        </div>
+      </div>
     </div>
     <figure class="close" @click="$emit('close')"><img src="/assets/icons/close.svg" alt="Close"></figure>
   </div>
@@ -30,24 +30,15 @@ export default {
 <style scoped lang="scss">
 
 h1 { 
-  color: #42b983;
-  margin-bottom: 20px;
+  color: $foreground;
+  margin-bottom: 2rem;
 }
-#badgesSelector ul {
-  display: flex;
-  .added {
-    background: #42b983;
-    color: white;
-    img {
-      filter: invert(1)
-    }
-   }
-  li {
-    color: black;
-    display: flex;
-    margin-right: 10px;
-    text-align: center;
-    figure { width: 100px; cursor: pointer; padding: 10px; border-radius: 10px; }
-  }
+.badge {
+  cursor: pointer;
 }
+.toAdd {
+  background: white;
+  color: black;
+}
+  
 </style>
