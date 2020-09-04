@@ -1,29 +1,58 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Dashboard from '../views/Dashboard.vue'
+//import PostService from '../PostService'
+import authHeader from '../_helpers/auth-header'
+
+import routes from './routes'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'Dashboard',
-    component: Dashboard
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+/*let newUser
+async function makeUser() {
+  newUser = await PostService.makeUser({email: 'luc@e.com', name: 'Luke', password: 'asd123'})
+  if (newUser) {
+    return true
+  } else {
+    return false
   }
-]
+}*/
 
-const router = new VueRouter({
+const Router = new VueRouter({
+  //scrollBehavior: () => ({ x: 0, y: 0 }),
+  routes,
+
+  // Leave these as is and change from quasar.conf.js instead!
+  // quasar.conf.js -> build -> vueRouterMode
+  // quasar.conf.js -> build -> publicPath
   mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+  base: process.env.VUE_ROUTER_BASE
 })
 
-export default router
+Router.beforeEach((to, from, next) => {
+  
+  let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+  if (requiresAuth) {
+    let user = authHeader()
+    console.log(to)
+    console.log('requires auth')
+
+    if (user) {
+      console.log('user logged:')
+      console.log(user)
+      next()
+    } else {
+      next('login')
+      /*if (makeUser()) {
+        console.log('user created')
+        console.log (user)
+      }*/
+    }
+  } else {
+    next()
+  }
+
+})
+
+export default Router
+

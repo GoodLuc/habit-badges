@@ -24,7 +24,7 @@
           <button class="badge-add" @click="addBadge">
             <figure>
               <img src="/assets/badges/default/add.svg" alt="Add new">
-              <figcaption>Add new</figcaption>
+              <figcaption>Add new <span v-if="getDayLoad.badges.length">/ edit</span></figcaption>
             </figure>
           </button>
         </div>
@@ -159,10 +159,15 @@ export default {
   }
 }
 .badge-add, .edit {
-  background: $ellis2;
+  background: $card;
+  color: black;
   cursor: pointer;
   figure { background: none; }
-  img { filter: invert(1) }
+  &:hover {
+    background: $radialb;
+    color: white;
+    img { filter: invert(1) }
+  }
 }
 .edit {
   margin-right: 0;
@@ -181,6 +186,11 @@ export default {
     background: $lightgrad;
     padding: .8rem 2rem;
     border-radius: .314rem .314rem 0 0;
+  }
+  .badge { 
+    background: $shine2; 
+    text-shadow: 2px 2px 2px rgba(255, 255, 255, 1);
+    color: black; 
   }
   > div {
     margin-bottom: 2rem;

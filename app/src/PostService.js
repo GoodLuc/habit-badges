@@ -45,6 +45,11 @@ class PostService {
   static deletePost(id) {
     return axios.delete(`${url}${id}`)
   }
+
+  // Create Posts
+  static makeUser(user) {
+    return axios.post(url+'makeuser', { user })
+  }
 }
 
 export default PostService

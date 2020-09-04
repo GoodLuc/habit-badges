@@ -17,16 +17,6 @@ router.get('/:user/:year/:month', async (req, res) => {
 });
 
 // Add logs
-router.post('/', async (req, res) => {
-  const logs = await getLogs();
-  await logs.insertOne({
-    text: req.body.text,
-    createdAt: new Date()
-  })
-  res.status(201).send();
-})
-
-// Add logs
 router.post("/update/:user/:year/:month", async (req, res) => {
   console.log('Params are:')
   console.log(req.params)
@@ -44,13 +34,27 @@ router.post("/update/:user/:year/:month", async (req, res) => {
   }
 });
 
-
 // Delete logs
 router.delete('/:id', async (req, res) => {
   const logs = await getLogs();
   await logs.deleteOne({ _id: new mongodb.ObjectID(req.params.id) });
   res.status(200).send();
 })
+
+// New user
+router.post("/makeuser", async (req, res) => {
+  console.log('Making user. Body is:')
+  console.log(req.body)
+  try {
+    const users = await getUsers();
+    await users.insertOne(
+      { ...req.body.user },
+    );
+    res.status(201).send();
+  } catch (error) {
+    console.error(error)
+  }
+});
 
 async function getLogs() {
   const client = await mongodb.MongoClient.connect
@@ -69,6 +73,15 @@ async function getMonth(user, year, month) {
     });
   
   return client.db('HeroBadge').collection('logs').find({ "user": user, "year": year, "month": month})
+}
+
+async function getUsers() {
+  const client = await mongodb.MongoClient.connect
+    ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
+      useNewUrlParser: true
+    });
+  
+  return client.db('HeroBadge').collection('users')
 }
 
 

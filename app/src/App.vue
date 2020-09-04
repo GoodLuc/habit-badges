@@ -105,11 +105,15 @@ button {
   text-align: center;
   padding: .5rem;
   border-radius: .35rem;
-  background: $ellis;
-  color: $foreground;
+  background: $card;
+  color: $darkbg;
   display: flex;
   align-items: center;
   border: none;
   cursor: pointer;
+  &:hover {
+    background: $radialb;
+    color: white;
+  }
 }
 </style>
