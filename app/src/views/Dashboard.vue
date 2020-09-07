@@ -3,17 +3,15 @@
     <div class="container dash">
       <div class="main">
         <div v-if="getDayLoad">
-          <h1 v-if="user">Welcome back {{ user }}</h1>
+          <h1 v-if="user">Welcome back {{ user.name }}</h1>
           <!--<p>Today you earned <strong>{{ getDayLoad.points }} improvement points.</strong> 
             &nbsp; <a href="#" @click="router.push('/history')" >See improvement history.</a>
           </p>-->
         </div>
       </div>
-  
       
       <h2>Earned Badges for Today:</h2>
       <div class="today">
-        
         <div v-if="getDayLoad" class="badges">
           <div class="badge" v-for="badge in getDayLoad.badges" :key="badge.id">
             <figure v-if="badge.figure.type == 'default'">
@@ -98,7 +96,7 @@ export default {
     },
     closeBadgeSelector: function() { 
       this.badgeSelector = false
-      this.$store.dispatch('setCurrentDate')  
+      this.$store.dispatch('setCurrentDate')
     },
     dayName: function(day) {
       var date = new Date(day.month+'/'+day.day+'/'+day.year);

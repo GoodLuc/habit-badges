@@ -41,8 +41,23 @@ body {
 a { color: $highlight; }
 h1 { font-size: 3.2rem; margin-bottom: .2rem }
 h2 { font-size: 2.2rem; font-weight: lighter }
+p { font-size: 1.28rem; }
 img { max-width: 100%; }
 ul { padding: 0; }
+input, button[type=submit] {
+  background: $lightbg; color: white; 
+  max-width: 35.71rem; margin-bottom: 1rem; 
+  font-size: 1.2rem; padding: .714rem; 
+  border: none; border-radius: .314rem; box-sizing: border-box;
+  &:hover {
+    background: $radialb; color: white;
+  }
+}
+button[type=submit] {
+  padding: 1.5rem;
+  justify-content: center; font-weight: 600;
+  background: $card; color: black
+}
 .container  {
   max-width: 1100px;
   margin: auto;

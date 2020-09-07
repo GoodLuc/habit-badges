@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: 'Luke',
+    user: {},
     today: {},
     date: {},
 		monthLoad: { days: {} },
@@ -41,11 +41,11 @@ export default new Vuex.Store({
     badges: state => state.badges,
     getDayLoad: state => {
       if (state.today.month == state.date.month) {
-        if (state.monthLoad.days[state.date.day] !== undefined) { console.log('this'); return state.monthLoad.days[state.date.day] }
+        if (state.monthLoad.days[state.date.day] !== undefined) { return state.monthLoad.days[state.date.day] }
       } else if (parseInt(state.today.month) === parseInt(state.date.month)+1) {
-        if (state.lastMonthLoad.days[state.date.day] !== undefined) { console.log('then'); return state.lastMonthLoad.days[state.date.day] }
+        if (state.lastMonthLoad.days[state.date.day] !== undefined) { return state.lastMonthLoad.days[state.date.day] }
       } else {
-        console.log('none foudn')
+        console.log('none found')
       }
     } 
 	},
@@ -61,6 +61,9 @@ export default new Vuex.Store({
           Vue.set(state.lastMonthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }) 
         }
       }
+    },
+    setUser: (state, user) => {
+      state.user = user
     },
     setCurrentDate( state ) {
       let year = new Date().getFullYear()
@@ -104,6 +107,9 @@ export default new Vuex.Store({
     },
     setDate({ commit }, date) {
       commit("setDate", date )
+    },
+    setUser({ commit }, user) {
+      commit("setUser", user )
     },
 		toggleBadge({ commit }, badgeTo) {
       commit("toggleBadge", badgeTo);

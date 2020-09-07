@@ -1,6 +1,5 @@
 const express = require('express');
 const mongodb = require('mongodb');
-
 const router = express.Router();
 
 ///////////////////////////////////////
@@ -13,13 +12,13 @@ router.get('/:user/:year/:month', async (req, res) => {
   const month = await getMonth(req.params.user, req.params.year, req.params.month);
   res.send(await month.toArray());
 });
+
 async function getMonth(user, year, month) {
-  console.log("Getting month for " + user + " on " + month + " on year " + year)
   const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
-      useNewUrlParser: true
-    });
-  
+  ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
+    useNewUrlParser: true, useUnifiedTopology: true
+  });
+  console.log("Getting month for " + user + " on " + month + " on year " + year)
   return client.db('HeroBadge').collection('logs').find({ "user": user, "year": year, "month": month})
 }
 
@@ -40,12 +39,12 @@ router.post("/update/:user/:year/:month", async (req, res) => {
     console.error(error)
   }
 });
+
 async function getLogs() {
   const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
-      useNewUrlParser: true
-    });
-  
+  ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
+    useNewUrlParser: true, useUnifiedTopology: true
+  });
   return client.db('HeroBadge').collection('logs')
 }
 
@@ -77,10 +76,9 @@ router.post("/makeuser", async (req, res) => {
 });
 async function getUsers() {
   const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
-      useNewUrlParser: true
-    });
-  
+  ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
+    useNewUrlParser: true, useUnifiedTopology: true
+  });
   return client.db('HeroBadge').collection('users')
 }
 
@@ -91,6 +89,7 @@ router.get('/user/:email', async (req, res) => {
   console.log(user)
   res.send(await user.toArray());
 });
+
 router.get('/checkuser/:email', async (req, res) => {
   const user = await getUser(req.params.email, null, 'check');
   console.log('user got:')
@@ -101,36 +100,30 @@ router.get('/checkuser/:email', async (req, res) => {
     res.sendStatus(204)
   }
 });
+
 //// Add logs
 router.post("/validateuser", async (req, res) => {
-  const user = await getUser(null, req.body, 'validate');
-  console.log('user got:')
-  console.log(user)
+  const user = await getUser(req.body.email, req.body.password, 'full');
   if (user) {
-    res.send(user)
+    res.send(user) 
   } else {
-    res.sendStatus(401)
+    res.sendStatus(404)
   }
 });
-async function getUser(email, token, action) {
+
+async function getUser(email, password, action) {
   const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
-      useNewUrlParser: true
-    });
-  let user
-  if (email != null) {
-    user = client.db('HeroBadge').collection('users').find({ email: email })
-  } else if (token != null) {
-    user = client.db('HeroBadge').collection('users').find({ _id: token })
-  }
-  
-  if ((action === 'full')||(action === 'validate')) {
-    return user
+  ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
+    useNewUrlParser: true, useUnifiedTopology: true
+  });
+
+  if (action === 'full') {
+    let user = client.db('HeroBadge').collection('users').find({ email: email, password: password })
+    return await user.toArray()
   } else if (action === 'check') {
-    return (await user.toArray()).length
+    let user = client.db('HeroBadge').collection('users').find({ email: email })
+    return await (user.toArray()).length
   }
 }
-
-
 
 module.exports = router;
