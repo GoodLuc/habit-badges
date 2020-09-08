@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: {},
+    user: false,
     today: {},
     date: {},
 		monthLoad: { days: {} },
@@ -119,13 +119,13 @@ export default new Vuex.Store({
       } else if (parseInt(this.state.today.month) === parseInt(this.state.date.month)+1) {
         monthToEdit = {...this.state.lastMonthLoad}
       }
-      PostService.updateLog(this.state.user, this.state.date.year, this.state.date.month, monthToEdit);
+      PostService.updateLog(this.state.user.token, this.state.date.year, this.state.date.month, monthToEdit);
     },
     async getMonth({ commit }) {
-      let monthLoad = await PostService.getMonth(this.state.user, this.state.date.year, this.state.date.month)
+      let monthLoad = await PostService.getMonth(this.state.user.token, this.state.date.year, this.state.date.month)
       commit("setMonthLoad", monthLoad[0]);
       if (this.state.date.day < 7) {
-        let lastMonthLoad = await PostService.getMonth(this.state.user, this.state.date.year, (parseInt(this.state.date.month) - 1))
+        let lastMonthLoad = await PostService.getMonth(this.state.user.token, this.state.date.year, (parseInt(this.state.date.month) - 1))
         if (lastMonthLoad[0] === undefined) {
           commit("setLastMonthLoad", { days:{}, year: this.state.date.year, month: (parseInt(this.state.date.month) - 1) });
         } else {

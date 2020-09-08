@@ -7,6 +7,7 @@
           <router-link to="/">Dashboard</router-link> 
           <router-link to="/today">Today</router-link> 
           <router-link to="/habits">Habits</router-link>
+          <a href="#" @click="logout" class="logout" v-if="user">Logout</a>
         </div>
       </div>
       <router-view/>
@@ -15,12 +16,30 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       loggedIn: true
     }
   },
+  computed: {
+    ...mapState(["user"]),
+  },
+  methods: {
+    logout: function() {
+      localStorage.removeItem("user")
+      this.$store.dispatch('setUser', false)
+      this.$router.push('/login')
+    }
+  },
+  mounted() {
+    if (localStorage.getItem("user") !== null) {
+      this.$store.dispatch('setUser', JSON.parse(localStorage.getItem("user")))
+    }
+    this.$store.dispatch('setCurrentDate')
+    this.$store.dispatch('getMonth')
+  }
 }
 </script>
 
@@ -84,6 +103,7 @@ figure { margin: 0; padding: 0 }
   .container {
     display: flex;
     align-items: center;
+    .logout { margin-left: auto; }
   }
 }
 
