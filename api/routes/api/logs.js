@@ -1,6 +1,11 @@
 const express = require('express');
 const mongodb = require('mongodb');
 const router = express.Router();
+const NounProject = require('the-noun-project'),
+nounProject = new NounProject({
+    key: '620cc0088f5f4b59a2124e6c2ddfc29f',
+    secret: '86058a5c621043bb932faa9812360891'
+});
 
 ///////////////////////////////////////
 /////// L O G S ///////////////////////
@@ -125,5 +130,25 @@ async function getUser(email, password, action) {
     return await (user.toArray()).length
   }
 }
+
+///////////////////////////////////////
+/////// I C O N S /////////////////////
+///////////////////////////////////////
+
+//// Get icons
+router.get('/icons/:term', async (req, res) => {
+  console.log("Term: " + req.params.term)
+  let icons
+  nounProject.getIconsByTerm(req.params.term, {limit: 5}, async function (err, data) {
+    if (!err) {
+      console.log('Success')
+      icons = await data.icons
+      res.send(await icons)
+    } else {
+      console.log("Error:")
+      console.log(err)
+    }
+  })
+});
 
 module.exports = router;

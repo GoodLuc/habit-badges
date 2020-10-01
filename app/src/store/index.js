@@ -132,7 +132,7 @@ export default new Vuex.Store({
           commit("setLastMonthLoad", lastMonthLoad[0]);
         }
       }
-    }
+    },
 	},
 	modules: {},
 });

@@ -90,6 +90,24 @@ class PostService {
       return err
     }
   }
+
+  ///////////////////////////////////////
+  /////// I C O N S  ////////////////////
+  ///////////////////////////////////////
+  
+  //// Get Posts
+  static async getIcons(term) {
+    console.log('getting... '+term)
+    const res = await axios.get(url+'icons/'+term)
+    try {
+      console.log('Success')
+      console.log(res)
+      return res
+    } catch (err) {
+      console.log('Error')
+      return err
+    }
+  }
 }
 
 export default PostService

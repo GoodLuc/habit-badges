@@ -108,11 +108,11 @@ figure { margin: 0; padding: 0 }
 }
 
 .overlay { 
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 3;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   padding-top: 7.14rem;
   flex-direction: column;
