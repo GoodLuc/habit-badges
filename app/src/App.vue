@@ -58,21 +58,22 @@ body {
   background: $darkbg;
 }
 a { color: $highlight; }
-h1 { font-size: 3.2rem; margin-bottom: .2rem }
+h1 { font-size: 3.2rem; color: $foreground; margin-bottom: 2rem; }
 h2 { font-size: 2.2rem; font-weight: lighter }
 p { font-size: 1.28rem; }
 img { max-width: 100%; }
 ul { padding: 0; }
-input, button[type=submit] {
+input, button[type=button] {
   background: $lightbg; color: white; 
   max-width: 35.71rem; margin-bottom: 1rem; 
   font-size: 1.2rem; padding: .714rem; 
-  border: none; border-radius: .314rem; box-sizing: border-box;
+  border: 1px solid $ellis2; border-radius: .314rem; box-sizing: border-box;
   &:hover {
     background: $radialb; color: white;
   }
 }
-button[type=submit] {
+button[type=button] {
+  border: none;
   padding: 1.5rem;
   justify-content: center; font-weight: 600;
   background: $card; color: black
@@ -114,7 +115,7 @@ figure { margin: 0; padding: 0 }
   z-index: 3;
   width: 100%;
   min-height: 100vh;
-  padding-top: 7.14rem;
+  padding-top: 1.14rem;
   flex-direction: column;
   background: $lightbg;
   &.show {

@@ -1,25 +1,25 @@
 <template>
   <div :class="['overlay', { show: status}]" id="badgesCreator">
     <div class="container">
-      <div v-if="slide[0]">
+      <div v-if="slide == 0">
         <h1>Describe your habit</h1>
-        <p><input type="text" placeholder="Ex. Work out"></p>
-        <p><button>Next</button></p>
+        <p><input v-model="habitName" type="text" placeholder="Ex. Work out"></p>
+        <p><button type="button" @click="selectIcon">Next</button></p>
       </div>
-      <div v-if="slide[1]">
+      <div v-if="slide == 1">
         <h1>Choose an icon</h1>
-        <p><input v-model="iconTerm" type="text"></p>
-        <p><button @click="getIcons">Search</button></p>
-        <div class="icons">
+        <p><input v-model="iconTerm" type="text" placeholder="Search..."></p>
+        <p><button type="button" @click="getIcons">Search</button></p>
+        <div v-if="icons.length" class="box icons">
           <figure v-for="icon in icons" :key="icon.id">
             <img :src="icon.preview_url" :alt="icon.attribution">
           </figure>
         </div>
       </div>
-      <div v-if="slide[2]">
+      <div v-if="slide == 2">
         <h1>Choose a badge border</h1>
         <p><input type="text"></p>
-        <p><button>Ok</button></p>
+        <p><button type="button">Ok</button></p>
       </div>
       
     </div>
@@ -35,9 +35,10 @@ export default {
   props: ['status'],
   data() {
     return {
+      habitName: '',
       iconTerm: '',
       icons: {},
-      slide: { 0: false, 1: true, 2:false }
+      slide: 0
     }
   },
   methods: {
@@ -45,15 +46,19 @@ export default {
       let icons = await PostService.getIcons(this.iconTerm)
       this.icons = icons.data
     },
+    selectIcon() {
+      this.iconTerm = this.habitName
+      this.getIcons()
+      this.nextSlide()
+    },
+    nextSlide: function() {
+      this.slide++
+    }
   }
 }
 </script>
 <style scoped lang="scss">
 
-h1 { 
-  color: $foreground;
-  margin-bottom: 2rem;
-}
 .badge {
   cursor: pointer;
 }
@@ -62,7 +67,19 @@ h1 {
   color: black;
 }
 
+input { width: 40rem; max-width: 80%; }
+
 .icons {
+  figure {
+    padding: 1.2rem;
+    box-sizing: border-box;
+    margin-right: 1rem;
+    width: 8rem;
+    &:hover {
+      background: $radialb;
+      img { filter: invert(0)}
+    }
+  }
   img { filter: invert(1)}
 }
   

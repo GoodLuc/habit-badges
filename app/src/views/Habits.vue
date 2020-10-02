@@ -3,13 +3,15 @@
     <div class="container dash">
       <div class="main">
         <h1>This are your habits</h1>
-        <div class="badges">
-          <button class="badge-add" @click="createBadge">
-            <figure>
-              <img src="/assets/badges/default/add.svg" alt="Add new">
-              <figcaption>Create new</figcaption>
-            </figure>
-          </button>
+        <div class="box">
+          <div class="badges">
+            <button class="badge-add" @click="createBadge">
+              <figure>
+                <img src="/assets/badges/default/add.svg" alt="Add new">
+                <figcaption>Create new</figcaption>
+              </figure>
+            </button>
+          </div>
         </div>
       </div>
 

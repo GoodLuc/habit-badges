@@ -11,7 +11,7 @@
       </div>
       
       <h2>Earned Badges for Today:</h2>
-      <div class="today">
+      <div class="box">
         <div v-if="getDayLoad" class="badges">
           <div class="badge" v-for="badge in getDayLoad.badges" :key="badge.id">
             <figure v-if="badge.figure.type == 'default'">
@@ -119,11 +119,12 @@ export default {
   h2 { margin: 2rem 0 1rem; text-transform: uppercase; font-weight: 200; }
 }
 
-.today {
+.box {
   background: $lightgrad;
   padding: 1rem;
   border-radius: .714rem;
   margin-bottom: 3rem;
+  display: flex;
 }
 
 .badges {
@@ -208,13 +209,7 @@ export default {
       figcaption { display: none; }
     }
   }
-  /*div > div {
-    background: $lightgrad;
-    margin-bottom: 1rem;
-    background: $lightgrad;
-    padding: .1rem;
-    border-radius: .314rem;
-  }*/
+  
 }
 
 </style>
