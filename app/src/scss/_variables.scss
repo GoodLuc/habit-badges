@@ -1,21 +1,34 @@
 $foreground: #f5d000;
 $background: #9BC6FF;
-$darkbg: #0b1111;
-$lightbg: #3c6164;
-$highlight: #42b983;
-$navbg: black;
+
+//////////////////////////////
+
+$navbg: #E8E5E5;
+
+$bg1: #ffffff;
+$bg2: #E8E5E5;
+
+$text1: #000000;
+$text2: #185dfa;
+$text3: #07ceff;
+
+$highlight: #00de7d;
+
+$shine1: linear-gradient(336deg, rgb(24, 93, 250) 8%, rgba(7,206,255,1) 51%, rgba(24,93,250,1) 92%);
+$shine2: linear-gradient(336deg, rgba(252, 194, 1,1) 32%, rgba(255,234,194,1) 51%, rgba(252, 194, 1,1) 77%);
+
+$glow: 0px 3px 8px 4px rgba(0,0,0,.3);
+
+//////////////////////////////
+
+$lightbg: #282828;
 $ellis2: #EFC30B;
 $ellis: #5CA7FF;
 $nubis: #F2F7FF;
 
 $radialb: radial-gradient(circle, rgba(7,206,253,1) 0%, rgba(24,93,250,1) 100%);
-$shine: linear-gradient(336deg, rgba(24,93,250,1) 8%, rgba(7,206,255,1) 51%, rgba(24,93,250,1) 92%);
-$shine2: linear-gradient(336deg, rgba(252, 194, 1,1) 32%, rgba(255,234,194,1) 51%, rgba(252, 194, 1,1) 77%);
 
 $lightgrad: linear-gradient(265deg, rgba(60,131,215,1) 0%, rgba(9,23,43,1) 100%);
 $lightgrad2: linear-gradient(180deg, rgba(60,131,215,1) 0%, rgba(9,23,43,1) 100%);
 
-$card: linear-gradient(169deg, rgba(255,255,255,1) 62%, rgba(217,217,217,1) 83%);
-$card_hvr: linear-gradient(169deg, rgba(255,255,255,1) 70%, rgba(217,217,217,1) 92%);
-
-$glow: 0px 2px 8px 0px rgba(0,0,0,1);
+$card: linear-gradient(169deg, rgba(255,255,255,1) 32%, rgba(217,217,217,1) 83%);

@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <div v-if="loggedIn">
-      <div id="nav">
-        <div class="container">
-          <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
+    <div id="nav">
+      <div class="container">
+        <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
+        <div v-if="user">
           <router-link to="/">Dashboard</router-link> 
           <router-link to="/today">Today</router-link> 
           <router-link to="/habits">Habits</router-link>
-          <a href="#" @click="logout" class="logout" v-if="user">Logout</a>
+          <a href="#" @click="logout" class="logout">Logout</a>
         </div>
       </div>
-      <router-view/>
     </div>
+    <router-view/>
   </div>
 </template>
 
@@ -51,33 +51,54 @@ body {
   margin: 0;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   font-family: 'Roboto', sans-serif;
+  font-family: 'Raleway', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  font-feature-settings: "lnum";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $foreground;
+  color: $text1;
   padding-bottom: 2.14rem;
-  background: $darkbg;
+  background: $bg1;
 }
-a { color: $highlight; }
-h1 { font-size: 3.2rem; color: $foreground; margin-bottom: 2rem; }
+a { color: $text2; }
+h1 { font-size: 3.2rem; color: $text1; margin-bottom: 2rem; }
 h2 { font-size: 2.2rem; font-weight: lighter }
 p { font-size: 1.28rem; }
 img { max-width: 100%; }
 ul { padding: 0; }
+
 input, button[type=button] {
-  background: $lightbg; color: white; 
+  background: $bg2; color: $text1; 
   max-width: 35.71rem; margin-bottom: 1rem; 
   font-size: 1.2rem; padding: .714rem; 
-  border: 1px solid $ellis2; border-radius: .314rem; box-sizing: border-box;
+  border: 1px solid transparent; border-radius: .314rem; box-sizing: border-box;
   &:hover {
-    background: $radialb; color: white;
+    border: 1px solid $ellis;
   }
 }
 button[type=button] {
   border: none;
   padding: 1.5rem;
   justify-content: center; font-weight: 600;
-  background: $card; color: black
+  background: $text2; color: white;
+  border: 1px solid #c2c2c2;
 }
+button {
+  text-align: center;
+  padding: .5rem;
+  border-radius: .35rem;
+  background: $card;
+  color: $text2;
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background: $radialb;
+    color: white;
+  }
+}
+
 .container  {
   max-width: 1100px;
   margin: auto;
@@ -87,7 +108,7 @@ button[type=button] {
 figure { margin: 0; padding: 0 }
 
 #logo {
-  filter: invert(1);
+  filter: invert(0);
   width: 3.57rem;
   margin-right: 0.714rem;
 }
@@ -97,13 +118,18 @@ figure { margin: 0; padding: 0 }
   a {
     font-weight: bold;
     margin-right: 0.714rem;
+    padding: 1.3rem;
+    text-decoration: none;
     &.router-link-exact-active {
-      color: $foreground;
+      //color: $text3;
+      background: $text2;
+      color: white;
     }
   }
   .container {
     display: flex;
     align-items: center;
+    > div { display: flex; flex-grow: 1; }
     .logout { margin-left: auto; }
   }
 }
@@ -117,7 +143,7 @@ figure { margin: 0; padding: 0 }
   min-height: 100vh;
   padding-top: 1.14rem;
   flex-direction: column;
-  background: $lightbg;
+  background: $bg2;
   &.show {
     display: flex;
   }
@@ -137,19 +163,4 @@ figure { margin: 0; padding: 0 }
   }
 }
 
-button {
-  text-align: center;
-  padding: .5rem;
-  border-radius: .35rem;
-  background: $card;
-  color: $darkbg;
-  display: flex;
-  align-items: center;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    background: $radialb;
-    color: white;
-  }
-}
 </style>

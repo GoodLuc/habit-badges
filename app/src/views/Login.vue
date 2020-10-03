@@ -2,8 +2,8 @@
   <div class="container">
     <div v-if="selector" class="selector">
       <h1>Register or login</h1>
-      <button @click="showRegister">Register</button>
-      <button @click="showLogin">Login</button>
+      <button type="button" @click="showRegister">Register</button>
+      <button type="button" @click="showLogin">Login</button>
     </div>
     <div v-if="register" class="register">
       <h2>Register</h2>
@@ -15,7 +15,7 @@
       <input type="password" v-model="password" placeholder="Password">
       <p v-if="warn" class="warn">{{ warn_message }}</p>
       <p v-if="warn2" class="warn">That email is already registered. <a href="#" @click="showLogin">Login instead?</a></p>
-      <button :disabled="loading" type="submit" @click="makeUser">Register</button>
+      <button :disabled="loading" type="button" @click="makeUser">Register</button>
     </div>
     <div v-if="login" class="login">
       <h2>Login</h2>
@@ -25,7 +25,7 @@
       <input type="text" v-model="email" placeholder="Email">
       <input type="password" v-model="password" placeholder="Password">
       <p v-if="warn" class="warn">{{ warn_message }}</p>
-      <button :disabled="loading == 1" type="submit" @click="validateUser">Login</button>
+      <button :disabled="loading == 1" type="button" @click="validateUser">Login</button>
     </div>
     <div v-if="created" class="created">
       <h1>Welcome {{ name }}!</h1>
@@ -43,6 +43,7 @@ export default {
     return {
       loading: false,
       warn: false,
+      warn2: false,
       warn_message: '',
       selector: true,
       register: false,

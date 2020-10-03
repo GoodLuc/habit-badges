@@ -8,8 +8,7 @@
       </div>
       <div v-if="slide == 1">
         <h1>Choose an icon</h1>
-        <p><input v-model="iconTerm" type="text" placeholder="Search..."></p>
-        <p><button type="button" @click="getIcons">Search</button></p>
+        <p class="input-button"><input v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button type="button" @click="getIcons">Search</button></p>
         <div v-if="icons.length" class="box icons">
           <figure v-for="icon in icons" :key="icon.id">
             <img :src="icon.preview_url" :alt="icon.attribution">
@@ -49,6 +48,7 @@ export default {
     selectIcon() {
       this.iconTerm = this.habitName
       this.getIcons()
+      this.iconTerm = ''
       this.nextSlide()
     },
     nextSlide: function() {
@@ -68,6 +68,7 @@ export default {
 }
 
 input { width: 40rem; max-width: 80%; }
+.input-button { display: flex; }
 
 .icons {
   figure {

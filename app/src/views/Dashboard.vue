@@ -4,9 +4,6 @@
       <div class="main">
         <div v-if="getDayLoad">
           <h1 v-if="user">Welcome back {{ user.name }}</h1>
-          <!--<p>Today you earned <strong>{{ getDayLoad.points }} improvement points.</strong> 
-            &nbsp; <a href="#" @click="router.push('/history')" >See improvement history.</a>
-          </p>-->
         </div>
       </div>
       
@@ -116,15 +113,16 @@ export default {
 <style lang="scss">
 
 .dash {
-  h2 { margin: 2rem 0 1rem; text-transform: uppercase; font-weight: 200; }
+  h2 { margin: 2rem 0 1rem; font-weight: 200; }
 }
 
 .box {
-  background: $lightgrad;
-  padding: 1rem;
+  background: $bg2;
+  padding: .714rem;
   border-radius: .714rem;
   margin-bottom: 3rem;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .badges {
@@ -135,32 +133,35 @@ export default {
 }
 .badge, .badge-add, .edit {
   border-radius: .35rem;
-  background: $shine;
-  padding: .714rem;
+  background: $shine2;
+  padding: 1rem .714rem;
   box-sizing: border-box;
   margin-right: 1rem;
   width: 8rem;
   height: 11.5rem;
   text-align: center;
-  color: white;
-  box-shadow: $glow;
+  color: black;
+  text-shadow: 2px 2px 2px rgba(255, 255, 255, 1);
+  //box-shadow: $glow;
   font-size: 1.1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: default;
   figure { 
     border-radius: 50%; 
     background: white; 
     width: 6rem; height: 6rem;
   }
   figcaption {
-    padding: .5rem;
+    padding: .714rem .5rem;
   }
 }
 .badge-add, .edit {
   background: $card;
   color: black;
   cursor: pointer;
+  text-shadow: none;
   figure { background: none; }
   &:hover {
     background: $radialb;
@@ -177,26 +178,26 @@ export default {
 
 .week {
   h3 {
-    color: $foreground;
+    color: black;
     text-align: center;
     display: flex;
     align-items: center;
     margin: .5rem 0 0;
-    background: $lightgrad;
+    background: #C8C8C8;
     padding: .8rem 2rem;
     border-radius: .314rem .314rem 0 0;
+    font-weight: 200;
   }
   .badge { 
     background: $shine2; 
-    text-shadow: 2px 2px 2px rgba(255, 255, 255, 1);
     color: black; 
   }
   > div {
     margin-bottom: 2rem;
     border-radius: .314rem;
-    background: $lightbg;
+    background: $bg2;
     > div {
-      padding: 2rem;
+      padding: .714rem;
       display: flex;
       align-items: center;
     }

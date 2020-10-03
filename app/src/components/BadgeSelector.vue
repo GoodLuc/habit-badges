@@ -29,10 +29,6 @@ export default {
 </script>
 <style scoped lang="scss">
 
-h1 { 
-  color: $foreground;
-  margin-bottom: 2rem;
-}
 .badge {
   cursor: pointer;
 }
