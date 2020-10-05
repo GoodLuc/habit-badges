@@ -34,6 +34,16 @@ export default {
   computed: {
 
   },
+  watch: {
+    badgeCreator: function() {
+      const bod = document.body
+      if (this.badgeCreator) {
+        bod.classList.add('overlaid')
+      } else {
+        bod.classList.remove('overlaid')
+      }
+    }
+  },
   methods: {
     createBadge: function() { this.badgeCreator = true },
     closeBadgeCreator: function() { 

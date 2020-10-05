@@ -108,6 +108,15 @@ class PostService {
       return err
     }
   }
+  ///////////////////////////////////////
+  /////// B A D G E S  //////////////////
+  ///////////////////////////////////////
+  
+  //// Update Log
+  static saveBadge(load) {
+    return axios.post(url+'savebadge/', {load})
+  }
 }
+
 
 export default PostService

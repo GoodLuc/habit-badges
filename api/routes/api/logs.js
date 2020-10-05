@@ -139,9 +139,8 @@ async function getUser(email, password, action) {
 router.get('/icons/:term', async (req, res) => {
   console.log("Term: " + req.params.term)
   let icons
-  nounProject.getIconsByTerm(req.params.term, {limit: 5}, async function (err, data) {
+  nounProject.getIconsByTerm(req.params.term, {limit: 100}, async function (err, data) {
     if (!err) {
-      console.log('Success')
       icons = await data.icons
       res.send(await icons)
     } else {
@@ -149,6 +148,28 @@ router.get('/icons/:term', async (req, res) => {
       console.log(err)
     }
   })
+});
+
+///////////////////////////////////////
+/////// B A D G E S ///////////////////
+///////////////////////////////////////
+
+//// New badge
+router.post("/savebadge", async (req, res) => {
+  console.log('Saving badge')
+  console.log(req.body.load)
+  try {
+    const users = await getUsers();
+    await users.updateOne(
+      // Filter
+      { _id: new mongodb.ObjectID(req.body.load.user) },
+      { $push: { habits: req.body.load.habit } },
+    );
+    console.log('Badge saved')
+    res.status(201).send();
+  } catch (error) {
+    console.error(error)
+  }
 });
 
 module.exports = router;

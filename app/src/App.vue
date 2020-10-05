@@ -20,7 +20,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      loggedIn: true
+      loggedIn: true,
     }
   },
   computed: {
@@ -59,6 +59,9 @@ body {
   color: $text1;
   padding-bottom: 2.14rem;
   background: $bg1;
+  &.overlaid {
+    overflow: hidden;
+  }
 }
 a { color: $text2; }
 h1 { font-size: 3.2rem; color: $text1; margin-bottom: 2rem; }
@@ -99,6 +102,13 @@ button {
   }
 }
 
+.flex { 
+  display: flex; 
+  &.align-bottom {
+    align-items: flex-end;
+  }
+}
+
 .container  {
   max-width: 1100px;
   margin: auto;
@@ -135,17 +145,22 @@ figure { margin: 0; padding: 0 }
 }
 
 .overlay { 
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
   z-index: 3;
   width: 100%;
   min-height: 100vh;
-  padding-top: 1.14rem;
   flex-direction: column;
   background: $bg2;
+  overflow: hidden;
   &.show {
     display: flex;
+  }
+  > div {
+    overflow-y: auto;
+    height: 100%;
   }
   .close {
     background: $background;

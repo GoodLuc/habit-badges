@@ -100,6 +100,16 @@ export default {
       return date.toLocaleDateString("en-EN", { weekday: 'long' });
     }
   },
+  watch: {
+    badgeSelector: function() {
+      const bod = document.body
+      if (this.badgeSelector) {
+        bod.classList.add('overlaid')
+      } else {
+        bod.classList.remove('overlaid')
+      }
+    }
+  },
   components: {
     BadgeSelector
   },
@@ -134,7 +144,7 @@ export default {
 .badge, .badge-add, .edit {
   border-radius: .35rem;
   background: $shine2;
-  padding: 1rem .714rem;
+  padding: 1rem;
   box-sizing: border-box;
   margin-right: 1rem;
   width: 8rem;
@@ -151,7 +161,8 @@ export default {
   figure { 
     border-radius: 50%; 
     background: white; 
-    width: 6rem; height: 6rem;
+    width: 100%;
+    img { display: block; }
   }
   figcaption {
     padding: .714rem .5rem;
