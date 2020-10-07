@@ -9,7 +9,7 @@ export default new Vuex.Store({
     user: false,
     today: {},
     date: {},
-		monthLoad: { days: {} },
+		monthLoad: { days: {}, loading: true },
     lastMonthLoad: { days:{} },
 		badges: [
 			{
@@ -35,7 +35,6 @@ export default new Vuex.Store({
 		],
 	},
 	getters: {
-    user: state => state.user,
     getMonthLoad: state => state.monthLoad,
     getLastMonthLoad: state => state.lastMonthLoad,
     badges: state => state.badges,

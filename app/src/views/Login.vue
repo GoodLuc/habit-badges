@@ -80,8 +80,8 @@ export default {
           if (newUser) {
             let user = await PostService.getUser(this.email)
             console.log('User created')
-            localStorage.setItem("user", JSON.stringify({ name: user[0].name, email: user[0].email, token: user[0]._id}))
-            this.$store.dispatch('setUser', { name: user[0].name, email: user[0].email, token: user[0]._id})
+            localStorage.setItem("user", JSON.stringify({ ...user[0], token: user[0]._id}))
+            this.$store.dispatch('setUser', { ...user[0], token: user[0]._id})
             this.register = false; this.created = true
             return true
           } else {
@@ -100,8 +100,8 @@ export default {
         let user = await PostService.validateUser({email: this.email, password: this.password})
         if (user[0]._id) {
           console.log('User logged')
-          localStorage.setItem("user", JSON.stringify({ name: user[0].name, email: user[0].email, token: user[0]._id}))
-          this.$store.dispatch('setUser', { name: user[0].name, email: user[0].email, token: user[0]._id})
+          localStorage.setItem("user", JSON.stringify({ ...user[0], token: user[0]._id}))
+          this.$store.dispatch('setUser', { ...user[0], token: user[0]._id})
           this.$router.push('/')
         } else {
           this.warn = true

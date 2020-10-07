@@ -112,7 +112,7 @@ export default {
       console.log("Badge saved at "+this.selectedIcon.id);
       var user = JSON.parse(localStorage.getItem("user"))
       var uniqueId = Math.floor(Date.now() / 1000);
-      PostService.saveBadge({ user: user.token, habit: { _id: uniqueId, icon: this.selectedIcon.id, habit: this.habitName, frame: this.selectedFrameIndex } });
+      PostService.saveBadge({ user: user.token, habit: { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex } });
     }
   }
 }
@@ -180,21 +180,9 @@ export default {
   margin-right: 0;
   width: auto;
   height: auto;
-  figure {
-    position: relative;
-    .frame {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    .icon {
-      transform: scale(0.3);
-    }
-  }
-  figcaption { overflow: hidden; max-width: 100%; }
 }
 
-input { width: 40rem; max-width: 80%; }
+input { width: 40rem; max-width: 80%; background: $shine2; }
 
 .input-button { 
   display: flex; 

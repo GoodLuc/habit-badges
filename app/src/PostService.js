@@ -9,8 +9,8 @@ class PostService {
   
   //// Get Posts
   static async getPosts() {
-      const res = await axios.get(url)
-      try {
+    try {
+        const res = await axios.get(url)
         const data = res.data
         return data.map(post => ({
           ...post,
@@ -24,15 +24,14 @@ class PostService {
   //// Get Month
   static async getMonth(user, year, month) {
     //console.log('Getting..' + url + user + '/' + year + '/' + month)
-    const res = await axios.get(url+user+'/'+year+'/'+month)
     try {
+      const res = await axios.get(url+user+'/'+year+'/'+month)
       const data = res.data
       //console.log(data)
       return data.map(post => ({
         ...post
       }))
     } catch (err) {
-      console.log('failed')
       return err
     }
   }
@@ -59,8 +58,8 @@ class PostService {
 
   //// Get user
   static async getUser(email) {
-    const res = await axios.get(url+'user/'+email)
     try {
+      const res = await axios.get(url+'user/'+email)
       const data = res.data
       return data.map(post => ({
         ...post,

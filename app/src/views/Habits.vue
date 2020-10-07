@@ -2,10 +2,17 @@
   <div>
     <div class="container dash">
       <div class="main">
-        <h1>This are your habits</h1>
+        <h1>This are your habits {{ user.name }}</h1>
         <div class="box">
-          <div class="badges">
-            <button class="badge-add" @click="createBadge">
+          <div class="badges" v-if="user">
+            <div class="badge" v-for="habit in user.habits" :key="habit._id">
+              <figure>
+                <div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
+                <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="getBadgeIcon(habit.icon)" :alt="habit.name"></div>
+              </figure>
+              <figcaption>{{ habit.name }}</figcaption>
+            </div>
+            <button class="badge-add" @click="badgeCreator = true">
               <figure>
                 <img src="/assets/badges/default/add.svg" alt="Add new">
                 <figcaption>Create new</figcaption>
@@ -17,22 +24,23 @@
 
     </div>
   
-  <BadgeCreator v-if="badgeCreator" @close="closeBadgeCreator" />
+  <BadgeCreator v-if="badgeCreator" @close="badgeCreator = false" />
   </div>
 </template>
 
 <script>
 import BadgeCreator from '@/components/BadgeCreator.vue'
+import { mapState } from "vuex";
 
 export default {
   name: 'Habits',
   data() {
     return {
-      badgeCreator: false
+      badgeCreator: false,
     }
   },
   computed: {
-
+    ...mapState(["user"]),
   },
   watch: {
     badgeCreator: function() {
@@ -45,13 +53,12 @@ export default {
     }
   },
   methods: {
-    createBadge: function() { this.badgeCreator = true },
-    closeBadgeCreator: function() { 
-      this.badgeCreator = false
-    },
+    getBadgeIcon: function(id) {
+      return localStorage.getItem(id)
+    }
   },
   components: {
-    BadgeCreator
+    BadgeCreator,
   },
   mounted() {
     

@@ -6,7 +6,7 @@
           <h1 v-if="user">Welcome back {{ user.name }}</h1>
         </div>
       </div>
-      
+
       <h2>Earned Badges for Today:</h2>
       <div class="box">
         <div v-if="getDayLoad" class="badges">
@@ -23,10 +23,12 @@
             </figure>
           </button>
         </div>
+        <div v-else><pulse-loader :loading="loading"></pulse-loader></div>
       </div>
 
       <h2>Last 7 days:</h2>
-      <div class="week" v-if="week">
+      <div v-if="getMonthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
+      <div class="week" v-else>
         <div v-for="day in week" :key="day.day">
           <h3>{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
           <div :class="[{ isEmpty: !day.badges.length }]" >
@@ -56,6 +58,7 @@
 
 <script>
 import BadgeSelector from '@/components/BadgeSelector.vue'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { mapState, mapGetters } from "vuex";
 
 export default {
@@ -64,6 +67,7 @@ export default {
     return {
       badgeSelector: false,
       dateToEdit: [],
+      loading: true
     }
   },
   computed: {
@@ -111,7 +115,8 @@ export default {
     }
   },
   components: {
-    BadgeSelector
+    BadgeSelector,
+    PulseLoader
   },
   mounted() {
     this.$store.dispatch('setCurrentDate')
@@ -162,11 +167,18 @@ export default {
     border-radius: 50%; 
     background: white; 
     width: 100%;
+    position: relative;
+    .frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .icon {
+      transform: scale(0.3);
+    }
     img { display: block; }
   }
-  figcaption {
-    padding: .714rem .5rem;
-  }
+  figcaption { overflow: hidden; max-width: 100%; padding: .714rem .5rem; }
 }
 .badge-add, .edit {
   background: $card;
