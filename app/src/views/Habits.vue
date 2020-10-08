@@ -8,7 +8,7 @@
             <div class="badge" v-for="habit in user.habits" :key="habit._id">
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
-                <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="getBadgeIcon(habit.icon)" :alt="habit.name"></div>
+                <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
               </figure>
               <figcaption>{{ habit.name }}</figcaption>
             </div>
@@ -53,16 +53,10 @@ export default {
     }
   },
   methods: {
-    getBadgeIcon: function(id) {
-      return localStorage.getItem(id)
-    }
   },
   components: {
     BadgeCreator,
   },
-  mounted() {
-    
-  }
 }
 </script>
 

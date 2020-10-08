@@ -99,6 +99,9 @@ export default new Vuex.Store({
         state[monthToEdit].days[state.date.day].badges.push(badgeTo);
       }
     },
+    saveBadgeToStore: (state, habit) => {
+      state.user.habits = {...state.user.habits, habit}
+    }
 	},
   actions: {
     setCurrentDate({ commit }) {
@@ -132,6 +135,9 @@ export default new Vuex.Store({
         }
       }
     },
+    saveBadgeToStore: ({ commit }, habit) => {
+      commit("saveBadgeToStore", habit )
+    }
 	},
 	modules: {},
 });

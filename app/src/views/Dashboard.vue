@@ -152,8 +152,9 @@ export default {
   padding: 1rem;
   box-sizing: border-box;
   margin-right: 1rem;
-  width: 8rem;
-  height: 11.5rem;
+  width: 10rem;
+  height: 13.5rem;
+  margin-bottom: 20px;
   text-align: center;
   color: black;
   text-shadow: 2px 2px 2px rgba(255, 255, 255, 1);
@@ -170,11 +171,14 @@ export default {
     position: relative;
     .frame {
       position: absolute;
+      z-index: 1;
       top: 0;
       left: 0;
     }
     .icon {
+      z-index: 2;
       transform: scale(0.3);
+      position: relative;
     }
     img { display: block; }
   }

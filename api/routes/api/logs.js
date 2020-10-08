@@ -149,6 +149,20 @@ router.get('/icons/:term', async (req, res) => {
     }
   })
 });
+//// Get icon
+router.get('/icon/:id', async (req, res) => {
+  console.log("ID: " + req.params.id)
+  let icon
+  nounProject.getIconById(req.params.id, async function (err, data) {
+    if (!err) {
+      icon = await data.icon
+      res.send(await icon)
+    } else {
+      console.log("Error:")
+      console.log(err)
+    }
+  })
+});
 
 ///////////////////////////////////////
 /////// B A D G E S ///////////////////

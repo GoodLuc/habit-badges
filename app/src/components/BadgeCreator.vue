@@ -16,6 +16,7 @@
             <div class="slide" v-if="slide == 1">
               <h1>Choose an icon</h1>
               <p class="input-button"><input @keyup.enter="getIcons" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button type="button" @click="getIcons">Search</button></p>
+              <pulse-loader :loading="loading"></pulse-loader>
               <div v-if="icons.length" class="box icons">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
@@ -27,7 +28,7 @@
               <h1>Choose a badge frame</h1>
               <div class="box frames">
                 <figure :class="[{ selected: index == selectedFrameIndex }]" 
-                  v-for="index in 7" :key="index" @click="setFrame(index)">
+                  v-for="index in 20" :key="index" @click="setFrame(index)">
                   <img :src="'/assets/badges/frame/frame'+index+'.svg'">
                 </figure>
               </div>
@@ -39,7 +40,7 @@
                 <div class="badge">
                   <figure>
                     <div class="frame"><img :src="badgeFrame" :alt="habitName"></div>
-                    <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="iconSrc" :alt="habitName"></div>
+                    <div class="icon"><img crossOrigin="anonymous" ref="badgeIcon" id="badgeIcon" :src="iconSrc" :alt="habitName"></div>
                   </figure>
                   <figcaption>{{ habitName }}</figcaption>
                 </div>
@@ -57,6 +58,8 @@
 </template>
 <script>
 import PostService from '../PostService'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import { mapActions } from "vuex";
 
 
 export default {
@@ -67,6 +70,7 @@ export default {
       nextButton: 'Next',
       habitName: '',
       iconTerm: '',
+      loading: false,
       icons: {},
       selectedIconIndex: '',
       selectedFrameIndex: 1,
@@ -77,9 +81,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['saveBadgeToStore']),
     getIcons: async function() {
+      this.loading = true
+      this.icons = {}
       let icons = await PostService.getIcons(this.iconTerm)
       this.icons = icons.data
+      if (icons.data) { this.loading = false }
     },
     selectIcon() {
       this.iconTerm = this.habitName
@@ -102,18 +110,28 @@ export default {
       this.selectedFrameIndex = index
     },
     saveBadge: function() {
-      var badgeIcon = document.getElementById("badgeIcon");
-      console.log(document.getElementById("badgeIcon"))
-      var imgCanvas = document.createElement("canvas"), imgContext = imgCanvas.getContext("2d");
-      imgCanvas.width = badgeIcon.width; imgCanvas.height = badgeIcon.height;
-      imgContext.drawImage(badgeIcon, 0, 0, badgeIcon.width, badgeIcon.height);
-      var imgAsDataURL = imgCanvas.toDataURL("image/png");
-      localStorage.setItem(this.selectedIcon.id, imgAsDataURL);
-      console.log("Badge saved at "+this.selectedIcon.id);
-      var user = JSON.parse(localStorage.getItem("user"))
-      var uniqueId = Math.floor(Date.now() / 1000);
-      PostService.saveBadge({ user: user.token, habit: { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex } });
-    }
+      if (this.habitName == '') {
+        this.warn = true
+      } else {
+        var badgeIcon = this.$refs.badgeIcon;
+        console.log(this.$refs.badgeIcon)
+        var imgCanvas = document.createElement("canvas"), imgContext = imgCanvas.getContext("2d");
+        console.log("width:"+badgeIcon.width)
+        console.log("height:"+badgeIcon.height)
+        imgCanvas.width = badgeIcon.width; imgCanvas.height = badgeIcon.height;
+        imgContext.drawImage(badgeIcon, 0, 0, badgeIcon.width, badgeIcon.height);
+        var imgAsDataURL = imgCanvas.toDataURL("image/png");
+        console.log("Badge saved at "+this.selectedIcon.id);
+        var user = JSON.parse(localStorage.getItem("user"))
+        var uniqueId = Math.floor(Date.now() / 1000);
+        PostService.saveBadge({ user: user.token, habit: { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL } });
+        this.saveBadgeToStore({ _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL })
+        this.$emit('close')
+      }
+    },
+  },
+  components: {
+    PulseLoader
   }
 }
 </script>

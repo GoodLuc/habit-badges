@@ -94,7 +94,7 @@ class PostService {
   /////// I C O N S  ////////////////////
   ///////////////////////////////////////
   
-  //// Get Posts
+  //// Get Icons
   static async getIcons(term) {
     console.log('getting... '+term)
     const res = await axios.get(url+'icons/'+term)
@@ -107,6 +107,19 @@ class PostService {
       return err
     }
   }
+  //// Get Icon
+  static async getIcon(id) {
+    console.log('getting ID... '+id)
+    const res = await axios.get(url+'icon/'+id)
+    try {
+      console.log('Success')
+      return res
+    } catch (err) {
+      console.log('Error')
+      return err
+    }
+  }
+
   ///////////////////////////////////////
   /////// B A D G E S  //////////////////
   ///////////////////////////////////////
