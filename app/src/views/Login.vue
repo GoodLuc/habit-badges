@@ -12,9 +12,10 @@
       </p>
       <input type="text" v-model="email" placeholder="Email">
       <input type="text" v-model="name" placeholder="Name">
-      <input type="password" v-model="password" placeholder="Password">
+      <input @keyup.enter="makeUser" type="password" v-model="password" placeholder="Password">
       <p v-if="warn" class="warn">{{ warn_message }}</p>
       <p v-if="warn2" class="warn">That email is already registered. <a href="#" @click="showLogin">Login instead?</a></p>
+      <pulse-loader :loading="loading"></pulse-loader>
       <button :disabled="loading" type="button" @click="makeUser">Register</button>
     </div>
     <div v-if="login" class="login">
@@ -23,7 +24,8 @@
         <a href="#" @click="showRegister">Register instead?</a>
       </p>
       <input type="text" v-model="email" placeholder="Email">
-      <input type="password" v-model="password" placeholder="Password">
+      <input @keyup.enter="validateUser" type="password" v-model="password" placeholder="Password">
+      <pulse-loader :loading="loading"></pulse-loader>
       <p v-if="warn" class="warn">{{ warn_message }}</p>
       <button :disabled="loading == 1" type="button" @click="validateUser">Login</button>
     </div>
@@ -37,6 +39,7 @@
 
 <script>
 import PostService from '../PostService'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   data() {
@@ -68,21 +71,23 @@ export default {
     makeUser: async function() {
       if (this.email && this.name && this.password) {
         this.loading = true
-        this.warn = false
+        this.warn = false; this.warn2 = false
         let checkuser = await PostService.checkUser(this.email)
-        if (checkuser === 'Accepted') {
+        if (checkuser === 202) {
           this.loading = false
           this.warn = false
           this.warn2 = true 
           return false
-        } else if (checkuser === '') {
+        } else if (checkuser === 204) {
           let newUser = await PostService.makeUser({email: this.email, name: this.name, password: this.password})
           if (newUser) {
-            let user = await PostService.getUser(this.email)
+            let user = await PostService.validateUser({email: this.email, password: this.password})
             console.log('User created')
             localStorage.setItem("user", JSON.stringify({ ...user[0], token: user[0]._id}))
             this.$store.dispatch('setUser', { ...user[0], token: user[0]._id})
             this.register = false; this.created = true
+            this.loading = false
+            this.warn = false;  this.warn2 = false;
             return true
           } else {
             console.log('user not created')
@@ -96,15 +101,16 @@ export default {
     },
     validateUser: async function() {
       if (this.email && this.password) {
+        this.loading = true
         this.warn = false
         let user = await PostService.validateUser({email: this.email, password: this.password})
-        if (user[0]._id) {
+        if (user.length) {
           console.log('User logged')
           localStorage.setItem("user", JSON.stringify({ ...user[0], token: user[0]._id}))
           this.$store.dispatch('setUser', { ...user[0], token: user[0]._id})
           this.$router.push('/')
         } else {
-          this.warn = true
+          this.warn = true; this.loading = false
           this.warn_message = 'Email and password are not valid.'
         }
       } else {
@@ -112,6 +118,9 @@ export default {
         this.warn_message = 'Please complete all fields.'
       }
     }
+  },
+  components: {
+    PulseLoader
   }
 }
 </script>
@@ -134,7 +143,6 @@ h1 { margin-bottom: 2rem; width: 100%; }
 .login, .register, .created {
   flex-direction: column;
 }
-.warn { color: red; }
 button[disabled=disabled] {
   background: $ellis;
 }

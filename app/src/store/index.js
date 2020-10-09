@@ -85,6 +85,7 @@ export default new Vuex.Store({
       } else {
         if (state.monthLoad.days[state.date.day] === undefined) {
           Vue.set(state.monthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] })
+          Vue.delete(state.monthLoad, "loading")
         }
       }
     },
@@ -101,6 +102,11 @@ export default new Vuex.Store({
     },
     saveBadgeToStore: (state, habit) => {
       state.user.habits = {...state.user.habits, habit}
+      localStorage.setItem("user", JSON.stringify({ ...state.user }))
+    },
+    clearData: (state) => {
+      state.monthLoad = { days: {}, loading: true }
+      state.lastMonthLoad = { days:{} }
     }
 	},
   actions: {
@@ -112,6 +118,9 @@ export default new Vuex.Store({
     },
     setUser({ commit }, user) {
       commit("setUser", user )
+    },
+    clearData({ commit }) {
+      commit("clearData")
     },
 		toggleBadge({ commit }, badgeTo) {
       commit("toggleBadge", badgeTo);

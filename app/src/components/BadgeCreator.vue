@@ -11,12 +11,14 @@
             </nav>
             <div class="slide" v-if="slide == 0">
                 <h1>Describe your habit</h1>
+                <p v-if="warn" class="warn">Please enter a short description</p>
                 <p class="input-button"><input @keyup.enter="selectIcon" v-model="habitName" type="text" placeholder="Ex. Work out"></p>
             </div>
             <div class="slide" v-if="slide == 1">
               <h1>Choose an icon</h1>
               <p class="input-button"><input @keyup.enter="getIcons" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button type="button" @click="getIcons">Search</button></p>
               <pulse-loader :loading="loading"></pulse-loader>
+              <p v-if="warn2" class="warn">No icons found under the term '{{ habitName }}.' Enter a search term.</p>
               <div v-if="icons.length" class="box icons">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
@@ -70,6 +72,8 @@ export default {
       nextButton: 'Next',
       habitName: '',
       iconTerm: '',
+      warn: false,
+      warn2: false,
       loading: false,
       icons: {},
       selectedIconIndex: '',
@@ -85,9 +89,16 @@ export default {
     getIcons: async function() {
       this.loading = true
       this.icons = {}
-      let icons = await PostService.getIcons(this.iconTerm)
-      this.icons = icons.data
-      if (icons.data) { this.loading = false }
+      this.warn = false
+      this.warn2 = false
+      try {
+        var icons = await PostService.getIcons(this.iconTerm)
+        this.icons = icons.data
+        this.loading = false
+      } catch {
+        this.loading = false
+        this.warn2 = true
+      }
     },
     selectIcon() {
       this.iconTerm = this.habitName
@@ -100,6 +111,7 @@ export default {
     },
     nextSlide: function() {
       this.slide++
+      this.warn = false
     },
     setIcon: function(icon) {
       this.selectedIcon = icon
@@ -111,6 +123,7 @@ export default {
     },
     saveBadge: function() {
       if (this.habitName == '') {
+        this.slide = 0
         this.warn = true
       } else {
         var badgeIcon = this.$refs.badgeIcon;

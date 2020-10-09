@@ -30,6 +30,7 @@ export default {
     logout: function() {
       localStorage.removeItem("user")
       this.$store.dispatch('setUser', false)
+      this.$store.dispatch('clearData')
       this.$router.push('/login')
     }
   },
@@ -101,6 +102,7 @@ button {
     color: white;
   }
 }
+.warn { color: red; }
 
 .flex { 
   display: flex; 

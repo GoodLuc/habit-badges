@@ -88,17 +88,16 @@ async function getUsers() {
 }
 
 //// Get user
-router.get('/user/:email', async (req, res) => {
+/*router.get('/user/:email', async (req, res) => {
   const user = await getUser(req.params.email, null, 'full');
   console.log('user got:')
   console.log(user)
   res.send(await user.toArray());
-});
+});*/
 
 router.get('/checkuser/:email', async (req, res) => {
   const user = await getUser(req.params.email, null, 'check');
   console.log('user got:')
-  console.log(user)
   if (user) {
     res.sendStatus(202)
   } else {
@@ -127,7 +126,12 @@ async function getUser(email, password, action) {
     return await user.toArray()
   } else if (action === 'check') {
     let user = client.db('HeroBadge').collection('users').find({ email: email })
-    return await (user.toArray()).length
+    user = await user.toArray()
+    if (await user.length) {
+      return true
+    } else {
+      return false
+    }
   }
 }
 
@@ -146,6 +150,7 @@ router.get('/icons/:term', async (req, res) => {
     } else {
       console.log("Error:")
       console.log(err)
+      res.status(204).send()
     }
   })
 });

@@ -57,24 +57,20 @@ class PostService {
   }
 
   //// Get user
-  static async getUser(email) {
+  /*static async getUser(email) {
     try {
       const res = await axios.get(url+'user/'+email)
-      const data = res.data
-      return data.map(post => ({
-        ...post,
-        createdAt: new Date(post.createdAt)
-      }))
+      return res.data
     } catch (err) {
       return err
     }
-  }
+  }*/
 
   // Check user
   static async checkUser(email) {
-    const res = await axios.get(url+'checkuser/'+email)
     try {
-      return res.data
+      const res = await axios.get(url+'checkuser/'+email)
+      return res.status
     } catch (err) {
       return err
     }
