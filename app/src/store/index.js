@@ -46,6 +46,7 @@ export default new Vuex.Store({
       } else {
         console.log('none found')
       }
+      return { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
     } 
 	},
   mutations: {
@@ -92,6 +93,9 @@ export default new Vuex.Store({
     toggleBadge: (state, badgeTo) => { let monthToEdit
       if (state.today.month == state.date.month) { monthToEdit = 'monthLoad'; } 
       else if (parseInt(state.today.month) === parseInt(state.date.month)+1) { monthToEdit = 'lastMonthLoad'; }
+      
+      if (state[monthToEdit].days[state.date.day] === undefined) { Vue.set(state[monthToEdit].days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }) }
+      
       if (state[monthToEdit].days[state.date.day].badges.find(badge => badge.name === badgeTo.name)) {
         state[monthToEdit].days[state.date.day].badges = state[monthToEdit].days[state.date.day].badges.filter(
 					badge => badge.name !== badgeTo.name

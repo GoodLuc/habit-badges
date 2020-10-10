@@ -9,6 +9,7 @@
 
       <h2>Earned Badges for Today:</h2>
       <div class="box">
+        <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
         <div v-if="getDayLoad" class="badges">
           <div class="badge" v-for="badge in getDayLoad.badges" :key="badge.id">
             <figure v-if="badge.figure.type == 'default'">
@@ -18,8 +19,8 @@
           </div>
           <button class="badge-add" @click="addBadge">
             <figure>
-              <img src="/assets/badges/default/add.svg" alt="Add new">
-              <figcaption>Add new <span v-if="getDayLoad.badges.length">/ edit</span></figcaption>
+              <img src="/assets/badges/default/check.svg" alt="Check in">
+              <figcaption>Check in <span v-if="getDayLoad.badges.length">/ edit</span></figcaption>
             </figure>
           </button>
         </div>
@@ -29,16 +30,14 @@
       <h2>Last 7 days:</h2>
       <div v-if="getMonthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
       <div class="week" v-else>
-        <div v-for="day in week" :key="day.day">
-          <h3>{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
-          <div :class="[{ isEmpty: !day.badges.length }]" >
-            <div class="badges" >
-              <div class="badge" v-for="badge in day.badges" :key="badge.id">
-                <figure v-if="badge.figure.type == 'default'">
-                  <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
-                </figure>
-                <figcaption>{{ badge.name }}</figcaption>
-              </div>
+        <div class="box" v-for="day in week" :key="day.day">
+          <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
+          <div :class="['badges', { isEmpty: !day.badges.length }]" >
+            <div class="badge" v-for="badge in day.badges" :key="badge.id">
+              <figure v-if="badge.figure.type == 'default'">
+                <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
+              </figure>
+              <figcaption>{{ badge.name }}</figcaption>
             </div>
             <button class="edit" @click="editDay(day.year, day.month, day.day)">
               <figure>
@@ -132,12 +131,22 @@ export default {
 }
 
 .box {
+  background: rgb(192, 180, 147);
   background: $bg2;
-  padding: .714rem;
-  border-radius: .714rem;
+  background: $shine3;
+  //background: url('/assets/img/woodbg3.png');
+  padding: 2rem;
+  //border-radius: .714rem;
   margin-bottom: 3rem;
   display: flex;
   flex-wrap: wrap;
+  box-shadow: $inshadow;
+}
+
+h3.dayTitle {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  text-shadow: $textshadow;
 }
 
 .badges {
@@ -157,8 +166,8 @@ export default {
   margin-bottom: 20px;
   text-align: center;
   color: black;
-  text-shadow: 2px 2px 2px rgba(255, 255, 255, 1);
-  //box-shadow: $glow;
+  text-shadow: $textshadow;
+  box-shadow: $outshadow;
   font-size: 1.1rem;
   display: flex;
   flex-direction: column;
@@ -204,31 +213,21 @@ export default {
 .edit { margin-left: auto; }
 
 .week {
-  h3 {
-    color: black;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    margin: .5rem 0 0;
-    background: #C8C8C8;
-    padding: .8rem 2rem;
-    border-radius: .314rem .314rem 0 0;
-    font-weight: 200;
-  }
   .badge { 
     background: $shine2; 
     color: black; 
   }
-  > div {
+  /*> div {
     margin-bottom: 2rem;
     border-radius: .314rem;
     background: $bg2;
+    box-shadow: $inshadow;
     > div {
       padding: .714rem;
       display: flex;
       align-items: center;
     }
-  }
+  }*/
   .isEmpty { 
     .edit { 
       height: 3rem; width: 3rem;
