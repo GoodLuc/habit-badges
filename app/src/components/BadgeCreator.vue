@@ -1,5 +1,5 @@
 <template>
-  <div :class="['overlay', { show: status}]" id="badgesCreator">
+  <div :class="['overlay', { show: status}]" ref="modal" id="badgesCreator" tabindex="0" @keydown.esc="$emit('close')">
     <div>
       <div class="container">
         <div class="flex">
@@ -46,8 +46,9 @@
                   </figure>
                   <figcaption>{{ habitName }}</figcaption>
                 </div>
+                <pulse-loader :loading="loading"></pulse-loader>
                 <p v-if="slide <= 1"><button type="button" @click="nextSlide">Next</button></p>
-                <p v-if="slide == 2"><button type="button" @click="saveBadge">Save</button></p>
+                <p v-if="slide == 2"><button :disabled="loading" type="button" @click="saveBadge">Save</button></p>
               </div>
             </div>
           </div>
@@ -61,15 +62,25 @@
 <script>
 import PostService from '../PostService'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
-import { mapActions } from "vuex";
+import { mapMutations } from "vuex";
 
 
 export default {
   name: 'BadgeCreator',
-  props: ['status'],
+  props: {
+    status: {
+      type: Boolean,
+      default: false
+    },
+    habit: {
+      type: Object,
+      default: function() { return false }
+    }
+  },
   data() {
     return {
       nextButton: 'Next',
+      habitEdit: false,
       habitName: '',
       iconTerm: '',
       warn: false,
@@ -85,7 +96,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['saveBadgeToStore']),
+    ...mapMutations(['saveBadgeToStore','updateBadgeInStore']),
     getIcons: async function() {
       this.loading = true
       this.icons = {}
@@ -121,11 +132,13 @@ export default {
       this.badgeFrame = '/assets/badges/frame/frame'+index+'.svg'
       this.selectedFrameIndex = index
     },
-    saveBadge: function() {
+    saveBadge: async function() {
+      this.loading = true
       if (this.habitName == '') {
         this.slide = 0
         this.warn = true
       } else {
+        var user = JSON.parse(localStorage.getItem("user"))
         var badgeIcon = this.$refs.badgeIcon;
         console.log(this.$refs.badgeIcon)
         var imgCanvas = document.createElement("canvas"), imgContext = imgCanvas.getContext("2d");
@@ -134,17 +147,33 @@ export default {
         imgCanvas.width = badgeIcon.width; imgCanvas.height = badgeIcon.height;
         imgContext.drawImage(badgeIcon, 0, 0, badgeIcon.width, badgeIcon.height);
         var imgAsDataURL = imgCanvas.toDataURL("image/png");
-        console.log("Badge saved at "+this.selectedIcon.id);
-        var user = JSON.parse(localStorage.getItem("user"))
-        var uniqueId = Math.floor(Date.now() / 1000);
-        PostService.saveBadge({ user: user.token, habit: { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL } });
-        this.saveBadgeToStore({ _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL })
+        if (Object.keys(this.$props.habit).length) {
+          console.log("Updating")
+          let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL }
+          this.updateBadgeInStore( habit )
+          PostService.updateBadge( user.token, habit );
+        } else {
+          console.log("Saving as new")
+          var uniqueId = Math.floor(Date.now() / 1000);
+          let habit = { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL }
+          await PostService.saveBadge({ user: user.token, habit: habit });
+          this.saveBadgeToStore(habit)
+        }
         this.$emit('close')
       }
     },
   },
   components: {
     PulseLoader
+  },
+  mounted() {
+    this.$refs.modal.focus()
+    if (Object.keys(this.$props.habit).length) {
+      this.habitName = this.$props.habit.name
+      this.selectedFrameIndex = this.$props.habit.frame
+      this.iconSrc = this.$props.habit.image
+      this.badgeFrame = '/assets/badges/frame/frame'+this.selectedFrameIndex+'.svg'
+    }
   }
 }
 </script>
@@ -219,6 +248,9 @@ input { width: 40rem; max-width: 80%; background: $shine2; }
   display: flex; 
   input[type=text] {
     border-radius: .314rem 0 0 .314rem;
+  }
+  button {
+    width: auto;
   }
 }
 

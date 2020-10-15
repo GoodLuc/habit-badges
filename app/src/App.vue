@@ -1,11 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div class="container">
+      <div :class="['container',{ center: centerLogo }]">
         <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
         <div v-if="user">
           <router-link to="/">Dashboard</router-link> 
-          <router-link to="/today">Today</router-link> 
           <router-link to="/habits">Habits</router-link>
           <a href="#" @click="logout" class="logout">Logout</a>
         </div>
@@ -24,23 +23,26 @@ export default {
     }
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user","centerLogo"]),
   },
   methods: {
     logout: function() {
       localStorage.removeItem("user")
       this.$store.dispatch('setUser', false)
+      this.$store.dispatch('setBadges', {})
       this.$store.dispatch('clearData')
       this.$router.push('/login')
     }
   },
   mounted() {
     if (localStorage.getItem("user") !== null) {
-      this.$store.dispatch('setUser', JSON.parse(localStorage.getItem("user")))
+      let user = JSON.parse(localStorage.getItem("user"))
+      this.$store.dispatch('setUser', user)
+      if (user.habits !== undefined) { this.$store.dispatch('setBadges', user.habits) }
     }
     this.$store.dispatch('setCurrentDate')
     this.$store.dispatch('getMonth')
-  }
+  },
 }
 </script>
 
@@ -73,12 +75,17 @@ ul { padding: 0; }
 
 input, button[type=button] {
   background: $bg2; color: $text1; 
-  max-width: 35.71rem; margin-bottom: 1rem; 
+  width: 35.71rem;
+  max-width: 100%; margin-bottom: 1rem; 
   font-size: 1.2rem; padding: .714rem; 
   border: 1px solid transparent; border-radius: .314rem; box-sizing: border-box;
   &:hover {
     border: 1px solid $ellis;
   }
+}
+input[type=text], input[type=password] {
+  box-shadow: $inshadow;
+  background: $shine4;
 }
 button[type=button] {
   border: none;
@@ -145,6 +152,7 @@ figure { margin: 0; padding: 0 }
     .logout { margin-left: auto; }
   }
 }
+.container.center { justify-content: center; }
 
 .overlay { 
   position: fixed;

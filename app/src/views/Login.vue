@@ -27,12 +27,12 @@
       <input @keyup.enter="validateUser" type="password" v-model="password" placeholder="Password">
       <pulse-loader :loading="loading"></pulse-loader>
       <p v-if="warn" class="warn">{{ warn_message }}</p>
-      <button :disabled="loading == 1" type="button" @click="validateUser">Login</button>
+      <button :disabled="loading" type="button" @click="validateUser">Login</button>
     </div>
     <div v-if="created" class="created">
       <h1>Welcome {{ name }}!</h1>
       <h2>Your user has been created.</h2>
-      <button @click="$router.push('/')">Go to Dashboard</button>
+      <button type="button" @click="$router.push('/')">Go to Dashboard</button>
     </div>
   </div>
 </template>
@@ -105,9 +105,9 @@ export default {
         this.warn = false
         let user = await PostService.validateUser({email: this.email, password: this.password})
         if (user.length) {
-          console.log('User logged')
           localStorage.setItem("user", JSON.stringify({ ...user[0], token: user[0]._id}))
           this.$store.dispatch('setUser', { ...user[0], token: user[0]._id})
+          if (user[0].habits !== undefined) { this.$store.dispatch('setBadges', user[0].habits) }
           this.$router.push('/')
         } else {
           this.warn = true; this.loading = false
@@ -121,27 +121,36 @@ export default {
   },
   components: {
     PulseLoader
+  },
+  mounted() {
+    this.$store.dispatch("centerLogo", true)
+  },
+  beforeDestroy() {
+    this.$store.dispatch("centerLogo", false)
   }
 }
 </script>
 
 <style scoped lang="scss">
-h1 { margin-bottom: 2rem; width: 100%; }
+h1 { margin-bottom: 2rem; width: 100%; text-align: center; }
 .container > div {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .selector, .created {
   button {
-    margin-right: 3rem;
+    margin: 1rem;
     padding: 2rem;
     font-size: 1.4rem;
-    max-width: 35.71rem;
+    max-width: 25.71rem;
     justify-content: center;
   }
 }
 .login, .register, .created {
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 button[disabled=disabled] {
   background: $ellis;

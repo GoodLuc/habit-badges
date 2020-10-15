@@ -7,32 +7,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: false,
+    centerLogo: false,
     today: {},
     date: {},
 		monthLoad: { days: {}, loading: true },
     lastMonthLoad: { days:{} },
-		badges: [
-			{
-				id: 1,
-				name: "Clean House",
-				figure: { type: "default", id: "cleanHouse" },
-			},
-			{
-				id: 2,
-				name: "Excercise",
-				figure: { type: "default", id: "excercise" },
-			},
-			{
-				id: 3,
-				name: "Meditation",
-				figure: { type: "default", id: "meditation" },
-			},
-			{
-				id: 4,
-				name: "Music making",
-				figure: { type: "default", id: "musicMaking" },
-			},
-		],
+		badges: [],
 	},
 	getters: {
     getMonthLoad: state => state.monthLoad,
@@ -50,6 +30,9 @@ export default new Vuex.Store({
     } 
 	},
   mutations: {
+    centerLogo: (state, value) => {
+      state.centerLogo = value
+    },
     setDate: (state, date) => {
       state.date = { year: date.year, month: date.month, day: date.day }
       if (state.monthLoad.month == state.date.month) { 
@@ -64,6 +47,9 @@ export default new Vuex.Store({
     },
     setUser: (state, user) => {
       state.user = user
+    },
+    setBadges: (state, badges) => {
+      state.badges = badges
     },
     setCurrentDate( state ) {
       let year = new Date().getFullYear()
@@ -96,16 +82,23 @@ export default new Vuex.Store({
       
       if (state[monthToEdit].days[state.date.day] === undefined) { Vue.set(state[monthToEdit].days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }) }
       
-      if (state[monthToEdit].days[state.date.day].badges.find(badge => badge.name === badgeTo.name)) {
+      if (state[monthToEdit].days[state.date.day].badges.find(badge => badge === badgeTo)) {
         state[monthToEdit].days[state.date.day].badges = state[monthToEdit].days[state.date.day].badges.filter(
-					badge => badge.name !== badgeTo.name
+					badge => badge !== badgeTo
 				);
 			} else {
         state[monthToEdit].days[state.date.day].badges.push(badgeTo);
       }
     },
     saveBadgeToStore: (state, habit) => {
-      state.user.habits = {...state.user.habits, habit}
+      state.user.habits[habit._id] = habit
+      state.badges[habit._id] = habit
+      localStorage.setItem("user", JSON.stringify({ ...state.user }))
+    },
+    updateBadgeInStore: (state, habit) => {
+      let habits = Object.values(state.user.habits)
+      state.user.habits[habits.findIndex( x => x._id === habit._id )] = habit
+      state.badges = state.user.habits
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     clearData: (state) => {
@@ -114,6 +107,9 @@ export default new Vuex.Store({
     }
 	},
   actions: {
+    centerLogo({commit}, value) {
+      commit("centerLogo", value)
+    },
     setCurrentDate({ commit }) {
       commit("setCurrentDate")
     },
@@ -122,6 +118,9 @@ export default new Vuex.Store({
     },
     setUser({ commit }, user) {
       commit("setUser", user )
+    },
+    setBadges({ commit }, badges) {
+      commit("setBadges", badges )
     },
     clearData({ commit }) {
       commit("clearData")
@@ -148,9 +147,6 @@ export default new Vuex.Store({
         }
       }
     },
-    saveBadgeToStore: ({ commit }, habit) => {
-      commit("saveBadgeToStore", habit )
-    }
 	},
 	modules: {},
 });

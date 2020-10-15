@@ -4,12 +4,13 @@
       <div v-if="getDayLoad" class="container">
         <h1>What have you done to improve yourself today?</h1>
         <div class="badges">
-          <div class="badge" v-for="badge in badges" :key="badge.id" @click="toggleBadge(badge)"
-              :class="['badge', { toAdd: !getDayLoad.badges.find((tbadge) => badge.name === tbadge.name )}]" >
-            <figure v-if="badge.figure.type == 'default'">
-              <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
+          <div class="badge" v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id)"
+              :class="['badge', { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
+            <figure>
+              <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge._id].frame+'.svg'" :alt="user.habits[badge._id].name"></div>
+              <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge._id].image" :alt="user.habits[badge._id].icon"></div>
             </figure>
-            <figcaption>{{ badge.name }}</figcaption>
+            <figcaption>{{ user.habits[badge._id].name }}</figcaption>
           </div>
         </div>
       </div>
@@ -18,11 +19,14 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   props: ['status'],
-  computed: mapGetters(["badges","getDayLoad"]),
+  computed: {
+    ...mapState(["user"]),
+    ...mapGetters(["badges","getDayLoad"]),
+  },
   methods: {
     ...mapActions(['toggleBadge'])
   }

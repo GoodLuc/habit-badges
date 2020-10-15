@@ -120,9 +120,13 @@ class PostService {
   /////// B A D G E S  //////////////////
   ///////////////////////////////////////
   
-  //// Update Log
+  //// Save Badge / Habit
   static saveBadge(load) {
     return axios.post(url+'savebadge/', {load})
+  }
+  //// Update Badge
+  static updateBadge(user, load) {
+    return axios.post(url+'updatebadge/'+load._id, {user, load})
   }
 }
 

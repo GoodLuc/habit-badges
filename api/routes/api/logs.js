@@ -72,7 +72,7 @@ router.post("/makeuser", async (req, res) => {
   try {
     const users = await getUsers();
     await users.insertOne(
-      { ...req.body.user },
+      { ...req.body.user, habits: {} },
     );
     res.status(201).send();
   } catch (error) {
@@ -179,12 +179,33 @@ router.post("/savebadge", async (req, res) => {
   console.log(req.body.load)
   try {
     const users = await getUsers();
+    var habitsId = { $set: {} };
+    habitsId.$set['habits.' + req.body.load.habit._id] = req.body.load.habit; 
     await users.updateOne(
       // Filter
       { _id: new mongodb.ObjectID(req.body.load.user) },
-      { $push: { habits: req.body.load.habit } },
+      habitsId,
     );
     console.log('Badge saved')
+    res.status(201).send();
+  } catch (error) {
+    console.error(error)
+  }
+});
+
+//// update badge
+router.post("/updatebadge/:id", async (req, res) => {
+  console.log('Updating badge')
+  console.log(req.body)
+  console.log(req.params)
+  try {
+    const users = await getUsers();
+    await users.updateOne(
+      // Filter
+      { _id: new mongodb.ObjectID(req.body.user), "habits._id": parseInt(req.params.id) },
+      { $set: { "habits.$": req.body.load } },
+    );
+    console.log('Badge updated')
     res.status(201).send();
   } catch (error) {
     console.error(error)

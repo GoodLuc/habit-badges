@@ -26,7 +26,6 @@ Router.beforeEach((to, from, next) => {
     if (user === null) {
       next('login')
     } else {
-      console.log('user logged')
       next()
     }
   } else {

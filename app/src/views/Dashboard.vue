@@ -11,11 +11,12 @@
       <div class="box">
         <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
         <div v-if="getDayLoad" class="badges">
-          <div class="badge" v-for="badge in getDayLoad.badges" :key="badge.id">
-            <figure v-if="badge.figure.type == 'default'">
-              <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
+          <div class="badge" v-for="badge in getDayLoad.badges" :key="badge">
+            <figure>
+              <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
+              <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
             </figure>
-            <figcaption>{{ badge.name }}</figcaption>
+            <figcaption>{{ user.habits[badge].name }}</figcaption>
           </div>
           <button class="badge-add" @click="addBadge">
             <figure>
@@ -33,11 +34,12 @@
         <div class="box" v-for="day in week" :key="day.day">
           <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
           <div :class="['badges', { isEmpty: !day.badges.length }]" >
-            <div class="badge" v-for="badge in day.badges" :key="badge.id">
-              <figure v-if="badge.figure.type == 'default'">
-                <img :src="'/assets/badges/default/'+badge.figure.id+'.svg'" :alt="badge.name">
+            <div class="badge" v-for="badge in day.badges" :key="badge">
+              <figure>
+                <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
+                <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
               </figure>
-              <figcaption>{{ badge.name }}</figcaption>
+              <figcaption>{{ user.habits[badge].name }}</figcaption>
             </div>
             <button class="edit" @click="editDay(day.year, day.month, day.day)">
               <figure>
