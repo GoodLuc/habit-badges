@@ -11,7 +11,7 @@
       <div class="box">
         <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
         <div v-if="getDayLoad" class="badges">
-          <div class="badge" v-for="badge in getDayLoad.badges" :key="badge">
+          <div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
             <figure>
               <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
               <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
@@ -34,7 +34,7 @@
         <div class="box" v-for="day in week" :key="day.day">
           <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
           <div :class="['badges', { isEmpty: !day.badges.length }]" >
-            <div class="badge" v-for="badge in day.badges" :key="badge">
+            <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
                 <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
@@ -159,7 +159,6 @@ h3.dayTitle {
 }
 .badge, .badge-add, .edit {
   border-radius: .35rem;
-  background: $shine2;
   padding: 1rem;
   box-sizing: border-box;
   margin-right: 1rem;
@@ -171,12 +170,17 @@ h3.dayTitle {
   text-shadow: $textshadow;
   box-shadow: $outshadow;
   font-size: 1.1rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: default;
+  &.gold { background: $gold; border: 1px solid #fcc201; }
+  &.silver { background: $silver; border: 1px solid #ffeac2; }
+  &.azure { background: $azure; color: white; text-shadow: $darktextshadow; border: 1px solid #185dfa; }
   figure { 
     border-radius: 50%; 
+    box-shadow: $outshadow;
     background: white; 
     width: 100%;
     position: relative;
@@ -200,7 +204,8 @@ h3.dayTitle {
   color: black;
   cursor: pointer;
   text-shadow: none;
-  figure { background: none; }
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+  figure { background: none; box-shadow: none; }
   &:hover {
     background: $radialb;
     color: white;
@@ -216,7 +221,6 @@ h3.dayTitle {
 
 .week {
   .badge { 
-    background: $shine2; 
     color: black; 
   }
   /*> div {

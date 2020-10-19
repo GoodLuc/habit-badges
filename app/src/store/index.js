@@ -96,8 +96,7 @@ export default new Vuex.Store({
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     updateBadgeInStore: (state, habit) => {
-      let habits = Object.values(state.user.habits)
-      state.user.habits[habits.findIndex( x => x._id === habit._id )] = habit
+      state.user.habits[habit._id] = habit
       state.badges = state.user.habits
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },

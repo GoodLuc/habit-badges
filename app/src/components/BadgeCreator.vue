@@ -7,23 +7,27 @@
             <nav class="flex">
               <button :class="[{ current: slide == 0}]" role="tab" @click="gotoSlide(0)">Habit name</button>
               <button :class="[{ current: slide == 1}]" role="tab" @click="gotoSlide(1)">Icon</button>
-              <button :class="[{ current: slide == 2}]" role="tab" @click="gotoSlide(2)">Medal frame</button>
+              <button :class="[{ current: slide == 2}]" role="tab" @click="gotoSlide(2)">Frame</button>
+              <button :class="[{ current: slide == 3}]" role="tab" @click="gotoSlide(3)">Material</button>
             </nav>
             <div class="slide" v-if="slide == 0">
                 <h1>Describe your habit</h1>
-                <p v-if="warn" class="warn">Please enter a short description</p>
+                <p v-if="warn" class="warn">Please enter the name of your habit</p>
                 <p class="input-button"><input @keyup.enter="selectIcon" v-model="habitName" type="text" placeholder="Ex. Work out"></p>
             </div>
             <div class="slide" v-if="slide == 1">
               <h1>Choose an icon</h1>
-              <p class="input-button"><input @keyup.enter="getIcons" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button type="button" @click="getIcons">Search</button></p>
+              <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button type="button" @click="getIcons(iconTerm)">Search</button></p>
               <pulse-loader :loading="loading"></pulse-loader>
-              <p v-if="warn2" class="warn">No icons found under the term '{{ habitName }}.' Enter a search term.</p>
               <div v-if="icons.length" class="box icons">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
                   <img :src="icon.preview_url" :alt="icon.attribution">
                 </figure>
+              </div>
+              <div v-else>
+                <p v-if="!loading">No icons found under '{{ iconSearchTerm }}.' Please enter another search term. <br>
+                Tip: Try a simple noun.</p>
               </div>
             </div>
             <div class="slide" v-if="slide == 2">
@@ -35,11 +39,19 @@
                 </figure>
               </div>
             </div>
+            <div class="slide" v-if="slide == 3">
+              <h1>Choose a material for your badge</h1>
+              <div class="box materials">
+                <div class="badge gold" @click="material = 'gold'"><figcaption>Gold</figcaption></div>
+                <div class="badge silver" @click="material = 'silver'"><figcaption>Silver</figcaption></div>
+                <div class="badge azure" @click="material = 'azure'"><figcaption>Azure</figcaption></div>
+              </div>
+            </div>
           </div>
           <div class="badgeHolder">
             <div>
               <div>
-                <div class="badge">
+                <div :class="['badge', material]">
                   <figure>
                     <div class="frame"><img :src="badgeFrame" :alt="habitName"></div>
                     <div class="icon"><img crossOrigin="anonymous" ref="badgeIcon" id="badgeIcon" :src="iconSrc" :alt="habitName"></div>
@@ -47,8 +59,8 @@
                   <figcaption>{{ habitName }}</figcaption>
                 </div>
                 <pulse-loader :loading="loading"></pulse-loader>
-                <p v-if="slide <= 1"><button type="button" @click="nextSlide">Next</button></p>
-                <p v-if="slide == 2"><button :disabled="loading" type="button" @click="saveBadge">Save</button></p>
+                <p v-if="slide <= 2"><button type="button" @click="nextSlide">Next</button></p>
+                <p v-if="slide == 3"><button :disabled="loading" type="button" @click="saveBadge">Save</button></p>
               </div>
             </div>
           </div>
@@ -83,6 +95,7 @@ export default {
       habitEdit: false,
       habitName: '',
       iconTerm: '',
+      iconSearchTerm: '',
       warn: false,
       warn2: false,
       loading: false,
@@ -92,20 +105,22 @@ export default {
       slide: 0,
       selectedIcon: {},
       iconSrc: '/assets/badges/default/default.svg',
-      badgeFrame: '/assets/badges/frame/frame1.svg'
+      badgeFrame: '/assets/badges/frame/frame1.svg',
+      material: 'silver'
     }
   },
   methods: {
     ...mapMutations(['saveBadgeToStore','updateBadgeInStore']),
-    getIcons: async function() {
+    getIcons: async function(term) {
       this.loading = true
       this.icons = {}
       this.warn = false
       this.warn2 = false
       try {
-        var icons = await PostService.getIcons(this.iconTerm)
+        var icons = await PostService.getIcons(term)
         this.icons = icons.data
         this.loading = false
+        this.iconSearchTerm = term
       } catch {
         this.loading = false
         this.warn2 = true
@@ -113,7 +128,7 @@ export default {
     },
     selectIcon() {
       this.iconTerm = this.habitName
-      this.getIcons()
+      this.getIcons(this.iconTerm)
       this.iconTerm = ''
       this.gotoSlide(1)
     },
@@ -121,7 +136,11 @@ export default {
       this.slide = nr
     },
     nextSlide: function() {
-      this.slide++
+      if (this.slide == 0) { 
+        this.selectIcon() 
+      } else {
+        this.slide++
+      }
       this.warn = false
     },
     setIcon: function(icon) {
@@ -140,22 +159,19 @@ export default {
       } else {
         var user = JSON.parse(localStorage.getItem("user"))
         var badgeIcon = this.$refs.badgeIcon;
-        console.log(this.$refs.badgeIcon)
         var imgCanvas = document.createElement("canvas"), imgContext = imgCanvas.getContext("2d");
-        console.log("width:"+badgeIcon.width)
-        console.log("height:"+badgeIcon.height)
         imgCanvas.width = badgeIcon.width; imgCanvas.height = badgeIcon.height;
         imgContext.drawImage(badgeIcon, 0, 0, badgeIcon.width, badgeIcon.height);
         var imgAsDataURL = imgCanvas.toDataURL("image/png");
         if (Object.keys(this.$props.habit).length) {
           console.log("Updating")
-          let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL }
+          let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material }
+          await PostService.saveBadge({ user: user.token, habit: habit });
           this.updateBadgeInStore( habit )
-          PostService.updateBadge( user.token, habit );
         } else {
           console.log("Saving as new")
           var uniqueId = Math.floor(Date.now() / 1000);
-          let habit = { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL }
+          let habit = { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material }
           await PostService.saveBadge({ user: user.token, habit: habit });
           this.saveBadgeToStore(habit)
         }
@@ -173,6 +189,7 @@ export default {
       this.selectedFrameIndex = this.$props.habit.frame
       this.iconSrc = this.$props.habit.image
       this.badgeFrame = '/assets/badges/frame/frame'+this.selectedFrameIndex+'.svg'
+      this.material = this.$props.habit.material
     }
   }
 }
@@ -184,6 +201,7 @@ export default {
   width: 100%;
   padding: 2rem;
   border-radius: 0 .314rem .314rem .314rem;
+  h1 { padding-bottom: 1.5rem; }
 }
 
 .container {
@@ -242,7 +260,14 @@ export default {
   height: auto;
 }
 
-input { width: 40rem; max-width: 80%; background: $shine2; }
+.materials {
+  .badge { 
+    margin-right: 20px; 
+    min-width: 5rem; min-height: 5rem;  
+  }
+}
+
+input { width: 40rem; max-width: 80%; background: $shine3; }
 
 .input-button { 
   display: flex; 

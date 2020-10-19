@@ -4,8 +4,8 @@
       <div v-if="getDayLoad" class="container">
         <h1>What have you done to improve yourself today?</h1>
         <div class="badges">
-          <div class="badge" v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id)"
-              :class="['badge', { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
+          <div v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id)"
+              :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
             <figure>
               <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge._id].frame+'.svg'" :alt="user.habits[badge._id].name"></div>
               <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge._id].image" :alt="user.habits[badge._id].icon"></div>
@@ -36,15 +36,18 @@ export default {
 
 .badge {
   cursor: pointer;
+  text-shadow: none !important;
   &:hover {
-    background: $radialb;
     color: white;
     text-shadow: none;
+    &.gold { background: $gold !important; }
+    &.silver { background: $silver !important; }
+    &.azure { background: $azure !important; color: white !important; text-shadow: $darktextshadow; }
   }
 }
 .toAdd {
-  background: white;
-  color: black;
+  background: white !important;
+  color: black !important;
 }
   
 </style>

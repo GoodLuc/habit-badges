@@ -193,23 +193,4 @@ router.post("/savebadge", async (req, res) => {
   }
 });
 
-//// update badge
-router.post("/updatebadge/:id", async (req, res) => {
-  console.log('Updating badge')
-  console.log(req.body)
-  console.log(req.params)
-  try {
-    const users = await getUsers();
-    await users.updateOne(
-      // Filter
-      { _id: new mongodb.ObjectID(req.body.user), "habits._id": parseInt(req.params.id) },
-      { $set: { "habits.$": req.body.load } },
-    );
-    console.log('Badge updated')
-    res.status(201).send();
-  } catch (error) {
-    console.error(error)
-  }
-});
-
 module.exports = router;
