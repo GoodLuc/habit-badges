@@ -9,6 +9,7 @@
               <button :class="[{ current: slide == 1}]" role="tab" @click="gotoSlide(1)">Icon</button>
               <button :class="[{ current: slide == 2}]" role="tab" @click="gotoSlide(2)">Frame</button>
               <button :class="[{ current: slide == 3}]" role="tab" @click="gotoSlide(3)">Material</button>
+              <button :class="[{ current: slide == 4}]" role="tab" @click="gotoSlide(4)">Value</button>
             </nav>
             <div class="slide" v-if="slide == 0">
                 <h1>Describe your habit</h1>
@@ -45,6 +46,19 @@
                 <div class="badge gold" @click="material = 'gold'"><figcaption>Gold</figcaption></div>
                 <div class="badge silver" @click="material = 'silver'"><figcaption>Silver</figcaption></div>
                 <div class="badge azure" @click="material = 'azure'"><figcaption>Azure</figcaption></div>
+              </div>
+            </div>
+            <div class="slide" v-if="slide == 4">
+              <h1>Assign a value</h1>
+              <p>Define how valuable completing this habit is.</p>
+              <div class="flex align-center justify-left">
+                <div class="slidecontainer">
+                  <input type="range" min="1" max="12" v-model="coins" class="slider" id="myRange">
+                </div>
+                <div class="coin"> 
+                  <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
+                  <figcaption>{{ coins }}</figcaption>
+                </div>
               </div>
             </div>
           </div>
@@ -106,7 +120,8 @@ export default {
       selectedIcon: {},
       iconSrc: '/assets/badges/default/default.svg',
       badgeFrame: '/assets/badges/frame/frame1.svg',
-      material: 'silver'
+      material: 'silver',
+      coins: 5,
     }
   },
   methods: {
@@ -296,6 +311,45 @@ input { width: 40rem; max-width: 80%; background: $shine3; }
     }
   }
   img { filter: invert(0)}
+}
+
+.slidecontainer {
+  width: auto; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s; margin: 0;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
 }
   
 </style>

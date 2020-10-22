@@ -9,7 +9,11 @@
 
       <h2>Earned Badges for Today:</h2>
       <div class="box">
-        <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
+        <div class="title">
+          <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
+          <div class="coin"><img src="/assets/icons/coin.svg" alt="Coins"></div>
+        </div>
+
         <div v-if="getDayLoad" class="badges">
           <div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
             <figure>
@@ -32,7 +36,10 @@
       <div v-if="getMonthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
       <div class="week" v-else>
         <div class="box" v-for="day in week" :key="day.day">
-          <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
+          <div class="title">
+            <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
+            <div class="coin"><img src="/assets/icons/coin.svg" alt="Coins"></div>
+          </div>
           <div :class="['badges', { isEmpty: !day.badges.length }]" >
             <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
               <figure>
@@ -143,12 +150,23 @@ export default {
   display: flex;
   flex-wrap: wrap;
   box-shadow: $inshadow;
+  .title { width: 100%; display: flex; justify-content: space-between; }
 }
 
 h3.dayTitle {
   margin: 0 0 1rem;
   font-size: 1.5rem;
   text-shadow: $textshadow;
+}
+
+.coin {
+  position: relative;
+  width: 40px; height: 40px;
+  figcaption {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center;
+    color: white; font-size: 1.6rem; font-weight: bold;
+  }
 }
 
 .badges {

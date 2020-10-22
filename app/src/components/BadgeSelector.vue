@@ -4,13 +4,14 @@
       <div v-if="getDayLoad" class="container">
         <h1>What have you done to improve yourself today?</h1>
         <div class="badges">
-          <div v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id)"
-              :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
-            <figure>
-              <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge._id].frame+'.svg'" :alt="user.habits[badge._id].name"></div>
-              <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge._id].image" :alt="user.habits[badge._id].icon"></div>
-            </figure>
-            <figcaption>{{ user.habits[badge._id].name }}</figcaption>
+          <div v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id)">
+            <div v-if="!badge.deleted" :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
+              <figure>
+                <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge._id].frame+'.svg'" :alt="user.habits[badge._id].name"></div>
+                <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge._id].image" :alt="user.habits[badge._id].icon"></div>
+              </figure>
+              <figcaption>{{ user.habits[badge._id].name }}</figcaption>
+            </div>
           </div>
         </div>
       </div>

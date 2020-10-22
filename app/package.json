@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "bulma": "^0.9.1",
     "core-js": "^3.6.4",
     "fetch-base64": "^2.1.2",
     "the-noun-project": "^2.1.0",
+    "vodal": "^2.4.0",
     "vue": "^2.6.11",
+    "vue-over-body": "0.0.5",
     "vue-router": "^3.1.5",
     "vuex": "^3.1.2"
   },

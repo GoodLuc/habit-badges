@@ -116,6 +116,12 @@ button {
   &.align-bottom {
     align-items: flex-end;
   }
+  &.align-center {
+    align-items: center;
+  }
+  &.justify-left {
+    justify-content: flex-start;
+  }
 }
 
 .container  {

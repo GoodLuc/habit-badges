@@ -7,14 +7,16 @@
         <div class="box">
           <div class="badges" v-if="user">
             <div v-for="habit in user.habits" :key="habit._id">
-              <div :class="['badge', habit.material]">
-                <figure>
-                  <div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
-                  <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
-                </figure>
-                <figcaption>{{ habit.name }}</figcaption>
+              <div v-if="!habit.deleted">
+                <div :class="['badge', habit.material]">
+                  <figure>
+                    <div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
+                    <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
+                  </figure>
+                  <figcaption>{{ habit.name }}</figcaption>
+                </div>
+                <div class="badgeEditControls"><button @click="editHabit(habit)" type="button">Edit</button><button class="del" type="button" @click="delDialog = true; delHabit = habit">Delete</button></div>
               </div>
-              <div class="badgeEditControls"><button @click="editHabit(habit)" type="button">Edit</button><button class="del" type="button">Delete</button></div>
             </div>
             <button class="badge-add" @click="badgeCreator = true">
               <figure>
@@ -27,21 +29,44 @@
       </div>
 
     </div>
+
+  <div v-if="delDialog" class="delDialog overlay">
+    <div v-if="!confirmed" class="container">
+      <div>
+        <h1>Are you sure you wish to delete this badge?</h1>
+        <p>Any previous entries in the daily calendar will still be visible.</p>
+      </div>
+      <pulse-loader :loading="loading"></pulse-loader>
+      <div class="controls"><button :disabled="loading" class="del" @click="deleteHabit(delHabit)" type="button">Delete</button> <button type="button" @click="delDialog = false">Cancel</button></div>
+    </div>
+    <div else>
+      <h1>The selected badge has been deleted.</h1>
+      <div class="controls">
+        <button type="button" @click="delDialog = false">Ok</button>
+      </div>
+    </div>
+  </div>
   
   <BadgeCreator v-if="badgeCreator" @close="badgeCreator = false; habit = {}" :habit="habit" />
   </div>
 </template>
 
 <script>
+import PostService from '../PostService'
 import BadgeCreator from '@/components/BadgeCreator.vue'
 import { mapState } from "vuex";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   name: 'Habits',
   data() {
     return {
       badgeCreator: false,
-      habit: {}
+      delDialog: false,
+      delHabit: null,
+      habit: {},
+      loading: false,
+      confirmed: false
     }
   },
   computed: {
@@ -61,10 +86,17 @@ export default {
     editHabit: function(habit) {
       this.habit = habit
       this.badgeCreator = true
+    },
+    deleteHabit: async function() {
+      this.loading = true
+      this.delHabit = { ...this.delHabit, deleted: true }
+      await PostService.saveBadge({ user: this.user.token, habit: this.delHabit });
+      this.loading = false
+      this.confirmed = true
     }
   },
   components: {
-    BadgeCreator,
+    BadgeCreator, PulseLoader
   },
 }
 </script>
@@ -72,6 +104,7 @@ export default {
 <style scoped lang="scss">
 .badges > div {
   margin-bottom: 20px;
+  .badgeEditControls { opacity: 0; }
   &:hover .badgeEditControls {
     opacity: 1;
   }
@@ -81,7 +114,6 @@ export default {
 }
 .badgeEditControls {
   display: flex;
-  opacity: 0;
   button[type=button] { 
     font-weight: 200;
     width: 5rem;
@@ -94,6 +126,16 @@ export default {
         background: #F72616;
       }
     }
+  }
+}
+
+.delDialog { 
+  text-align: center; 
+  .controls {
+    display: flex;
+    justify-content: center;
+    button { margin-right: 20px; width: auto; }
+    button.del { background: #F72616; }
   }
 }
 </style>
