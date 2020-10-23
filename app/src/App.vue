@@ -146,7 +146,6 @@ figure { margin: 0; padding: 0 }
     padding: 1.3rem;
     text-decoration: none;
     &.router-link-exact-active {
-      //color: $text3;
       background: $text2;
       color: white;
     }

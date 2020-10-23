@@ -27,7 +27,7 @@ export default new Vuex.Store({
         console.log('none found')
       }
       return { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
-    } 
+    },
 	},
   mutations: {
     centerLogo: (state, value) => {

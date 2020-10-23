@@ -4,17 +4,23 @@
       <div class="main">
         <div v-if="getDayLoad">
           <h1 v-if="user">Welcome back {{ user.name }}</h1>
+          <p>Your are on level 1. Collect 18 more coins to level up!</p>
+          <p>Level 1 Perks:</p>
+          <p>Next level perks:</p>
         </div>
       </div>
 
       <h2>Earned Badges for Today:</h2>
-      <div class="box">
+      <div v-if="getDayLoad" class="box">
         <div class="title">
           <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
-          <div class="coin"><img src="/assets/icons/coin.svg" alt="Coins"></div>
+          <div class="coin"> 
+            <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
+            <figcaption>{{ dayPay(getDayLoad.badges) }}</figcaption>
+          </div>
         </div>
 
-        <div v-if="getDayLoad" class="badges">
+        <div class="badges">
           <div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
             <figure>
               <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
@@ -29,8 +35,8 @@
             </figure>
           </button>
         </div>
-        <div v-else><pulse-loader :loading="loading"></pulse-loader></div>
       </div>
+      <div v-else><pulse-loader :loading="loading"></pulse-loader></div>
 
       <h2>Last 7 days:</h2>
       <div v-if="getMonthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
@@ -38,7 +44,10 @@
         <div class="box" v-for="day in week" :key="day.day">
           <div class="title">
             <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
-            <div class="coin"><img src="/assets/icons/coin.svg" alt="Coins"></div>
+            <div class="coin"> 
+              <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
+              <figcaption>{{ dayPay(day.badges) }}</figcaption>
+            </div>
           </div>
           <div :class="['badges', { isEmpty: !day.badges.length }]" >
             <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
@@ -95,7 +104,7 @@ export default {
           }
       }
       return week;
-    }
+    },
   },
   methods: {
     addBadge: function() { this.badgeSelector = true },
@@ -110,6 +119,17 @@ export default {
     dayName: function(day) {
       var date = new Date(day.month+'/'+day.day+'/'+day.year);
       return date.toLocaleDateString("en-EN", { weekday: 'long' });
+    },
+    dayPay: function(dayBadges) {
+      if (dayBadges.length) {
+        let pay = 0
+        dayBadges.forEach(badge => {
+          pay += parseInt(this.user.habits[badge].value)
+        });
+        return pay
+      } else {
+        return '0'
+      }
     }
   },
   watch: {
@@ -143,9 +163,7 @@ export default {
   background: rgb(192, 180, 147);
   background: $bg2;
   background: $shine3;
-  //background: url('/assets/img/woodbg3.png');
   padding: 2rem;
-  //border-radius: .714rem;
   margin-bottom: 3rem;
   display: flex;
   flex-wrap: wrap;
@@ -153,8 +171,12 @@ export default {
   .title { width: 100%; display: flex; justify-content: space-between; }
 }
 
+.title {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;
+}
+
 h3.dayTitle {
-  margin: 0 0 1rem;
+  margin: 0;
   font-size: 1.5rem;
   text-shadow: $textshadow;
 }
@@ -196,6 +218,7 @@ h3.dayTitle {
   &.gold { background: $gold; border: 1px solid #fcc201; }
   &.silver { background: $silver; border: 1px solid #ffeac2; }
   &.azure { background: $azure; color: white; text-shadow: $darktextshadow; border: 1px solid #185dfa; }
+
   figure { 
     border-radius: 50%; 
     box-shadow: $outshadow;
@@ -238,20 +261,6 @@ h3.dayTitle {
 .edit { margin-left: auto; }
 
 .week {
-  .badge { 
-    color: black; 
-  }
-  /*> div {
-    margin-bottom: 2rem;
-    border-radius: .314rem;
-    background: $bg2;
-    box-shadow: $inshadow;
-    > div {
-      padding: .714rem;
-      display: flex;
-      align-items: center;
-    }
-  }*/
   .isEmpty { 
     .edit { 
       height: 3rem; width: 3rem;

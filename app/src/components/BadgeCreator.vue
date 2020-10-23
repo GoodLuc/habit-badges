@@ -73,8 +73,8 @@
                   <figcaption>{{ habitName }}</figcaption>
                 </div>
                 <pulse-loader :loading="loading"></pulse-loader>
-                <p v-if="slide <= 2"><button type="button" @click="nextSlide">Next</button></p>
-                <p v-if="slide == 3"><button :disabled="loading" type="button" @click="saveBadge">Save</button></p>
+                <p v-if="slide <= 3"><button type="button" @click="nextSlide">Next</button></p>
+                <p v-if="slide == 4"><button :disabled="loading" type="button" @click="saveBadge">Save</button></p>
               </div>
             </div>
           </div>
@@ -180,13 +180,13 @@ export default {
         var imgAsDataURL = imgCanvas.toDataURL("image/png");
         if (Object.keys(this.$props.habit).length) {
           console.log("Updating")
-          let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material }
+          let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material, value: this.coins }
           await PostService.saveBadge({ user: user.token, habit: habit });
           this.updateBadgeInStore( habit )
         } else {
           console.log("Saving as new")
           var uniqueId = Math.floor(Date.now() / 1000);
-          let habit = { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material }
+          let habit = { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material, value: this.coins }
           await PostService.saveBadge({ user: user.token, habit: habit });
           this.saveBadgeToStore(habit)
         }
@@ -205,6 +205,7 @@ export default {
       this.iconSrc = this.$props.habit.image
       this.badgeFrame = '/assets/badges/frame/frame'+this.selectedFrameIndex+'.svg'
       this.material = this.$props.habit.material
+      this.coins = this.$props.habit.value
     }
   }
 }

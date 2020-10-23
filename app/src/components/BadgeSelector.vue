@@ -2,7 +2,7 @@
   <div :class="['overlay', { show: status}]" id="badgesSelector">
     <div>
       <div v-if="getDayLoad" class="container">
-        <h1>What have you done to improve yourself today?</h1>
+        <h1>What have you done to improve yourself <span v-if="getDayLoad.day == today.day">today</span><span v-else>on {{ dayName({day: getDayLoad.day, month: getDayLoad.month, year: getDayLoad.year}) }}</span>?</h1>
         <div class="badges">
           <div v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id)">
             <div v-if="!badge.deleted" :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
@@ -25,11 +25,15 @@ import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   props: ['status'],
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user","today"]),
     ...mapGetters(["badges","getDayLoad"]),
   },
   methods: {
-    ...mapActions(['toggleBadge'])
+    ...mapActions(['toggleBadge']),
+    dayName: function(day) {
+      var date = new Date(day.month+'/'+day.day+'/'+day.year);
+      return date.toLocaleDateString("en-EN", { weekday: 'long' });
+    },
   }
 }
 </script>
@@ -38,17 +42,18 @@ export default {
 .badge {
   cursor: pointer;
   text-shadow: none !important;
-  &:hover {
+  
+}
+.toAdd {
+  background: white !important;
+  color: black !important;
+  /*&:hover {
     color: white;
     text-shadow: none;
     &.gold { background: $gold !important; }
     &.silver { background: $silver !important; }
     &.azure { background: $azure !important; color: white !important; text-shadow: $darktextshadow; }
-  }
-}
-.toAdd {
-  background: white !important;
-  color: black !important;
+  }*/
 }
   
 </style>
