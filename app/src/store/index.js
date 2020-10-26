@@ -89,6 +89,12 @@ export default new Vuex.Store({
 			} else {
         state[monthToEdit].days[state.date.day].badges.push(badgeTo);
       }
+
+      let points = 0
+      state[monthToEdit].days[state.date.day].badges.forEach(id => {
+        points += parseInt(state.user.habits[id].value)
+      });
+      state[monthToEdit].days[state.date.day].points = points
     },
     saveBadgeToStore: (state, habit) => {
       state.user.habits[habit._id] = habit
