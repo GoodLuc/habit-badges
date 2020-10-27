@@ -12,9 +12,8 @@ nounProject = new NounProject({
 ///////////////////////////////////////
 
 //// Get logs
-router.get('/:user/:year/:month', async (req, res) => {
-  console.log("Year: " + req.params.year + ", Month: " + req.params.month)
-  const month = await getMonth(req.params.user, req.params.year, req.params.month);
+router.post('/getmonth', async (req, res) => {
+  const month = await getMonth(req.body.load.user, req.body.load.date.year, req.body.load.date.month);
   res.send(await month.toArray());
 });
 
@@ -23,20 +22,17 @@ async function getMonth(user, year, month) {
   ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true, useUnifiedTopology: true
   });
-  console.log("Getting month for " + user + " on " + month + " on year " + year)
-  return client.db('HeroBadge').collection('logs').find({ "user": user, "year": year, "month": month})
+  return client.db('HeroBadge').collection('logs').find({ "user": user, "year": parseInt(year), "month": parseInt(month)})
 }
 
-//// Add logs
-router.post("/update/:user/:year/:month", async (req, res) => {
-  console.log('Params are:')
-  console.log(req.params)
+//// Update logs
+router.post("/update", async (req, res) => {
   try {
     const logs = await getLogs();
     await logs.updateOne(
       // Filter
-      { user: req.params.user, year: req.params.year, month: req.params.month },
-      { $set: { days: req.body.load.days } },
+      { user: req.body.load.user, year: parseInt(req.body.load.date.year), month: parseInt(req.body.load.date.month) },
+      { $set: { days: req.body.load.monthLoad.days } },
       { upsert: true }
     );
     res.status(201).send();
@@ -52,14 +48,6 @@ async function getLogs() {
   });
   return client.db('HeroBadge').collection('logs')
 }
-
-//// Delete logs
-router.delete('/:id', async (req, res) => {
-  const logs = await getLogs();
-  await logs.deleteOne({ _id: new mongodb.ObjectID(req.params.id) });
-  res.status(200).send();
-})
-
 
 ///////////////////////////////////////
 /////// U S E R S /////////////////////
@@ -86,14 +74,6 @@ async function getUsers() {
   });
   return client.db('HeroBadge').collection('users')
 }
-
-//// Get user
-/*router.get('/user/:email', async (req, res) => {
-  const user = await getUser(req.params.email, null, 'full');
-  console.log('user got:')
-  console.log(user)
-  res.send(await user.toArray());
-});*/
 
 router.get('/checkuser/:email', async (req, res) => {
   const user = await getUser(req.params.email, null, 'check');

@@ -25,8 +25,8 @@ import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   props: ['status'],
   computed: {
-    ...mapState(["user","today"]),
-    ...mapGetters(["badges","getDayLoad"]),
+    ...mapState(["user","today","badges"]),
+    ...mapGetters(["getDayLoad"]),
   },
   methods: {
     ...mapActions(['toggleBadge']),
@@ -47,13 +47,6 @@ export default {
 .toAdd {
   background: white !important;
   color: black !important;
-  /*&:hover {
-    color: white;
-    text-shadow: none;
-    &.gold { background: $gold !important; }
-    &.silver { background: $silver !important; }
-    &.azure { background: $azure !important; color: white !important; text-shadow: $darktextshadow; }
-  }*/
 }
   
 </style>

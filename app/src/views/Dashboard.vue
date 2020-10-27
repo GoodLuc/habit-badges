@@ -5,8 +5,8 @@
         <div v-if="getDayLoad">
           <h1 v-if="user">Welcome back {{ user.name }}</h1>
           <p>Your are on level 1. Collect 18 more coins to level up!</p>
-          <p>Level 1 Perks:</p>
-          <p>Next level perks:</p>
+          <div class="level"><div></div></div>
+          <p>Level 1: <strong>Newborn</strong></p>
         </div>
       </div>
 
@@ -39,7 +39,7 @@
       <div v-else><pulse-loader :loading="loading"></pulse-loader></div>
 
       <h2>Last 7 days:</h2>
-      <div v-if="getMonthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
+      <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
       <div class="week" v-else>
         <div class="box" v-for="day in week" :key="day.day">
           <div class="title">
@@ -88,18 +88,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(["user","date"]),
-    ...mapGetters(["getDayLoad", "getMonthLoad","getLastMonthLoad"]),
+    ...mapState(["user","date","monthLoad","lastMonthLoad"]),
+    ...mapGetters(["getDayLoad"]),
+    // Set week logs, either from this month or previous one.
     week: function () {
       var week = {};
       for (var i=1; i<8; i++) {
           var d = new Date();
           d.setDate(d.getDate() - i);
           if ((d.getMonth()+1) == this.date.month) {
-            if (this.getMonthLoad.days[d.getDate()] !== undefined){ week[i] = this.getMonthLoad.days[d.getDate()] }
+            if (this.monthLoad.days[d.getDate()] !== undefined){ week[i] = this.monthLoad.days[d.getDate()] }
             else { week[i] = { year: d.getFullYear(), month: d.getMonth()+1, day: d.getDate(), badges: {} } }
           } else if ((d.getMonth()+1) == (this.date.month - 1)) {
-            if (this.getLastMonthLoad.days[d.getDate()] !== undefined){ week[i] = this.getLastMonthLoad.days[d.getDate()] }
+            if (this.lastMonthLoad.days[d.getDate()] !== undefined){ week[i] = this.lastMonthLoad.days[d.getDate()] }
             else { week[i] = { year: d.getFullYear(), month: d.getMonth()+1, day: d.getDate(), badges: {} } }
           }
       }
@@ -108,6 +109,7 @@ export default {
   },
   methods: {
     addBadge: function() { this.badgeSelector = true },
+    // Set the date to edit with the Badge Selector component
     editDay: function(year, month, day) { 
       this.$store.dispatch('setDate', {year: year, month: month, day: day})
       this.badgeSelector = true 
@@ -120,6 +122,7 @@ export default {
       var date = new Date(day.month+'/'+day.day+'/'+day.year);
       return date.toLocaleDateString("en-EN", { weekday: 'long' });
     },
+    // Daily points / coins
     dayPay: function(dayBadges) {
       if (dayBadges.length) {
         let pay = 0
@@ -157,6 +160,16 @@ export default {
 
 .dash {
   h2 { margin: 2rem 0 1rem; font-weight: 200; }
+}
+
+.level {
+  width: 100%;
+  background: $background;
+  height: 2rem; border-radius: 1rem; overflow: hidden;
+  div {
+    display: block; background: $foreground;
+    width: 50%; height: 2rem;
+  }
 }
 
 .box {
@@ -254,11 +267,9 @@ h3.dayTitle {
   }
 }
 .edit {
-  margin-right: 0;
   padding: 1rem;
 }
 
-.edit { margin-left: auto; }
 
 .week {
   .isEmpty { 

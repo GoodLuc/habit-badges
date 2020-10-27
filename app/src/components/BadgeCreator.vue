@@ -126,6 +126,7 @@ export default {
   },
   methods: {
     ...mapMutations(['saveBadgeToStore','updateBadgeInStore']),
+    // Search for icons using The Noun Project API
     getIcons: async function(term) {
       this.loading = true
       this.icons = {}
@@ -172,6 +173,7 @@ export default {
         this.slide = 0
         this.warn = true
       } else {
+        // This saves the selected icon PNG image as a base64 string to embed in the DB
         var user = JSON.parse(localStorage.getItem("user"))
         var badgeIcon = this.$refs.badgeIcon;
         var imgCanvas = document.createElement("canvas"), imgContext = imgCanvas.getContext("2d");
@@ -179,6 +181,7 @@ export default {
         imgContext.drawImage(badgeIcon, 0, 0, badgeIcon.width, badgeIcon.height);
         var imgAsDataURL = imgCanvas.toDataURL("image/png");
         if (Object.keys(this.$props.habit).length) {
+          // If this is the edition of a previously existing habit, update instead of saving as new.
           console.log("Updating")
           let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material, value: this.coins }
           await PostService.saveBadge({ user: user.token, habit: habit });
@@ -199,6 +202,7 @@ export default {
   },
   mounted() {
     this.$refs.modal.focus()
+    // Check if this is an edition of an existing habit as set by the props.
     if (Object.keys(this.$props.habit).length) {
       this.habitName = this.$props.habit.name
       this.selectedFrameIndex = this.$props.habit.frame

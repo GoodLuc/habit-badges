@@ -7,43 +7,19 @@ class PostService {
   /////// L O G S ///////////////////////
   ///////////////////////////////////////
   
-  //// Get Posts
-  static async getPosts() {
-    try {
-        const res = await axios.get(url)
-        const data = res.data
-        return data.map(post => ({
-          ...post,
-          createdAt: new Date(post.createdAt)
-        }))
-      } catch (err) {
-        return err
-      }
-  }
-
   //// Get Month
-  static async getMonth(user, year, month) {
-    //console.log('Getting..' + url + user + '/' + year + '/' + month)
+  static async getMonth(load) {
     try {
-      const res = await axios.get(url+user+'/'+year+'/'+month)
-      const data = res.data
-      //console.log(data)
-      return data.map(post => ({
-        ...post
-      }))
+      const res = await axios.post(url+'getmonth/', {load})
+      return res.data
     } catch (err) {
       return err
     }
   }
 
-  //// Update Log
-  static updateLog(user, year, month, load) {
-    return axios.post(url+'update/'+user+'/'+year+'/'+month, {load})
-  }
-
-  //// Delete Posts
-  static deletePost(id) {
-    return axios.delete(`${url}${id}`)
+  //// Update Month Log
+  static updateLog(load) {
+    return axios.post(url+'update/', {load})
   }
 
 
@@ -56,17 +32,7 @@ class PostService {
     return axios.post(url+'makeuser', { user })
   }
 
-  //// Get user
-  /*static async getUser(email) {
-    try {
-      const res = await axios.get(url+'user/'+email)
-      return res.data
-    } catch (err) {
-      return err
-    }
-  }*/
-
-  // Check user
+  // Check user (to see if exists)
   static async checkUser(email) {
     try {
       const res = await axios.get(url+'checkuser/'+email)
@@ -76,7 +42,7 @@ class PostService {
     }
   }
 
-  // Validate user
+  // Validate user (returns full user data)
   static async validateUser(data) {
     const res = await axios.post(url+'validateuser/', data)
     try {
@@ -90,7 +56,7 @@ class PostService {
   /////// I C O N S  ////////////////////
   ///////////////////////////////////////
   
-  //// Get Icons
+  //// Get Icons (search)
   static async getIcons(term) {
     console.log('getting... '+term)
     const res = await axios.get(url+'icons/'+term)
@@ -103,7 +69,7 @@ class PostService {
       return err
     }
   }
-  //// Get Icon
+  //// Get Icon (single)
   static async getIcon(id) {
     console.log('getting ID... '+id)
     const res = await axios.get(url+'icon/'+id)

@@ -73,6 +73,7 @@ export default {
     ...mapState(["user"]),
   },
   watch: {
+    // Add overlay class to body if Badge Creator component is open
     badgeCreator: function() {
       const bod = document.body
       if (this.badgeCreator) {
@@ -87,6 +88,7 @@ export default {
       this.habit = habit
       this.badgeCreator = true
     },
+    // Set habit to hidden in DB with the *deleted* attribute
     deleteHabit: async function() {
       this.loading = true
       this.delHabit = { ...this.delHabit, deleted: true }
