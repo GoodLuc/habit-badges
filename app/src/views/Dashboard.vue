@@ -11,8 +11,8 @@
       </div>
 
       <h2>Earned Badges for Today:</h2>
-      <div v-if="getDayLoad" class="box">
-        <div class="title">
+      <div v-if="getDayLoad" class="box flex wrap">
+        <div class="flex fw align-center justify-between mb-1">
           <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
           <div class="coin"> 
             <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
@@ -20,7 +20,7 @@
           </div>
         </div>
 
-        <div class="badges">
+        <div class="flex fw wrap">
           <div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
             <figure>
               <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
@@ -41,15 +41,15 @@
       <h2>Last 7 days:</h2>
       <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
       <div class="week" v-else>
-        <div class="box" v-for="day in week" :key="day.day">
-          <div class="title">
+        <div class="box flex wrap" v-for="day in week" :key="day.day">
+          <div class="flex fw align-center justify-between mb-1">
             <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
             <div class="coin"> 
               <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
               <figcaption>{{ dayPay(day.badges) }}</figcaption>
             </div>
           </div>
-          <div :class="['badges', { isEmpty: !day.badges.length }]" >
+          <div :class="['flex fw wrap', { isEmpty: !day.badges.length }]" >
             <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
@@ -158,129 +158,66 @@ export default {
 
 <style lang="scss">
 
-.dash {
-  h2 { margin: 2rem 0 1rem; font-weight: 200; }
-}
+.dash { h2 { margin: 2rem 0 1rem; font-weight: 200; } }
 
 .level {
-  width: 100%;
-  background: $background;
-  height: 2rem; border-radius: 1rem; overflow: hidden;
-  div {
-    display: block; background: $foreground;
-    width: 50%; height: 2rem;
+  width: 100%; background: $background; height: 1.2rem; border-radius: .5rem;
+  box-shadow: $inshadow; display: flex; align-items: center;
+  div { 
+    background: $foreground; width: 50%; height: .8rem; border-radius: .5rem;
+    box-shadow: 0 0 3px 6px rgba(255, 255, 255,.9), 0 0 3px 6px rgba(0, 255, 255,.7);
   }
 }
 
 .box {
-  background: rgb(192, 180, 147);
-  background: $bg2;
-  background: $shine3;
-  padding: 2rem;
-  margin-bottom: 3rem;
-  display: flex;
-  flex-wrap: wrap;
-  box-shadow: $inshadow;
-  .title { width: 100%; display: flex; justify-content: space-between; }
+  background: $shine3; padding: 1.5rem 3rem;
+  margin-bottom: 2rem; box-shadow: $inshadow2;
 }
 
-.title {
-  display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;
-}
-
-h3.dayTitle {
-  margin: 0;
-  font-size: 1.5rem;
-  text-shadow: $textshadow;
-}
+h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 
 .coin {
-  position: relative;
-  width: 40px; height: 40px;
+  position: relative; width: 40px; height: 40px;
   figcaption {
-    position: absolute; top: 0; left: 0;
+    position: absolute; top: 0; left: 0; color: white; font-size: 1.6rem; font-weight: bold;
     width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center;
-    color: white; font-size: 1.6rem; font-weight: bold;
   }
 }
 
-.badges {
-  color: white;
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
 .badge, .badge-add, .edit {
-  border-radius: .35rem;
-  padding: 1rem;
-  box-sizing: border-box;
-  margin-right: 1rem;
-  width: 10rem;
-  height: 13.5rem;
-  margin-bottom: 20px;
-  text-align: center;
-  color: black;
-  text-shadow: $textshadow;
-  box-shadow: $outshadow;
-  font-size: 1.1rem;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: default;
+  border-radius: .35rem; padding: 1rem; box-sizing: border-box; margin: 0 1.5rem 1.5rem 0;
+  width: 10rem; height: 13.5rem; text-align: center; color: black;
+  font-size: 1.1rem; box-shadow: $outshadow2;
+  display: flex; flex-direction: column; align-items: center; cursor: default;
   &.gold { background: $gold; border: 1px solid #fcc201; }
   &.silver { background: $silver; border: 1px solid #ffeac2; }
-  &.azure { background: $azure; color: white; text-shadow: $darktextshadow; border: 1px solid #185dfa; }
+  &.azure { background: $azure; color: white; border: 1px solid #185dfa; }
 
   figure { 
-    border-radius: 50%; 
-    box-shadow: $outshadow;
-    background: white; 
-    width: 100%;
-    position: relative;
-    .frame {
-      position: absolute;
-      z-index: 1;
-      top: 0;
-      left: 0;
-    }
-    .icon {
-      z-index: 2;
-      transform: scale(0.3);
-      position: relative;
-    }
+    border-radius: 50%; box-shadow: $outshadow; background: white; 
+    width: 100%; position: relative;
+    .frame { position: absolute; z-index: 1; top: 0; left: 0; }
+    .icon { z-index: 2; transform: scale(0.3); position: relative; }
     img { display: block; }
   }
-  figcaption { overflow: hidden; max-width: 100%; padding: .714rem .5rem; }
-}
-.badge-add, .edit {
-  background: $card;
-  color: black;
-  cursor: pointer;
-  text-shadow: none;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
-  figure { background: none; box-shadow: none; }
-  &:hover {
-    background: $radialb;
-    color: white;
-    img { filter: invert(1) }
-  }
-}
-.edit {
-  padding: 1rem;
+  figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; }
 }
 
+.badge-add, .edit {
+  background: $link; color: white; cursor: pointer; font-weight: 200; display: flex; align-items: center;
+  box-shadow: $inshadow;
+  figure { background: none; box-shadow: none; }
+  img { filter: invert(1); }
+  &:hover { background: $azure; color: white; }
+}
 
 .week {
   .isEmpty { 
-    .edit { 
-      height: 3rem; width: 3rem;
-      padding: .1rem;
+    .edit {  height: 3rem; width: 3rem; padding: .1rem;
       figure, img { max-width: 100%; }
       figcaption { display: none; }
     }
   }
-  
 }
 
 </style>

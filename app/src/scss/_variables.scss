@@ -1,29 +1,47 @@
-$foreground: #f5d000;
-$background: #9BC6FF;
-
 //////////////////////////////
 
-$navbg: #E8E5E5;
+$text: #000000;
+$link: #185dfa;
 
-$bg1: #ffffff;
+$ellis: #5CA7FF;
+
 $bg2: #E8E5E5;
-$bg3: #223653;
-
-$text1: #000000;
-$text2: #185dfa;
-$text3: #07ceff;
-
-$highlight: #00de7d;
+$foreground: #f5d000;
+$background: #9BC6FF;
 
 $gold: linear-gradient(336deg, rgba(252, 194, 1,1) 32%, rgba(255,234,194,1) 51%, rgba(252, 194, 1,1) 77%);
 $silver: linear-gradient(336deg, rgba(232,229,229,1) 28%, rgba(255,234,194,1) 51%, rgba(232,229,229,1) 78%);
 $azure: linear-gradient(336deg, rgb(24, 93, 250) 8%, rgba(7,206,255,1) 51%, rgba(24,93,250,1) 92%);
 
-$shine3: linear-gradient(0deg, rgba(232,229,229,1) 0%, rgba(236,231,214,1) 88%, rgba(255,241,143,1) 100%);
-$shine4: linear-gradient(0deg, rgba(232,229,229,1) 0%, rgba(236,231,214,1) 68%, rgba(255,241,143,1) 100%);
+$inshadow: inset 0px 1px 3px 0px rgba(0,0,0,0.25);
+$inshadow2: inset 0px 1px 3px 4px rgba(0,0,0,0.25);
 
-$outshadow: 0px 3px 3px 3px rgba(0,0,0,.3);
-$inshadow: inset 0px 1px 5px 0px rgba(0,0,0,0.75);
+$outshadow: 0px 5px 5px 1px rgba(0,0,0,.4);
+$outshadow2: rgba(0, 0, 0, 0.25) 0px 7px 18px, rgba(0, 0, 0, 0.22) 0px 8px 8px;
+
+$shine3: linear-gradient(0deg, rgb(243, 243, 243) 0%, rgb(241, 241, 241) 88%, rgb(250, 238, 146) 100%);
+
+$card: linear-gradient(169deg, rgba(255,255,255,1) 32%, rgba(217,217,217,1) 83%);
+
+
+//////////////////////////////
+
+
+
+
+
+$bg1: #ffffff;
+$bg3: #223653;
+$navbg: #E8E5E5;
+
+
+$text3: #07ceff;
+
+$highlight: #00de7d;
+
+
+$shine4: linear-gradient(0deg, rgb(13, 52, 75) 0%, rgb(102, 126, 136) 68%, rgba(255,241,143,1) 100%);
+
 $textshadow: 2px 2px 2px rgba(255, 255, 255, 1);
 $darktextshadow: 2px 2px 2px rgba(0, 0, 0, 1);
 
@@ -31,7 +49,6 @@ $darktextshadow: 2px 2px 2px rgba(0, 0, 0, 1);
 
 $lightbg: #282828;
 $ellis2: #EFC30B;
-$ellis: #5CA7FF;
 $nubis: #F2F7FF;
 
 $radialb: radial-gradient(circle, rgba(7,206,253,1) 0%, rgba(24,93,250,1) 100%);
@@ -39,4 +56,3 @@ $radialb: radial-gradient(circle, rgba(7,206,253,1) 0%, rgba(24,93,250,1) 100%);
 $lightgrad: linear-gradient(265deg, rgba(60,131,215,1) 0%, rgba(9,23,43,1) 100%);
 $lightgrad2: linear-gradient(180deg, rgba(60,131,215,1) 0%, rgba(9,23,43,1) 100%);
 
-$card: linear-gradient(169deg, rgba(255,255,255,1) 32%, rgba(217,217,217,1) 83%);

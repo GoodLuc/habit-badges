@@ -3,7 +3,7 @@
     <div>
       <div v-if="getDayLoad" class="container">
         <h1>What have you done to improve yourself <span v-if="getDayLoad.day == today.day">today</span><span v-else>on {{ dayName({day: getDayLoad.day, month: getDayLoad.month, year: getDayLoad.year}) }}</span>?</h1>
-        <div class="badges">
+        <div class="flex fw wrap">
           <div v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id)">
             <div v-if="!badge.deleted" :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
               <figure>
@@ -39,14 +39,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-.badge {
-  cursor: pointer;
-  text-shadow: none !important;
-  
-}
-.toAdd {
-  background: white !important;
-  color: black !important;
-}
+.badge { cursor: pointer; }
+.toAdd { background: white !important; color: black !important; }
   
 </style>

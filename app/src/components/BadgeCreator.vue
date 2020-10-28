@@ -2,7 +2,7 @@
   <div :class="['overlay', { show: status}]" ref="modal" id="badgesCreator" tabindex="0" @keydown.esc="$emit('close')">
     <div>
       <div class="container">
-        <div class="flex">
+        <div class="flex fw">
           <div class="tabs">
             <nav class="flex">
               <button :class="[{ current: slide == 0}]" role="tab" @click="gotoSlide(0)">Habit name</button>
@@ -20,7 +20,7 @@
               <h1>Choose an icon</h1>
               <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button type="button" @click="getIcons(iconTerm)">Search</button></p>
               <pulse-loader :loading="loading"></pulse-loader>
-              <div v-if="icons.length" class="box icons">
+              <div v-if="icons.length" class="box icons flex wrap">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
                   <img :src="icon.preview_url" :alt="icon.attribution">
@@ -33,7 +33,7 @@
             </div>
             <div class="slide" v-if="slide == 2">
               <h1>Choose a badge frame</h1>
-              <div class="box frames">
+              <div class="box frames flex wrap">
                 <figure :class="[{ selected: index == selectedFrameIndex }]" 
                   v-for="index in 20" :key="index" @click="setFrame(index)">
                   <img :src="'/assets/badges/frame/frame'+index+'.svg'">
@@ -42,7 +42,7 @@
             </div>
             <div class="slide" v-if="slide == 3">
               <h1>Choose a material for your badge</h1>
-              <div class="box materials">
+              <div class="box materials flex wrap">
                 <div class="badge gold" @click="material = 'gold'"><figcaption>Gold</figcaption></div>
                 <div class="badge silver" @click="material = 'silver'"><figcaption>Silver</figcaption></div>
                 <div class="badge azure" @click="material = 'azure'"><figcaption>Azure</figcaption></div>
@@ -85,11 +85,12 @@
     </div>
   </div>
 </template>
+
 <script>
+
 import PostService from '../PostService'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { mapMutations } from "vuex";
-
 
 export default {
   name: 'BadgeCreator',
@@ -197,9 +198,7 @@ export default {
       }
     },
   },
-  components: {
-    PulseLoader
-  },
+  components: { PulseLoader },
   mounted() {
     this.$refs.modal.focus()
     // Check if this is an edition of an existing habit as set by the props.
@@ -217,73 +216,44 @@ export default {
 <style scoped lang="scss">
 
 .slide {
-  background: white;
-  width: 100%;
-  padding: 2rem;
-  border-radius: 0 .314rem .314rem .314rem;
+  background: white; width: 100%; padding: 2rem; border-radius: 0 .314rem .314rem .314rem;
   h1 { padding-bottom: 1.5rem; }
 }
 
-.container {
-  >.flex {
-    width: 100%; 
-    .tabs { 
-      width: 100%;
-      flex-grow: 1;
-      margin-right: 2rem;
-      margin-top: 1rem;
-      nav { 
-        button {
-          font-size: 1.6rem;
-          border-radius: .314rem .314rem 0 0;
-          padding: 1rem;
-          margin-right: .5rem;
-          color: inherit;
-          font-weight: 200;
-          &.current {
-            background: white;
-            &:hover {
-              color: black;
-            }
-          }
-          &:hover {
-            color: white;
-          }
-        }
-      }
-      .slide {
-        box-sizing: border-box;
-        h1 { margin: 0; }
-      }
-    }
-    .badgeHolder > div {
-      margin-left: auto;
-      padding-top: 5rem;
-      position: relative;
-      width: 12rem;
-      height: 16rem;
-      display: block;
-      > div {
-        position: fixed;
-        width: 12rem;
-        button { width: 100%; }
-      }
+.tabs { 
+  width: 100%; flex-grow: 1; margin-right: 2rem; margin-top: 1rem;
+  nav { 
+    button {
+      border: none; background: $card; font-size: 1.6rem; border-radius: .314rem .314rem 0 0;
+      padding: 1rem; margin-right: .5rem; color: inherit; font-weight: 200; margin: 0 .5rem 0 0; box-shadow: none;
+      &:last-of-type { margin: 0 }
+      &.current { background: white; }
+      &:hover { background: $azure; color: white; }
     }
   }
+  .slide {
+    box-sizing: border-box;
+    h1 { margin: 0; }
+  }
+}
 
+.badgeHolder > div {
+  margin-left: auto; padding-top: 5rem; position: relative;
+  width: 12rem; height: 16rem; display: block;
+  > div {
+    position: fixed; width: 12rem;
+    button { width: 100%; }
+  }
 }
 
 .badge {
-  cursor: pointer;
-  margin-right: 0;
-  width: auto;
-  height: auto;
+  cursor: pointer; margin-right: 0; width: auto; height: auto;
 }
 
 .materials {
+  padding-top: 3rem;
   .badge { 
-    margin-right: 20px; 
-    min-width: 5rem; min-height: 5rem;  
+    margin-right: 20px; min-width: 5rem; min-height: 5rem;  
   }
 }
 
@@ -291,70 +261,32 @@ input { width: 40rem; max-width: 80%; background: $shine3; }
 
 .input-button { 
   display: flex; 
-  input[type=text] {
-    border-radius: .314rem 0 0 .314rem;
-  }
-  button {
-    width: auto;
-  }
+  input[type=text] { border-radius: .314rem 0 0 .314rem; }
+  button { width: auto; }
 }
 
-.icons, .frames {
-  background: white;
-  border-radius: .314rem;
-  margin-top: 2rem;
+.icons, .frames, .materials {
+  border-radius: .314rem; margin-top: 2rem;
   figure {
-    padding: 1.2rem;
-    box-sizing: border-box;
-    border-radius: .314rem;
-    margin-right: 1rem;
-    width: 8rem;
+    padding: 1.2rem; box-sizing: border-box; border-radius: .314rem;
+    margin-right: 1rem; width: 8rem;
     &:hover, &.selected {
-      background: $radialb;
-      cursor: pointer;
-      img { filter: invert(1)}
+      background: $azure; cursor: pointer;
+      img { filter: invert(1) }
     }
   }
   img { filter: invert(0)}
 }
 
-.slidecontainer {
-  width: auto; /* Width of the outside container */
+.slidecontainer { width: calc(100% - 10rem); max-width: 35rem; margin-right: 1rem; input { max-width: 100%; } }
+.slider { -webkit-appearance: none; appearance: none; width: 100%;
+  height: 25px; background: #d3d3d3; outline: none; opacity: 0.7;
+  -webkit-transition: .2s; transition: opacity .2s; margin: 0;
 }
+.slider:hover { opacity: 1; }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;
+  width: 25px; height: 25px; background: #4CAF50; cursor: pointer;
+}
+.slider::-moz-range-thumb { width: 25px; height: 25px; background: #4CAF50; cursor: pointer; }
 
-/* The slider itself */
-.slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s; margin: 0;
-}
-
-/* Mouse-over effects */
-.slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
-}
-
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-
-.slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-  
 </style>

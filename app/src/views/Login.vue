@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <div v-if="selector" class="selector">
+    <div v-if="selector" class="selector flex wrap justify-center">
       <h1>Register or login</h1>
       <button type="button" @click="showRegister">Register</button>
       <button type="button" @click="showLogin">Login</button>
     </div>
-    <div v-if="register" class="register">
+    <div v-if="register" class="register flex wrap justify-center">
       <h2>Register</h2>
       <p>
         <a href="#" @click="showLogin">Login instead?</a>
@@ -18,7 +18,7 @@
       <pulse-loader :loading="loading"></pulse-loader>
       <button :disabled="loading" type="button" @click="makeUser">Register</button>
     </div>
-    <div v-if="login" class="login">
+    <div v-if="login" class="login flex wrap justify-center">
       <h2>Login</h2>
       <p>
         <a href="#" @click="showRegister">Register instead?</a>
@@ -72,6 +72,7 @@ export default {
       if (this.email && this.name && this.password) {
         this.loading = true
         this.warn = false; this.warn2 = false
+        // Check if user exists
         let checkuser = await PostService.checkUser(this.email)
         if (checkuser === 202) {
           this.loading = false
@@ -79,8 +80,10 @@ export default {
           this.warn2 = true 
           return false
         } else if (checkuser === 204) {
+          // If user doesn't exist, create it
           let newUser = await PostService.makeUser({email: this.email, name: this.name, password: this.password})
           if (newUser) {
+            // Once user is created, load it's info (including the new ID)
             let user = await PostService.validateUser({email: this.email, password: this.password})
             console.log('User created')
             localStorage.setItem("user", JSON.stringify({ ...user[0], token: user[0]._id}))
@@ -119,41 +122,23 @@ export default {
       }
     }
   },
-  components: {
-    PulseLoader
-  },
-  mounted() {
-    this.$store.dispatch("centerLogo", true)
-  },
-  beforeDestroy() {
-    this.$store.dispatch("centerLogo", false)
-  }
+  components: { PulseLoader },
+  mounted() { this.$store.dispatch("centerLogo", true) },
+  beforeDestroy() { this.$store.dispatch("centerLogo", false) }
 }
 </script>
 
 <style scoped lang="scss">
 h1 { margin-bottom: 2rem; width: 100%; text-align: center; }
-.container > div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
 .selector, .created {
-  button {
-    margin: 1rem;
-    padding: 2rem;
-    font-size: 1.4rem;
-    max-width: 25.71rem;
-    justify-content: center;
-  }
+  button { margin: 1rem; max-width: 25rem; }
 }
-.login, .register, .created {
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+.login, .register, .created { 
+  flex-direction: column; align-items: center; text-align: center;
+  width: 100%; max-width: 35rem; margin: auto;
+  button { max-width: 100%; width: 100%; }
 }
-button[disabled=disabled] {
-  background: $ellis;
-}
+
+button[disabled=disabled] { background: $ellis; }
 
 </style>

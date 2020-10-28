@@ -5,8 +5,8 @@
         <h1>This are your habits {{ user.name }}</h1>
         <p>Create your custom badges to track your daily progress</p>
         <div class="box">
-          <div class="badges" v-if="user">
-            <div v-for="habit in user.habits" :key="habit._id">
+          <div class="flex fw wrap" v-if="user">
+            <div class="habit" v-for="habit in user.habits" :key="habit._id">
               <div v-if="!habit.deleted">
                 <div :class="['badge', habit.material]">
                   <figure>
@@ -97,47 +97,38 @@ export default {
       this.confirmed = true
     }
   },
-  components: {
-    BadgeCreator, PulseLoader
-  },
+  components: { BadgeCreator, PulseLoader },
 }
 </script>
 
 <style scoped lang="scss">
-.badges > div {
-  margin-bottom: 20px;
-  .badgeEditControls { opacity: 0; }
-  &:hover .badgeEditControls {
-    opacity: 1;
-  }
+
+.box {
+  padding-top: 3rem;
 }
-.badge {
-  margin-bottom: 10px;
-}
-.badgeEditControls {
-  display: flex;
-  button[type=button] { 
-    font-weight: 200;
-    width: 5rem;
-    padding: .614rem; 
-    margin: 0;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-    &.del {
-      background: #929292;
-      &:hover {
-        background: #F72616;
+.habit {
+  margin-bottom: 2rem;
+  .badge { margin-bottom: 1rem; }
+  .badgeEditControls { 
+    opacity: 0; display: flex;
+    button { 
+      font-weight: 200; width: 5rem; padding: .614rem;  margin: 0;
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+      &.del { background: #929292;
+        &:hover { background: #F72616; }
       }
     }
   }
+  &:hover .badgeEditControls { opacity: 1; }
 }
 
 .delDialog { 
   text-align: center; 
   .controls {
-    display: flex;
-    justify-content: center;
+    display: flex; justify-content: center;
     button { margin-right: 20px; width: auto; }
     button.del { background: #F72616; }
   }
 }
+
 </style>
