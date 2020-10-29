@@ -25,6 +25,22 @@ async function getMonth(user, year, month) {
   return client.db('HeroBadge').collection('logs').find({ "user": user, "year": parseInt(year), "month": parseInt(month)})
 }
 
+async function getPoints(user) {
+  const client = await mongodb.MongoClient.connect
+  ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
+    useNewUrlParser: true, useUnifiedTopology: true
+  });
+  let logsall = client.db('HeroBadge').collection('logs').find({ "user": user })
+  logsall = await logsall.toArray()
+  let points = 0
+  logsall.forEach(function(month) {
+    for (const day in month.days) {
+      points += parseInt(month.days[day].points)
+    }
+  })
+  return points
+}
+
 //// Update logs
 router.post("/update", async (req, res) => {
   try {
@@ -33,6 +49,14 @@ router.post("/update", async (req, res) => {
       // Filter
       { user: req.body.load.user, year: parseInt(req.body.load.date.year), month: parseInt(req.body.load.date.month) },
       { $set: { days: req.body.load.monthLoad.days } },
+      { upsert: true }
+    );
+    let points = await getPoints(req.body.load.user)
+    const users = await getUsers();
+    await users.updateOne(
+      // Filter
+      { _id: new mongodb.ObjectID(req.body.load.user) },
+      { $set: { points: parseInt(points) } },
       { upsert: true }
     );
     res.status(201).send();

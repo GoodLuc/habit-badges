@@ -88,7 +88,7 @@ button {
   &.wrap { flex-wrap: wrap; }
   &.fw { width: 100%; }
 }
-
+.center { text-align: center; }
 .mb-1 { margin-bottom: 1rem; }
 
 .container  {

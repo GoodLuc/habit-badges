@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="container dash">
-      <div class="main">
+      <div class="main center">
         <div v-if="getDayLoad">
           <h1 v-if="user">Welcome back {{ user.name }}</h1>
           <p>Your are on level 1. Collect 18 more coins to level up!</p>
           <div class="level"><div></div></div>
-          <p>Level 1: <strong>Newborn</strong></p>
+          <p class="entitlement">Level 1: <strong>Newborn</strong></p>
         </div>
       </div>
 
@@ -167,6 +167,9 @@ export default {
     background: $foreground; width: 50%; height: .8rem; border-radius: .5rem;
     box-shadow: 0 0 3px 6px rgba(255, 255, 255,.9), 0 0 3px 6px rgba(0, 255, 255,.7);
   }
+}
+.entitlement {
+  strong { text-shadow: $textshadow; }
 }
 
 .box {
