@@ -25,20 +25,27 @@ async function getMonth(user, year, month) {
   return client.db('HeroBadge').collection('logs').find({ "user": user, "year": parseInt(year), "month": parseInt(month)})
 }
 
-async function getPoints(user) {
+async function getPoints(action, userID) {
   const client = await mongodb.MongoClient.connect
   ('mongodb+srv://ombu_test:Kh5MQLgsUx8nVLGE@ombu-cluster1-3qjol.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true, useUnifiedTopology: true
   });
-  let logsall = client.db('HeroBadge').collection('logs').find({ "user": user })
-  logsall = await logsall.toArray()
-  let points = 0
-  logsall.forEach(function(month) {
-    for (const day in month.days) {
-      points += parseInt(month.days[day].points)
-    }
-  })
-  return points
+  if (action == "collectAllPoints") {
+    let logsall = client.db('HeroBadge').collection('logs').find({ "user": userID })
+    logsall = await logsall.toArray()
+    let points = 0
+    logsall.forEach(function(month) {
+      for (const day in month.days) {
+        points += parseInt(month.days[day].points)
+      }
+    })
+    return points
+  } else if (action == "getSavedPoints") {
+    let user = client.db('HeroBadge').collection('users').find({ "_id": new mongodb.ObjectID(userID) })
+    //console.log(user)
+    user = await user.toArray()
+    return user[0].points
+  }
 }
 
 //// Update logs
@@ -51,7 +58,7 @@ router.post("/update", async (req, res) => {
       { $set: { days: req.body.load.monthLoad.days } },
       { upsert: true }
     );
-    let points = await getPoints(req.body.load.user)
+    let points = await getPoints("collectAllPoints", req.body.load.user)
     const users = await getUsers();
     await users.updateOne(
       // Filter
@@ -138,6 +145,12 @@ async function getUser(email, password, action) {
     }
   }
 }
+
+//// Get just point count
+router.post('/getpoints', async (req, res) => {
+  const points = await getPoints("getSavedPoints", req.body.user)
+  res.send(await points.toString());
+});
 
 ///////////////////////////////////////
 /////// I C O N S /////////////////////

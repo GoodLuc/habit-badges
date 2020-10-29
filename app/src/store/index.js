@@ -47,6 +47,9 @@ export default new Vuex.Store({
     setUser: (state, user) => {
       state.user = user
     },
+    setUserPoints: (state, points) => {
+      state.user.points = points
+    },
     setBadges: (state, badges) => {
       state.badges = badges
     },
@@ -148,6 +151,8 @@ export default new Vuex.Store({
       }
       // Write to DB
       await PostService.updateLog({ user: this.state.user.token, date: { year: this.state.date.year, month: this.state.date.month }, monthLoad: monthToEdit});
+      let points = await PostService.getUserPoints(this.state.user.token)
+      commit("setUserPoints", points)
     },
     // Get Month Load according to Date
     async getMonth({ commit }) {

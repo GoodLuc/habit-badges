@@ -52,6 +52,16 @@ class PostService {
     }
   }
 
+  // Get user points
+  static async getUserPoints(user) {
+    const res = await axios.post(url+'getpoints/', { user })
+    try {
+      return res.data
+    } catch (err) {
+      return err
+    }
+  }
+
   ///////////////////////////////////////
   /////// I C O N S  ////////////////////
   ///////////////////////////////////////
