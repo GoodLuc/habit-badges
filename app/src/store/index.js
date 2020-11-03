@@ -12,7 +12,8 @@ export default new Vuex.Store({
     date: {},
 		monthLoad: { days: {}, loading: true },
     lastMonthLoad: { days:{} },
-		badges: [],
+    badges: [],
+    titles: ['','Newborn','Habit pawn','Persistent ant','Rising cadet','Standard soldier','Potential prospect','Promising subject','Blue belt','Acolyte']
 	},
 	getters: {
     getDayLoad: state => {
@@ -25,6 +26,29 @@ export default new Vuex.Store({
       // Default empty DayLoad 
       return { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
     },
+    userLevel: (state) => {
+      if (state.user.points < 100) {
+        return { level: 1, percent: state.user.points, toNext: (100 - state.user.points), next: 100 }
+      } else {
+        let calcpoint = 100
+        let increment = 80
+        let level = 1
+        let prevLevelPoints = 100
+        while (calcpoint <= state.user.points) {
+          increment += 20
+          calcpoint = calcpoint + increment
+          level++
+          if (!(calcpoint > state.user.points)) { prevLevelPoints = calcpoint }
+        }
+        var nextLevelPoints = calcpoint - prevLevelPoints
+        var userBaseLevelPoints = state.user.points - prevLevelPoints
+        var percentage = (userBaseLevelPoints / nextLevelPoints) * 100
+        return { level: level, percent: percentage, toNext: (state.user.points - (calcpoint - (calcpoint - increment))), next: calcpoint }
+      }
+    },
+    user: (state) => {
+      return state.user
+    }
 	},
   mutations: {
     // For login screen
@@ -46,9 +70,11 @@ export default new Vuex.Store({
     },
     setUser: (state, user) => {
       state.user = user
+      localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     setUserPoints: (state, points) => {
       state.user.points = points
+      localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     setBadges: (state, badges) => {
       state.badges = badges

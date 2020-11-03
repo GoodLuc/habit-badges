@@ -4,9 +4,9 @@
       <div class="main center">
         <div v-if="getDayLoad">
           <h1 v-if="user">Welcome back {{ user.name }}</h1>
-          <p>Your are on level 1. Collect 18 more coins to level up!</p>
-          <div class="level"><div></div></div>
-          <p class="entitlement">Level 1: <strong>Newborn</strong></p>
+          <p>Your are on level {{ userLevel.level }}. Points: {{ user.points }}. Collect {{ (userLevel.next - user.points) }} more coins to level up!</p>
+          <div class="level"><div :style="'width:'+userLevel.percent+'%'"></div></div>
+          <p class="entitlement">Level {{ userLevel.level }}: <strong>{{ titles[userLevel.level] }}</strong></p>
         </div>
       </div>
 
@@ -84,12 +84,13 @@ export default {
     return {
       badgeSelector: false,
       dateToEdit: [],
+      coincount: new Audio(require('../assets/audio/coincount.mp3')),
       loading: true
     }
   },
   computed: {
-    ...mapState(["user","date","monthLoad","lastMonthLoad"]),
-    ...mapGetters(["getDayLoad"]),
+    ...mapState(["date","monthLoad","lastMonthLoad","titles"]),
+    ...mapGetters(["user","getDayLoad","userLevel","userPoints"]),
     // Set week logs, either from this month or previous one.
     week: function () {
       var week = {};
@@ -117,6 +118,7 @@ export default {
     closeBadgeSelector: function() { 
       this.badgeSelector = false
       this.$store.dispatch('setCurrentDate')
+      this.coincount.play()
     },
     dayName: function(day) {
       var date = new Date(day.month+'/'+day.day+'/'+day.year);
@@ -164,7 +166,7 @@ export default {
   width: 100%; background: $background; height: 1.2rem; border-radius: .5rem;
   box-shadow: $inshadow; display: flex; align-items: center;
   div { 
-    background: $foreground; width: 50%; height: .8rem; border-radius: .5rem;
+    background: $foreground; height: .8rem; border-radius: .5rem;
     box-shadow: 0 0 3px 6px rgba(255, 255, 255,.9), 0 0 3px 6px rgba(0, 255, 255,.7);
   }
 }
@@ -182,7 +184,7 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 .coin {
   position: relative; width: 40px; height: 40px;
   figcaption {
-    position: absolute; top: 0; left: 0; color: white; font-size: 1.6rem; font-weight: bold;
+    position: absolute; top: 0; left: 0; color: white; font-size: 1.3rem; font-weight: bold;
     width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center;
   }
 }
