@@ -2,155 +2,54 @@
   <div>
     <div class="container dash">
       <div class="main center">
-        <div v-if="getDayLoad">
-          <h1 v-if="user">Welcome back {{ user.name }}</h1>
-          <p>Your are on level {{ userLevel.level }}. Points: {{ user.points }}. Collect {{ (userLevel.next - user.points) }} more coins to level up!</p>
-          <div class="level"><div :style="'width:'+userLevel.percent+'%'"></div></div>
-          <p class="entitlement">Level {{ userLevel.level }}: <strong>{{ titles[userLevel.level] }}</strong></p>
+        <div v-if="user.level">
+          <p>Your are on level {{ user.level.nr }}. Points: {{ user.points }}. Collect {{ user.level.toNext }} more coins to level up!</p>
+          <div class="level"><div :style="'width:'+user.level.percent+'%'"></div></div>
+          <p class="entitlement">Level {{ user.level.nr }}: <strong>{{ titles[user.level.nr] }}</strong></p>
         </div>
       </div>
 
-      <h2>Earned Badges for Today:</h2>
-      <div v-if="getDayLoad" class="box flex wrap">
-        <div class="flex fw align-center justify-between mb-1">
-          <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
-          <div class="coin"> 
-            <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
-            <figcaption>{{ dayPay(getDayLoad.badges) }}</figcaption>
-          </div>
-        </div>
-
-        <div class="flex fw wrap">
-          <div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
-            <figure>
-              <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
-              <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
-            </figure>
-            <figcaption>{{ user.habits[badge].name }}</figcaption>
-          </div>
-          <button class="badge-add" @click="addBadge">
-            <figure>
-              <img src="/assets/badges/default/check.svg" alt="Check in">
-              <figcaption>Check in <span v-if="getDayLoad.badges.length">/ edit</span></figcaption>
-            </figure>
-          </button>
-        </div>
-      </div>
-      <div v-else><pulse-loader :loading="loading"></pulse-loader></div>
-
-      <h2>Last 7 days:</h2>
+      <h2>Monthly view:</h2>
       <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
-      <div class="week" v-else>
-        <div class="box flex wrap" v-for="day in week" :key="day.day">
+      <div class="month flex wrap justify-between" v-else>
+        <div class="box flex wrap" v-for="day in monthLoad.days" :key="day.day">
           <div class="flex fw align-center justify-between mb-1">
-            <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
-            <div class="coin"> 
-              <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
-              <figcaption>{{ dayPay(day.badges) }}</figcaption>
-            </div>
+            <h3 class="dayTitle">{{ day.month + "/" + day.day }}</h3>
           </div>
-          <div :class="['flex fw wrap', { isEmpty: !day.badges.length }]" >
+          <div :class="['flex fw wrap justify-between', { isEmpty: !day.badges.length }]" >
             <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
                 <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
               </figure>
-              <figcaption>{{ user.habits[badge].name }}</figcaption>
             </div>
-            <button class="edit" @click="editDay(day.year, day.month, day.day)">
-              <figure>
-                <img src="/assets/badges/default/edit.svg" alt="Edit">
-                <figcaption>Edit</figcaption>
-              </figure>
-            </button>
           </div>
         </div>
       </div>
 
     </div>
   
-    <BadgeSelector v-if="badgeSelector" @close="closeBadgeSelector" :day="dateToEdit" />
   </div>
 </template>
 
 <script>
-import BadgeSelector from '@/components/BadgeSelector.vue'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: 'Monthly',
   data() {
     return {
-      badgeSelector: false,
-      dateToEdit: [],
-      coincount: new Audio(require('../assets/audio/coincount.mp3')),
       loading: true
     }
   },
   computed: {
-    ...mapState(["date","monthLoad","lastMonthLoad","titles"]),
-    ...mapGetters(["user","getDayLoad","userLevel","userPoints"]),
-    // Set week logs, either from this month or previous one.
-    week: function () {
-      var week = {};
-      for (var i=1; i<8; i++) {
-          var d = new Date();
-          d.setDate(d.getDate() - i);
-          if ((d.getMonth()+1) == this.date.month) {
-            if (this.monthLoad.days[d.getDate()] !== undefined){ week[i] = this.monthLoad.days[d.getDate()] }
-            else { week[i] = { year: d.getFullYear(), month: d.getMonth()+1, day: d.getDate(), badges: {} } }
-          } else if ((d.getMonth()+1) == (this.date.month - 1)) {
-            if (this.lastMonthLoad.days[d.getDate()] !== undefined){ week[i] = this.lastMonthLoad.days[d.getDate()] }
-            else { week[i] = { year: d.getFullYear(), month: d.getMonth()+1, day: d.getDate(), badges: {} } }
-          }
-      }
-      return week;
-    },
+    ...mapState(["user","date","monthLoad","lastMonthLoad","titles"]),
   },
   methods: {
-    addBadge: function() { this.badgeSelector = true },
-    // Set the date to edit with the Badge Selector component
-    editDay: function(year, month, day) { 
-      this.$store.dispatch('setDate', {year: year, month: month, day: day})
-      this.badgeSelector = true 
-    },
-    closeBadgeSelector: function() { 
-      this.badgeSelector = false
-      this.$store.dispatch('setCurrentDate')
-      this.coincount.play()
-    },
-    dayName: function(day) {
-      var date = new Date(day.month+'/'+day.day+'/'+day.year);
-      return date.toLocaleDateString("en-EN", { weekday: 'long' });
-    },
-    // Daily points / coins
-    dayPay: function(dayBadges) {
-      if (dayBadges.length) {
-        let pay = 0
-        dayBadges.forEach(badge => {
-          pay += parseInt(this.user.habits[badge].value)
-        });
-        return pay
-      } else {
-        return '0'
-      }
-    }
+    
   },
-  watch: {
-    badgeSelector: function() {
-      const bod = document.body
-      if (this.badgeSelector) {
-        bod.classList.add('overlaid')
-      } else {
-        bod.classList.remove('overlaid')
-      }
-    }
-  },
-  components: {
-    BadgeSelector,
-    PulseLoader
-  },
+  components: { PulseLoader },
   mounted() {
     this.$store.dispatch('setCurrentDate')
     this.$store.dispatch('getMonth')
@@ -158,6 +57,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style scoped lang="scss">
+.month { 
+  > .box {
+    padding: 1.5rem;
+    width: calc(32% - 3rem);
+    .badge { width: calc(32% - .5rem); height: auto; margin: 0 0 1rem; padding: 1rem; }
+    .badge:last-of-type { margin-right: auto; margin-left: 1.1rem; }
+  }
+}
 </style>
