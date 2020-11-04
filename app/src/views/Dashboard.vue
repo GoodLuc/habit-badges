@@ -86,7 +86,7 @@ export default {
     return {
       badgeSelector: false,
       dateToEdit: [],
-      coincount: new Audio(require('../assets/audio/coincount.mp3')),
+      levelup: new Audio(require('../assets/audio/levelup.wav')),
       loading: true
     }
   },
@@ -120,7 +120,7 @@ export default {
     closeBadgeSelector: function() { 
       this.badgeSelector = false
       this.$store.dispatch('setCurrentDate')
-      this.coincount.play()
+      this.levelup.play()
     },
     dayName: function(day) {
       var date = new Date(day.month+'/'+day.day+'/'+day.year);
