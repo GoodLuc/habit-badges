@@ -1,5 +1,6 @@
 import Dashboard from '../views/Dashboard.vue'
 import Habits from '../views/Habits.vue'
+import Monthly from '../views/Monthly.vue'
 
 const routes = [
   {
@@ -7,6 +8,12 @@ const routes = [
     meta: { requiresAuth: true },
     name: 'Dashboard',
     component: Dashboard
+  },
+  {
+    path: '/monthly',
+    meta: { requiresAuth: true },
+    name: 'Monthly',
+    component: Monthly
   },
   {
     path: '/habits',

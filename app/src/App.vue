@@ -5,7 +5,10 @@
         <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
         <div v-if="user">
           <router-link to="/">Dashboard</router-link> 
+          <router-link to="/monthly">Monthly view</router-link> 
           <router-link to="/habits">Habits</router-link>
+          <router-link to="/trinkets">Trinkets</router-link>
+          <router-link to="/castle">Your castle</router-link>
           <a href="#" @click="logout" class="logout">Logout</a>
         </div>
       </div>
@@ -85,11 +88,13 @@ button {
   &.justify-left { justify-content: flex-start; }
   &.justify-center { justify-content: center; }
   &.justify-between { justify-content: space-between; }
+  &.column { flex-direction: column; }
   &.wrap { flex-wrap: wrap; }
   &.fw { width: 100%; }
 }
 .center { text-align: center; }
 .mb-1 { margin-bottom: 1rem; }
+.padyMed { padding-top: 2rem; padding-bottom: 2rem; }
 
 .container  {
   max-width: 1100px; margin: auto;

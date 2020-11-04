@@ -13,7 +13,7 @@ export default new Vuex.Store({
 		monthLoad: { days: {}, loading: true },
     lastMonthLoad: { days:{} },
     badges: [],
-    titles: ['','Newborn','Habit pawn','Persistent ant','Rising cadet','Standard soldier','Potential prospect','Promising subject','Blue belt','Acolyte']
+    titles: ['','Newborn','Habit pawn','Persistent ant','Rising cadet','Standard recruit','Potential prospect','Promising subject','Blue belt','Young acolyte','Apprentice of the good ways']
 	},
 	getters: {
     getDayLoad: state => {
@@ -26,29 +26,6 @@ export default new Vuex.Store({
       // Default empty DayLoad 
       return { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
     },
-    userLevel: (state) => {
-      if (state.user.points < 100) {
-        return { level: 1, percent: state.user.points, toNext: (100 - state.user.points), next: 100 }
-      } else {
-        let calcpoint = 100
-        let increment = 80
-        let level = 1
-        let prevLevelPoints = 100
-        while (calcpoint <= state.user.points) {
-          increment += 20
-          calcpoint = calcpoint + increment
-          level++
-          if (!(calcpoint > state.user.points)) { prevLevelPoints = calcpoint }
-        }
-        var nextLevelPoints = calcpoint - prevLevelPoints
-        var userBaseLevelPoints = state.user.points - prevLevelPoints
-        var percentage = (userBaseLevelPoints / nextLevelPoints) * 100
-        return { level: level, percent: percentage, toNext: (state.user.points - (calcpoint - (calcpoint - increment))), next: calcpoint }
-      }
-    },
-    user: (state) => {
-      return state.user
-    }
 	},
   mutations: {
     // For login screen
@@ -73,7 +50,8 @@ export default new Vuex.Store({
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     setUserPoints: (state, points) => {
-      state.user.points = points
+      console.log('setting points')
+      Vue.set(state.user, 'points', points)
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     setBadges: (state, badges) => {
@@ -106,7 +84,9 @@ export default new Vuex.Store({
       }
     },
     // Toggle a badge ON/OFF with *filter*, either in current or last month (as defined in *date*.)
-    toggleBadge: (state, badgeTo) => { let monthToEdit
+    toggleBadge: (state, badgeTo) => { 
+      console.log('toggl')
+      let monthToEdit
       if (state.today.month == state.date.month) { monthToEdit = 'monthLoad'; } 
       else if (parseInt(state.today.month) === parseInt(state.date.month)+1) { monthToEdit = 'lastMonthLoad'; }
       
@@ -126,6 +106,27 @@ export default new Vuex.Store({
         points += parseInt(state.user.habits[id].value)
       });
       state[monthToEdit].days[state.date.day].points = points
+    },
+    setUserLevel: (state) => {
+      console.log('setting level')
+      if (state.user.points < 100) {
+        Vue.set(state.user, "level", { nr: 1, percent: state.user.points, toNext: (100 - state.user.points), next: 100 })
+      } else {
+        let calcpoint = 100
+        let increment = 80
+        let level = 1
+        let prevLevelPoints = 100
+        while (calcpoint <= state.user.points) {
+          increment += 20
+          calcpoint = calcpoint + increment
+          level++
+          if (!(calcpoint > state.user.points)) { prevLevelPoints = calcpoint }
+        }
+        var nextLevelPoints = calcpoint - prevLevelPoints
+        var userBaseLevelPoints = state.user.points - prevLevelPoints
+        var percentage = (userBaseLevelPoints / nextLevelPoints) * 100
+        Vue.set(state.user, "level", { nr: level, percent: percentage, toNext: (calcpoint - state.user.points), next: calcpoint })
+      }
     },
     saveBadgeToStore: (state, habit) => {
       state.user.habits[habit._id] = habit
@@ -156,6 +157,7 @@ export default new Vuex.Store({
     },
     setUser({ commit }, user) {
       commit("setUser", user )
+      commit("setUserLevel")
     },
     setBadges({ commit }, badges) {
       commit("setBadges", badges )
@@ -165,9 +167,8 @@ export default new Vuex.Store({
       commit("clearData")
     },
     // Save badge action to DB
-		async toggleBadge({ commit }, badgeTo) {
+		async saveCheckIn({ commit }) {
       // Further calculations in mutation.
-      commit("toggleBadge", badgeTo);
       let monthToEdit;
       // Set Month Load accordingly
       if (this.state.date.month === this.state.today.month) {
@@ -179,6 +180,8 @@ export default new Vuex.Store({
       await PostService.updateLog({ user: this.state.user.token, date: { year: this.state.date.year, month: this.state.date.month }, monthLoad: monthToEdit});
       let points = await PostService.getUserPoints(this.state.user.token)
       commit("setUserPoints", points)
+      commit("setUserLevel")
+      return true
     },
     // Get Month Load according to Date
     async getMonth({ commit }) {

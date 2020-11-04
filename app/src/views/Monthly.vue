@@ -4,11 +4,9 @@
       <div class="main center">
         <div v-if="getDayLoad">
           <h1 v-if="user">Welcome back {{ user.name }}</h1>
-          <div v-if="user.level">
-            <p>Your are on level {{ user.level.nr }}. Points: {{ user.points }}. Collect {{ user.level.toNext }} more coins to level up!</p>
-            <div class="level"><div :style="'width:'+user.level.percent+'%'"></div></div>
-            <p class="entitlement">Level {{ user.level.nr }}: <strong>{{ titles[user.level.nr] }}</strong></p>
-          </div>
+          <p>Your are on level {{ userLevel.level }}. Points: {{ user.points }}. Collect {{ (userLevel.next - user.points) }} more coins to level up!</p>
+          <div class="level"><div :style="'width:'+userLevel.percent+'%'"></div></div>
+          <p class="entitlement">Level {{ userLevel.level }}: <strong>{{ titles[userLevel.level] }}</strong></p>
         </div>
       </div>
 
@@ -81,7 +79,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { mapState, mapGetters } from "vuex";
 
 export default {
-  name: 'Dashboard',
+  name: 'Monthly',
   data() {
     return {
       badgeSelector: false,
@@ -91,8 +89,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(["user","date","monthLoad","lastMonthLoad","titles"]),
-    ...mapGetters(["getDayLoad"]),
+    ...mapState(["date","monthLoad","lastMonthLoad","titles"]),
+    ...mapGetters(["user","getDayLoad","userLevel","userPoints"]),
     // Set week logs, either from this month or previous one.
     week: function () {
       var week = {};
@@ -161,69 +159,5 @@ export default {
 </script>
 
 <style lang="scss">
-
-.dash { h2 { margin: 2rem 0 1rem; font-weight: 200; } }
-
-.level {
-  width: 100%; background: $background; height: 1.2rem; border-radius: .5rem;
-  box-shadow: $inshadow; display: flex; align-items: center;
-  div { 
-    background: $foreground; height: .8rem; border-radius: .5rem;
-    box-shadow: 0 0 3px 6px rgba(255, 255, 255,.9), 0 0 3px 6px rgba(0, 255, 255,.7);
-  }
-}
-.entitlement {
-  strong { text-shadow: $textshadow; }
-}
-
-.box {
-  background: $shine3; padding: 1.5rem 3rem;
-  margin-bottom: 2rem; box-shadow: $inshadow2;
-}
-
-h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
-
-.coin {
-  position: relative; width: 40px; height: 40px;
-  figcaption {
-    position: absolute; top: 0; left: 0; color: white; font-size: 1.3rem; font-weight: bold;
-    width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center;
-  }
-}
-
-.badge, .badge-add, .edit {
-  border-radius: .35rem; padding: 1rem; box-sizing: border-box; margin: 0 1.5rem 1.5rem 0;
-  width: 10rem; height: 13.5rem; text-align: center; color: black;
-  font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  display: flex; flex-direction: column; align-items: center; cursor: default;
-  &.gold { background: $gold; border: 1px solid #fcc201; }
-  &.silver { background: $silver; border: 3px solid #ffeac2; }
-  &.azure { background: $azure; color: white; border: 1px solid #185dfa; }
-
-  figure { 
-    border-radius: 50%; box-shadow: $outshadow; background: white; 
-    width: 100%; position: relative;
-    .frame { position: absolute; z-index: 1; top: 0; left: 0; }
-    .icon { z-index: 2; transform: scale(0.3); position: relative; }
-    img { display: block; }
-  }
-  figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; }
-}
-
-.badge-add, .edit {
-  background: white; color: $link; cursor: pointer; font-weight: 200; display: flex; align-items: center;
-  box-shadow: $inshadow;
-  figure { background: none; box-shadow: none; }
-  &:hover { background: $link; color: white; img { filter: invert(1) grayscale(100%) brightness(10); } }
-}
-
-.week {
-  .isEmpty { 
-    .edit {  height: 3rem; width: 3rem; padding: .1rem;
-      figure, img { max-width: 100%; }
-      figcaption { display: none; }
-    }
-  }
-}
 
 </style>

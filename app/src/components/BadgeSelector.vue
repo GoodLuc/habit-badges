@@ -3,6 +3,10 @@
     <div>
       <div v-if="getDayLoad" class="container">
         <h1>What have you done to improve yourself <span v-if="getDayLoad.day == today.day">today</span><span v-else>on {{ dayName({day: getDayLoad.day, month: getDayLoad.month, year: getDayLoad.year}) }}</span>?</h1>
+        <div v-if="loading" class="flex align-center column padyMed">
+          <h2>Saving...</h2>
+          <pulse-loader :loading="loading"></pulse-loader>
+        </div>
         <div class="flex fw wrap">
           <div v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id)">
             <div v-if="!badge.deleted" :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
@@ -15,26 +19,41 @@
           </div>
         </div>
       </div>
-      <figure class="close" @click="$emit('close')"><img src="/assets/icons/close.svg" alt="Close"></figure>
+      <figure class="close" @click="saveAndClose"><img src="/assets/icons/close.svg" alt="Close"></figure>
     </div>
   </div>
 </template>
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   props: ['status'],
+  data() {
+    return {
+      loading: false
+    }
+  },
   computed: {
     ...mapState(["user","today","badges"]),
     ...mapGetters(["getDayLoad"]),
   },
   methods: {
-    ...mapActions(['toggleBadge']),
+    ...mapMutations(['toggleBadge']),
+    ...mapActions(['saveCheckIn']),
     dayName: function(day) {
       var date = new Date(day.month+'/'+day.day+'/'+day.year);
       return date.toLocaleDateString("en-EN", { weekday: 'long' });
     },
-  }
+    saveAndClose: async function() {
+      this.loading = true
+      if (await this.saveCheckIn()) {
+        this.loading = false
+        this.$emit('close')
+      }
+    }
+  },
+  components: { PulseLoader }
 }
 </script>
 <style scoped lang="scss">
