@@ -11,12 +11,10 @@
 
       <h2>Monthly view:</h2>
       <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
-      <div class="month flex wrap justify-between" v-else>
-        <div class="box flex wrap" v-for="day in monthLoad.days" :key="day.day">
-          <div class="flex fw align-center justify-between mb-1">
-            <h3 class="dayTitle">{{ day.month + "/" + day.day }}</h3>
-          </div>
-          <div :class="['flex fw wrap justify-between', { isEmpty: !day.badges.length }]" >
+      <div class="month flex wrap" v-else>
+        <div class="box" v-for="day in monthLoad.days" :key="day.day">
+          <h3 class="dayTitle">{{ day.month + "/" + day.day }}</h3>
+          <div :class="['grid', { isEmpty: !day.badges.length }]" >
             <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
@@ -59,11 +57,18 @@ export default {
 
 <style scoped lang="scss">
 .month { 
+  margin-right: 2rem;
   > .box {
-    padding: 1.5rem;
+    padding: 1.5rem; margin: 0 1rem 1rem 0;
     width: calc(32% - 3rem);
-    .badge { width: calc(32% - .5rem); height: auto; margin: 0 0 1rem; padding: 1rem; }
-    .badge:last-of-type { margin-right: auto; margin-left: 1.1rem; }
+    h3 { text-align: center; width: 100%; margin-bottom: 1rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: calc(33.33% - 1.333rem) calc(33.33% - 1.333rem) calc(33.33% - 1.333rem);
+      column-gap: 2rem;
+      row-gap: 2rem;
+    }
+    .badge { width: auto; height: auto; flex-grow: 0; margin: 0; padding: 1rem; }
   }
 }
 </style>
