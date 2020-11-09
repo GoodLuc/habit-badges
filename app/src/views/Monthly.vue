@@ -11,11 +11,11 @@
 
       <h2>Monthly view:</h2>
       <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
-      <div class="month flex wrap" v-else>
-        <div class="box" v-for="day in monthLoad.days" :key="day.day">
-          <h3 class="dayTitle">{{ day.month + "/" + day.day }}</h3>
-          <div :class="['grid', { isEmpty: !day.badges.length }]" >
-            <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
+      <div class="month grid" v-else>
+        <div class="box" v-for="n in date.day" :key="n">
+          <h3 class="dayTitle">{{ dayName({year: date.year, month: date.month, day: n}) }} {{ date.month + "/" + n }}</h3>
+          <div v-if="typeof(monthLoad.days[n]) !== 'undefined'" :class="['grid', { isEmpty: !monthLoad.days[n].badges.length }]" >
+            <div :class="['badge', user.habits[badge].material]" v-for="badge in monthLoad.days[n].badges" :key="badge">
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
                 <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
@@ -45,7 +45,10 @@ export default {
     ...mapState(["user","date","monthLoad","lastMonthLoad","titles"]),
   },
   methods: {
-    
+    dayName: function(day) {
+      var date = new Date(day.month+'/'+day.day+'/'+day.year);
+      return date.toLocaleDateString("en-EN", { weekday: 'long' });
+    },
   },
   components: { PulseLoader },
   mounted() {
@@ -57,17 +60,9 @@ export default {
 
 <style scoped lang="scss">
 .month { 
-  margin-right: 2rem;
   > .box {
-    padding: 1.5rem; margin: 0 1rem 1rem 0;
-    width: calc(32% - 3rem);
+    padding: 1.5rem; margin: 0;
     h3 { text-align: center; width: 100%; margin-bottom: 1rem; }
-    .grid {
-      display: grid;
-      grid-template-columns: calc(33.33% - 1.333rem) calc(33.33% - 1.333rem) calc(33.33% - 1.333rem);
-      column-gap: 2rem;
-      row-gap: 2rem;
-    }
     .badge { width: auto; height: auto; flex-grow: 0; margin: 0; padding: 1rem; }
   }
 }

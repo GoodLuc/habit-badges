@@ -159,6 +159,9 @@ export default new Vuex.Store({
       commit("setUser", user )
       commit("setUserLevel")
     },
+    unsetUser({ commit }) {
+      commit("setUser", false )
+    },
     setBadges({ commit }, badges) {
       commit("setBadges", badges )
     },

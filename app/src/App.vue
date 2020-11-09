@@ -31,7 +31,7 @@ export default {
   methods: {
     logout: function() {
       localStorage.removeItem("user")
-      this.$store.dispatch('setUser', false)
+      this.$store.dispatch('unsetUser')
       this.$store.dispatch('setBadges', {})
       this.$store.dispatch('clearData')
       this.$router.push('/login')
@@ -56,7 +56,7 @@ html {
 body { 
   margin: 0; font-family: 'Work Sans', sans-serif; font-feature-settings: "lnum";
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  color: $text; padding-bottom: 2.14rem; background: $bg2;
+  color: $text; padding-bottom: 2.14rem; background: white;
   &.overlaid { overflow: hidden; }
 }
 a { color: $link; }
@@ -91,6 +91,12 @@ button {
   &.column { flex-direction: column; }
   &.wrap { flex-wrap: wrap; }
   &.fw { width: 100%; }
+}
+.grid {
+  display: grid;
+  grid-template-columns: calc(33.33% - .66rem) calc(33.33% - .66rem) calc(33.33% - .66rem);
+  column-gap: 1rem;
+  row-gap: 1rem;
 }
 .center { text-align: center; }
 .mb-1 { margin-bottom: 1rem; }
