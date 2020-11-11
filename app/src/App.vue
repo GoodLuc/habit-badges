@@ -1,15 +1,17 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div :class="['container',{ center: centerLogo }]">
+      <div :class="['container flex align-center',{ center: centerLogo }]">
         <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
-        <div v-if="user">
-          <router-link to="/">Dashboard</router-link> 
-          <router-link to="/monthly">Monthly view</router-link> 
-          <router-link to="/habits">Habits</router-link>
+        <a @click="menuActive = true" id="toggl" href="#"><figure><img src="/assets/icons/menu.svg" alt="Menu"></figure></a>
+        <div :class="['flex grow',{ overlay: menuActive, show: menuActive }]" id="menu" v-if="user">
+          <router-link @click.native="menuActive = false" to="/">Dashboard</router-link> 
+          <router-link @click.native="menuActive = false" to="/monthly">Monthly view</router-link> 
+          <router-link @click.native="menuActive = false" to="/habits">Habits</router-link>
           <!--router-link to="/trinkets">Trinkets</router-link>
           <router-link to="/castle">Your castle</router-link-->
           <a href="#" @click="logout" class="logout">Logout</a>
+          <figure class="close" @click="menuActive = false"><img src="/assets/icons/close.svg" alt="Close"></figure>
         </div>
       </div>
     </div>
@@ -23,6 +25,7 @@ export default {
   data() {
     return {
       loggedIn: true,
+      menuActive: false
     }
   },
   computed: {
@@ -30,12 +33,13 @@ export default {
   },
   methods: {
     logout: function() {
+      this.menuActive = false
       localStorage.removeItem("user")
       this.$store.dispatch('unsetUser')
       this.$store.dispatch('setBadges', {})
       this.$store.dispatch('clearData')
       this.$router.push('/login')
-    }
+    },
   },
   mounted() {
     if (localStorage.getItem("user") !== null) {
@@ -57,6 +61,7 @@ body {
   margin: 0; font-family: 'Work Sans', sans-serif; font-feature-settings: "lnum";
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   color: $text; padding-bottom: 2.14rem; background: white;
+  min-width: 320px;
   &.overlaid { overflow: hidden; }
 }
 a { color: $link; }
@@ -91,6 +96,7 @@ button {
   &.column { flex-direction: column; }
   &.wrap { flex-wrap: wrap; }
   &.fw { width: 100%; }
+  &.grow { flex-grow: 1; }
 }
 .grid {
   display: grid;
@@ -118,13 +124,13 @@ figure { margin: 0; padding: 0 }
     &.router-link-exact-active { background: $link; }
   }
   .container {
-    display: flex; align-items: center;
-    > div { display: flex; flex-grow: 1; }
     .logout { margin-left: auto; }
   }
-  #logo {
-    filter: invert(1); width: 3.57rem; margin-right: 0.714rem;
+  #logo, #toggl {
+    filter: invert(1); width: 3.57rem; margin-right: 0.714rem; flex-shrink: 0;
   }
+  #toggl { display: none; margin-left: auto; width: 2.57rem; padding: 0; }
+  .close { display: none; }
 }
 .container.center { justify-content: center; }
 
@@ -140,4 +146,16 @@ figure { margin: 0; padding: 0 }
   }
 }
 
+@media (max-width: 670px) {
+  #nav #toggl { display: block; }
+  #menu {
+    display: none;
+    background: $bg3;
+    &.show {
+      display: flex;
+      .close { display: block; height: 3.7rem; width: 3.7rem; }
+      a { text-align: center; width: 100%; }
+    }
+  }
+}
 </style>
