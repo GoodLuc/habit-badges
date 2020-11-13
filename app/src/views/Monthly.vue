@@ -11,10 +11,10 @@
 
       <h2>Monthly view:</h2>
       <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
-      <div class="month grid" v-else>
+      <div class="month grid three" v-else>
         <div class="box" v-for="n in date.day" :key="n">
           <h3 class="dayTitle">{{ dayName({year: date.year, month: date.month, day: n}) }} {{ date.month + "/" + n }}</h3>
-          <div v-if="typeof(monthLoad.days[n]) !== 'undefined'" :class="['grid', { isEmpty: !monthLoad.days[n].badges.length }]" >
+          <div v-if="typeof(monthLoad.days[n]) !== 'undefined'" :class="['grid three', { isEmpty: !monthLoad.days[n].badges.length }]" >
             <div :class="['badge', user.habits[badge].material]" v-for="badge in monthLoad.days[n].badges" :key="badge">
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>

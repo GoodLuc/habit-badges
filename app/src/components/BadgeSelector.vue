@@ -7,7 +7,7 @@
           <h2>Saving...</h2>
           <pulse-loader :loading="loading"></pulse-loader>
         </div>
-        <div class="flex fw wrap">
+        <div class="grid">
           <div v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id); coincount.cloneNode(true).play()">
             <div v-if="!badge.deleted" :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
               <figure>
@@ -36,8 +36,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(["user","today","badges"]),
-    ...mapGetters(["getDayLoad"]),
+    ...mapState(["user","today"]),
+    ...mapGetters(["getDayLoad","badges"]),
   },
   methods: {
     ...mapMutations(['toggleBadge']),
@@ -59,7 +59,13 @@ export default {
 </script>
 <style scoped lang="scss">
 
+h1 { padding-right: 5rem; }
+
 .badge { cursor: pointer; }
+.badge, .badge-add, .edit {
+  width: 100%; height: 100%;
+}
 .toAdd { background: white !important; color: black !important; }
-  
+.grid { margin-bottom: 3rem; }
+
 </style>

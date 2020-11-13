@@ -22,7 +22,7 @@
           </div>
         </div>
 
-        <div class="flex fw wrap">
+        <div class="grid">
           <div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
             <figure>
               <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
@@ -33,8 +33,8 @@
           <button class="badge-add" @click="addBadge">
             <figure>
               <img src="/assets/badges/default/check.svg" alt="Check in">
-              <figcaption>Check in <span v-if="getDayLoad.badges.length">/ edit</span></figcaption>
             </figure>
+            <figcaption>Check in <span v-if="getDayLoad.badges.length">/ edit</span></figcaption>
           </button>
         </div>
       </div>
@@ -51,7 +51,7 @@
               <figcaption>{{ dayPay(day.badges) }}</figcaption>
             </div>
           </div>
-          <div :class="['flex fw wrap', { isEmpty: !day.badges.length }]" >
+          <div :class="['grid', { isEmpty: !day.badges.length }]" >
             <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
@@ -62,8 +62,8 @@
             <button class="edit" @click="editDay(day.year, day.month, day.day)">
               <figure>
                 <img src="/assets/badges/default/edit.svg" alt="Edit">
-                <figcaption>Edit</figcaption>
               </figure>
+              <figcaption>Edit</figcaption>
             </button>
           </div>
         </div>
@@ -179,6 +179,11 @@ export default {
 .box {
   background: $shine3; padding: 1.5rem 3rem;
   margin-bottom: 2rem; box-shadow: $inshadow2;
+  .grid { margin-bottom: 2rem; }
+  .badge, .badge-add, .edit {
+    width: 100%; height: 100%;
+  }
+  @media (max-width: 520px) { padding: .8rem 2rem; }
 }
 
 h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
@@ -192,7 +197,7 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 }
 
 .badge, .badge-add, .edit {
-  border-radius: .35rem; padding: 1rem; box-sizing: border-box; margin: 0 1.5rem 1.5rem 0;
+  border-radius: .35rem; padding: 1rem; box-sizing: border-box; /*margin: 0 1.5rem 1.5rem 0;*/
   width: 10rem; height: 13.5rem; text-align: center; color: black;
   font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   display: flex; flex-direction: column; align-items: center; cursor: default;
@@ -225,5 +230,6 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
     }
   }
 }
+
 
 </style>

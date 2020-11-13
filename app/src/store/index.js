@@ -26,6 +26,10 @@ export default new Vuex.Store({
       // Default empty DayLoad 
       return { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
     },
+    badges: state => {
+      let badges = Object.values({...state.badges})
+      return badges.filter(badge => !badge.deleted)
+    }
 	},
   mutations: {
     // For login screen
