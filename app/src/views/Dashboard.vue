@@ -131,6 +131,9 @@ export default {
       if (dayBadges.length) {
         let pay = 0
         dayBadges.forEach(badge => {
+          /*console.log(badge)
+          console.log(this.user.habits[badge].value)
+          console.log(this.user.habits[badge].name)*/
           pay += parseInt(this.user.habits[badge].value)
         });
         return pay
@@ -183,6 +186,7 @@ export default {
   .badge, .badge-add, .edit {
     width: 100%; height: 100%;
   }
+  @media (max-width: 770px) { padding: 1rem 2rem; }
   @media (max-width: 520px) { padding: .8rem 2rem; }
 }
 

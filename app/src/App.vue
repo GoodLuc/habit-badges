@@ -56,6 +56,7 @@ export default {
 <style lang="scss">
 html {
   font-size: 14px;
+  min-width: 320px;
 }
 body { 
   margin: 0; font-family: 'Work Sans', sans-serif; font-feature-settings: "lnum";
@@ -65,7 +66,10 @@ body {
   &.overlaid { overflow: hidden; }
 }
 a { color: $link; }
-h1 { font-size: 3.2rem; color: $text; margin-bottom: 2rem; }
+h1 { 
+  font-size: 3.2rem; color: $text; margin-bottom: 2rem; 
+  @media (max-width: 640px) { font-size: 2.2rem; }
+}
 h2 { font-size: 2.2rem; font-weight: lighter }
 p { font-size: 1.28rem; }
 img { max-width: 100%; }
@@ -102,18 +106,19 @@ button {
   display: grid; width: 100%; column-gap: 1rem; row-gap: 1rem;
   grid-template-columns: repeat(6, calc(16.66% - .84rem));
   &.three { grid-template-columns: calc(33.33% - .66rem) calc(33.33% - .66rem) calc(33.33% - .66rem); }
-  @media (max-width: 1100px) { grid-template-rows: repeat(auto-fill, calc(100vw / 5.2)); }
+  &.isEmpty { grid-template-rows: auto; }
+  @media (max-width: 1100px) { grid-template-rows: repeat(auto-fill, calc(100vw / 4.9)); }
   @media (max-width: 900px) { 
     grid-template-columns: repeat(5, calc(20% - .8rem)); 
-    grid-template-rows: repeat(auto-fill, calc(100vw / 4.4))  
+    grid-template-rows: repeat(auto-fill, calc(100vw / 4))  
   }
   @media (max-width: 770px) {
     grid-template-columns: repeat(4, calc(25% - .75rem)); 
-    grid-template-rows: repeat(auto-fill, calc(100vw / 3.7))  
+    grid-template-rows: repeat(auto-fill, calc(100vw / 3.2))  
   }
   @media (max-width: 640px) {
-    grid-template-columns: repeat(3, calc(33.33% - .67rem)); 
-    grid-template-rows: repeat(auto-fill, calc(100vw / 3))  
+    //grid-template-columns: repeat(3, calc(33.33% - .67rem)); 
+    //grid-template-rows: repeat(auto-fill, calc(100vw / 2.6))
   }
   @media (max-width: 520px) {
     grid-template-columns: 100%; width: 100%;
@@ -126,7 +131,6 @@ button {
   }
   @media (max-width: 450px) {
     .badge, .badge-add, .edit {
-      font-size: 1.1rem;
       figure { width: 5rem; margin-right: .6rem; }
     }
   }
@@ -167,7 +171,7 @@ figure { margin: 0; padding: 0 }
   &.show { display: flex; }
   > div { overflow-y: auto; height: 100%; }
   .close {
-    background: $background; position: fixed; top: 0; right: 0;
+    background: $background; position: fixed; top: 0; right: 0; z-index: 10;
     width: 5.71rem; height: 5.71rem; cursor: pointer; padding: 1rem; box-sizing: border-box;
     img { filter: invert(1); }
   }

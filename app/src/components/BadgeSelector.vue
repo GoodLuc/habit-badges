@@ -8,7 +8,7 @@
           <pulse-loader :loading="loading"></pulse-loader>
         </div>
         <div class="grid">
-          <div v-for="badge in badges" :key="badge._id" @click="toggleBadge(badge._id); coincount.cloneNode(true).play()">
+          <div v-for="badge in userHabits" :key="badge._id" @click="toggleBadge(badge._id); coincount.cloneNode(true).play()">
             <div v-if="!badge.deleted" :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge._id].frame+'.svg'" :alt="user.habits[badge._id].name"></div>
@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     ...mapState(["user","today"]),
-    ...mapGetters(["getDayLoad","badges"]),
+    ...mapGetters(["getDayLoad","badges","userHabits"]),
   },
   methods: {
     ...mapMutations(['toggleBadge']),

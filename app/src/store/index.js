@@ -29,6 +29,19 @@ export default new Vuex.Store({
     badges: state => {
       let badges = Object.values({...state.badges})
       return badges.filter(badge => !badge.deleted)
+    },
+    userHabits: state => {
+      if (state.user != false) {
+        let userHabits = []
+        for (let habit in state.user.habits) {
+          if (!state.user.habits[habit].deleted) {
+            userHabits.push(state.user.habits[habit])
+          }
+        }
+        return userHabits;
+      } else {
+        return false;
+      }
     }
 	},
   mutations: {
@@ -107,6 +120,7 @@ export default new Vuex.Store({
       // (saving to actual DB is done in Action with the same name.)
       let points = 0
       state[monthToEdit].days[state.date.day].badges.forEach(id => {
+        console.log("adding:" + state.user.habits[id].value)
         points += parseInt(state.user.habits[id].value)
       });
       state[monthToEdit].days[state.date.day].points = points
