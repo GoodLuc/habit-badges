@@ -68,7 +68,7 @@ export default new Vuex.Store({
     },
     setUserPoints: (state, points) => {
       console.log('setting points')
-      Vue.set(state.user, 'points', points)
+      Vue.set(state.user, 'points', parseInt(points))
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     setBadges: (state, badges) => {
@@ -120,7 +120,6 @@ export default new Vuex.Store({
       // (saving to actual DB is done in Action with the same name.)
       let points = 0
       state[monthToEdit].days[state.date.day].badges.forEach(id => {
-        console.log("adding:" + state.user.habits[id].value)
         points += parseInt(state.user.habits[id].value)
       });
       state[monthToEdit].days[state.date.day].points = points
