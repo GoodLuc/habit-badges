@@ -60,10 +60,19 @@ export default {
 
 <style scoped lang="scss">
 .month { 
+  @media (max-width: 900px) { grid-template-columns: calc(50% - 1rem) calc(50% - 1rem); }
+  @media (max-width: 630px) { 
+    grid-template-columns: calc(100% - 1rem);
+    .grid.three { grid-template-columns: repeat(4, calc(25% - .75rem)) }
+  }
+  @media (max-width: 520px) { 
+    .grid.three { grid-template-columns: repeat(3, calc(33.33% - .67rem)); column-gap: 1rem !important; }
+  }
   > .box {
     padding: 1.5rem; margin: 0;
     h3 { text-align: center; width: 100%; margin-bottom: 1rem; }
     .badge { width: auto; height: auto; flex-grow: 0; margin: 0; padding: 1rem; }
   }
+  .grid .badge figure, .grid .badge-add figure, .grid .edit figure { width: 100%; }
 }
 </style>

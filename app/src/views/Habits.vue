@@ -5,18 +5,16 @@
         <h1>This are your habits {{ user.name }}</h1>
         <p>Create your custom badges to track your daily progress</p>
         <div class="box">
-          <div class="flex fw wrap" v-if="user">
-            <div class="habit" v-for="habit in user.habits" :key="habit._id">
-              <div v-if="!habit.deleted">
-                <div :class="['badge', habit.material]">
-                  <figure>
-                    <div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
-                    <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
-                  </figure>
-                  <figcaption>{{ habit.name }}</figcaption>
-                </div>
-                <div class="badgeEditControls"><button @click="editHabit(habit)" type="button">Edit</button><button class="del" type="button" @click="delDialog = true; delHabit = habit">Delete</button></div>
+          <div class="grid" v-if="user">
+            <div class="habit" v-for="habit in userHabits" :key="habit._id">
+              <div :class="['badge', habit.material]">
+                <figure>
+                  <div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
+                  <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
+                </figure>
+                <figcaption>{{ habit.name }}</figcaption>
               </div>
+              <div class="badgeEditControls"><button @click="editHabit(habit)" type="button">Edit</button><button class="del" type="button" @click="delDialog = true; delHabit = habit">Delete</button></div>
             </div>
             <button class="badge-add" @click="badgeCreator = true">
               <figure>
@@ -54,7 +52,7 @@
 <script>
 import PostService from '../PostService'
 import BadgeCreator from '@/components/BadgeCreator.vue'
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
@@ -71,6 +69,7 @@ export default {
   },
   computed: {
     ...mapState(["user"]),
+    ...mapGetters(["userHabits"]),
   },
   watch: {
     // Add overlay class to body if Badge Creator component is open
@@ -108,7 +107,7 @@ export default {
 }
 .habit {
   margin-bottom: 2rem;
-  .badge { margin-bottom: 1rem; }
+  .badge { margin-bottom: 1rem; height: calc(100% - 3rem); }
   .badgeEditControls { 
     opacity: 0; display: flex;
     button { 
@@ -121,6 +120,8 @@ export default {
   }
   &:hover .badgeEditControls { opacity: 1; }
 }
+
+.badge-add { height: calc(100% - 4.8rem); }
 
 .delDialog { 
   text-align: center; 

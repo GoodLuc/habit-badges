@@ -105,24 +105,26 @@ button {
 .grid {
   display: grid; width: 100%; column-gap: 1rem; row-gap: 1rem;
   grid-template-columns: repeat(6, calc(16.66% - .84rem));
-  &.three { grid-template-columns: calc(33.33% - .66rem) calc(33.33% - .66rem) calc(33.33% - .66rem); }
+  &.three { 
+    grid-template-columns: calc(33.33% - .66rem) calc(33.33% - .66rem) calc(33.33% - .66rem); 
+  }
   &.isEmpty { grid-template-rows: auto; }
-  @media (max-width: 1100px) { grid-template-rows: repeat(auto-fill, calc(100vw / 4.9)); }
+  @media (max-width: 1100px) { /*grid-template-rows: repeat(auto-fill, calc(100vw / 4.9)); */}
   @media (max-width: 900px) { 
     grid-template-columns: repeat(5, calc(20% - .8rem)); 
-    grid-template-rows: repeat(auto-fill, calc(100vw / 4))  
+    /*grid-template-rows: repeat(auto-fill, calc(100vw / 4))  */
   }
   @media (max-width: 770px) {
     grid-template-columns: repeat(4, calc(25% - .75rem)); 
-    grid-template-rows: repeat(auto-fill, calc(100vw / 3.2))  
+    //grid-template-rows: repeat(auto-fill, calc(100vw / 3.2))  
   }
-  @media (max-width: 640px) {
-    //grid-template-columns: repeat(3, calc(33.33% - .67rem)); 
+  @media (max-width: 580px) {
+    grid-template-columns: repeat(3, calc(33.33% - .67rem)); 
     //grid-template-rows: repeat(auto-fill, calc(100vw / 2.6))
   }
   @media (max-width: 520px) {
     grid-template-columns: 100%; width: 100%;
-    grid-template-rows: auto; column-gap: 0;
+    grid-template-rows: auto; /*column-gap: 0;*/
     .badge, .badge-add, .edit {
       flex-direction: row; font-size: 1.8rem; width: 100%; 
       figure { flex-shrink: 0; width: 8rem; margin-right: 1rem; }
