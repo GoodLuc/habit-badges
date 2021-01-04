@@ -24,7 +24,6 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      loggedIn: true,
       menuActive: false
     }
   },
@@ -34,10 +33,10 @@ export default {
   methods: {
     logout: function() {
       this.menuActive = false
-      localStorage.removeItem("user")
       this.$store.dispatch('unsetUser')
       this.$store.dispatch('setBadges', {})
       this.$store.dispatch('clearData')
+      localStorage.clear()
       this.$router.push('/login')
     },
   },
@@ -124,7 +123,7 @@ button {
   }
   @media (max-width: 520px) {
     grid-template-columns: 100%; width: 100%;
-    grid-template-rows: auto; /*column-gap: 0;*/
+    grid-template-rows: auto; column-gap: 0;
     .badge, .badge-add, .edit {
       flex-direction: row; font-size: 1.8rem; width: 100%; 
       figure { flex-shrink: 0; width: 8rem; margin-right: 1rem; }

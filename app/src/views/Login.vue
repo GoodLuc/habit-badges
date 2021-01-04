@@ -1,9 +1,11 @@
 <template>
   <div class="container">
     <div v-if="selector" class="selector flex wrap justify-center">
-      <h1>Register or login</h1>
+      <h1>Welcome to Hero Badge</h1>
+      <p>Register or login</p>
       <button type="button" @click="showRegister">Register</button>
       <button type="button" @click="showLogin">Login</button>
+      <p><small>v0.1</small></p>
     </div>
     <div v-if="register" class="register flex wrap justify-center">
       <h2>Register</h2>
@@ -129,7 +131,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-h1 { margin-bottom: 2rem; width: 100%; text-align: center; }
+h1, p { margin-bottom: 2rem; width: 100%; text-align: center; }
 .selector, .created {
   button { margin: 1rem; max-width: 25rem; }
 }
@@ -138,6 +140,7 @@ h1 { margin-bottom: 2rem; width: 100%; text-align: center; }
   width: 100%; max-width: 35rem; margin: auto;
   button { max-width: 100%; width: 100%; }
 }
+small { color: orange; }
 
 button[disabled=disabled] { background: $ellis; }
 
