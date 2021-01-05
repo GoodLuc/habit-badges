@@ -23,7 +23,7 @@
               <div v-if="icons.length" class="box icons flex wrap">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
-                  <img :src="icon.preview_url" :alt="icon.attribution">
+                  <img :src="icon.preview_url" :alt="icon.attribution" crossorigin="anonymous">
                 </figure>
               </div>
               <div v-else>
