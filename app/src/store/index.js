@@ -146,13 +146,13 @@ export default new Vuex.Store({
       }
     },
     saveBadgeToStore: (state, habit) => {
-      state.user.habits[habit._id] = habit
-      state.badges[habit._id] = habit
+      Vue.set(state.user.habits, habit._id, habit)
+      Vue.set(state, 'badges', state.user.habits)
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     updateBadgeInStore: (state, habit) => {
-      state.user.habits[habit._id] = habit
-      state.badges = state.user.habits
+      Vue.set(state.user.habits, habit._id, habit)
+      Vue.set(state, 'badges', state.user.habits)
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     // Logout

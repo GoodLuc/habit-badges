@@ -40,7 +40,7 @@
     <div else>
       <h1>The selected badge has been deleted.</h1>
       <div class="controls">
-        <button type="button" @click="delDialog = false">Ok</button>
+        <button type="button" @click="delDialog = false; confirmed = false">Ok</button>
       </div>
     </div>
   </div>
@@ -52,7 +52,7 @@
 <script>
 import PostService from '../PostService'
 import BadgeCreator from '@/components/BadgeCreator.vue'
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
@@ -83,6 +83,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['updateBadgeInStore']),
     editHabit: function(habit) {
       this.habit = habit
       this.badgeCreator = true
@@ -91,6 +92,7 @@ export default {
     deleteHabit: async function() {
       this.loading = true
       this.delHabit = { ...this.delHabit, deleted: true }
+      this.updateBadgeInStore( this.delHabit )
       await PostService.saveBadge({ user: this.user.token, habit: this.delHabit });
       this.loading = false
       this.confirmed = true
@@ -109,7 +111,7 @@ export default {
   margin-bottom: 2rem;
   .badge { margin-bottom: 1rem; height: calc(100% - 3rem); }
   .badgeEditControls { 
-    opacity: 0; display: flex;
+    opacity: 0; display: flex; justify-content: space-between;
     button { 
       font-weight: 200; width: 5rem; padding: .614rem;  margin: 0;
       box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
@@ -121,7 +123,7 @@ export default {
   &:hover .badgeEditControls { opacity: 1; }
 }
 
-.badge-add { height: calc(100% - 4.8rem); }
+//.badge-add { height: calc(100% - 4.8rem); }
 
 .delDialog { 
   text-align: center; 
