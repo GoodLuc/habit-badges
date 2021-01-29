@@ -172,7 +172,7 @@ export default {
   box-shadow: $inshadow; display: flex; align-items: center;
   div { 
     background: $foreground; height: .8rem; border-radius: .5rem;
-    box-shadow: 0 0 3px 6px rgba(255, 255, 255,.9), 0 0 3px 6px rgba(0, 255, 255,.7);
+    box-shadow: -1px -1px 2px 0px rgba(255, 255, 255,.9), 2px 2px 3px 3px rgba(0, 255, 255,.4);
   }
 }
 .entitlement {
@@ -181,10 +181,12 @@ export default {
 
 .box {
   background: $shine3; padding: 1.5rem 3rem;
-  margin-bottom: 2rem; box-shadow: $inshadow2;
+  border-radius: 15px;
+  box-shadow: -1px 3px 11px 0px rgba(95,182,173,0.65);
+  margin-bottom: 2rem;
   .grid { margin-bottom: 2rem; }
   .badge, .badge-add, .edit {
-    width: 100%; height: 100%;
+    //width: 100%; height: 100%;
   }
   @media (max-width: 770px) { padding: 1rem 2rem; }
   @media (max-width: 520px) { padding: .8rem 2rem; }
@@ -201,8 +203,9 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 }
 
 .badge, .badge-add, .edit {
+  margin: 0;
   border-radius: .35rem; padding: 1rem; box-sizing: border-box; /*margin: 0 1.5rem 1.5rem 0;*/
-  width: 10rem; height: 13.5rem; text-align: center; color: black;
+  width: 10rem; height: auto; text-align: center; color: black;
   font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   display: flex; flex-direction: column; align-items: center; cursor: default;
   &.gold { background: $gold; border: 1px solid #fcc201; }
