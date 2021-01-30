@@ -59,7 +59,7 @@
               </figure>
               <figcaption>{{ user.habits[badge].name }}</figcaption>
             </div>
-            <button class="edit" @click="editDay(day.year, day.month, day.day)">
+            <button class="badge-edit" @click="editDay(day.year, day.month, day.day)">
               <figure>
                 <img src="/assets/badges/default/edit.svg" alt="Edit">
               </figure>
@@ -186,7 +186,7 @@ export default {
   margin-bottom: 2rem;
   .grid { margin-bottom: 2rem; }
   .badge, .badge-add, .edit {
-    //width: 100%; height: 100%;
+    width: 100%;
   }
   @media (max-width: 770px) { padding: 1rem 2rem; }
   @media (max-width: 520px) { padding: .8rem 2rem; }
@@ -202,7 +202,7 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
   }
 }
 
-.badge, .badge-add, .edit {
+.badge, .badge-add, .badge-edit {
   margin: 0;
   border-radius: .35rem; padding: 1rem; box-sizing: border-box; /*margin: 0 1.5rem 1.5rem 0;*/
   width: 10rem; height: auto; text-align: center; color: black;
@@ -212,21 +212,21 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
   &.silver { background: $silver; border: 3px solid #ffeac2; }
   &.azure { background: $azure; color: white; border: 1px solid #185dfa; }
 
-  figure { 
+  > figure { 
     border-radius: 50%; box-shadow: $outshadow; background: white; 
     width: 100%; position: relative;
     .frame { position: absolute; z-index: 1; top: 0; left: 0; }
     .icon { z-index: 2; transform: scale(0.3); position: relative; }
-    img { display: block; }
+    img { display: block; width: 100%; height: auto; }
   }
-  figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; }
+  figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; height: 2.4em; }
 }
 
-.badge-add, .edit {
+.badge-add, .badge-edit {
   background: white; color: $link; cursor: pointer; font-weight: 200; display: flex; align-items: center;
   box-shadow: $inshadow;
   figure { background: none; box-shadow: none; }
-  &:hover { background: $link; color: white; img { filter: invert(1) grayscale(100%) brightness(10); } }
+  &:hover { background: $link; color: white; figure { filter: invert(1) brightness(100)} }
 }
 
 .week {

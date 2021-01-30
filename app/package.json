@@ -8,29 +8,29 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "bulma": "^0.9.1",
-    "core-js": "^3.6.4",
+    "axios": "^0.21.1",
+    "bulma": "^0.9.2",
+    "core-js": "^3.8.3",
     "fetch-base64": "^2.1.2",
     "the-noun-project": "^2.1.0",
     "vodal": "^2.4.0",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-over-body": "0.0.5",
-    "vue-router": "^3.1.5",
-    "vuex": "^3.1.2"
+    "vue-router": "^3.5.1",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-plugin-eslint": "~4.2.0",
-    "@vue/cli-plugin-router": "~4.2.0",
-    "@vue/cli-plugin-vuex": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
-    "babel-eslint": "^10.0.3",
+    "@vue/cli-plugin-babel": "^4.2.3",
+    "@vue/cli-plugin-eslint": "^4.2.3",
+    "@vue/cli-plugin-router": "^4.2.3",
+    "@vue/cli-plugin-vuex": "^4.2.3",
+    "@vue/cli-service": "^4.2.3",
+    "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.1.2",
+    "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {
     "root": true,

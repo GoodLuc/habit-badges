@@ -14,13 +14,20 @@
                 </figure>
                 <figcaption>{{ habit.name }}</figcaption>
               </div>
-              <div class="badgeEditControls"><button @click="editHabit(habit)" type="button">Edit</button><button class="del" type="button" @click="delDialog = true; delHabit = habit">Delete</button></div>
+              <div class="badgeEditControls">
+                <button class="edit" @click="editHabit(habit)" type="button">
+                  <figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
+                </button>
+                <button class="del" type="button" @click="delDialog = true; delHabit = habit">
+                  <figure><img src="/assets/badges/default/del.svg" alt="Delete"></figure>
+                </button>
+              </div>
             </div>
             <button class="badge-add" @click="badgeCreator = true">
               <figure>
                 <img src="/assets/badges/default/add.svg" alt="Add new">
-                <figcaption>Create new</figcaption>
               </figure>
+              <figcaption>Create new</figcaption>
             </button>
           </div>
         </div>
@@ -106,21 +113,24 @@ export default {
 
 .box {
   padding-top: 3rem;
+  .badge-add {
+    height: calc(100% - 3.7rem);
+  }
 }
 .habit {
-  margin-bottom: 2rem;
-  .badge { margin-bottom: 1rem; height: calc(100% - 3rem); }
+  background: cornsilk;
   .badgeEditControls { 
-    opacity: 0; display: flex; justify-content: space-between;
-    button { 
-      font-weight: 200; width: 5rem; padding: .614rem;  margin: 0;
-      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-      &.del { background: #929292;
-        &:hover { background: #F72616; }
-      }
+    display: flex; justify-content: space-between; 
+    width: 100%;
+    button { display: block;
+      width: auto; height: 4rem; border-radius: 0 0 .314rem .314rem;
+      font-weight: 200; font-size: .9rem; margin: 0; border: none; 
+      background: none; box-shadow: none;
+      &.edit { figure { filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); } }
+      &.del { figure { filter: invert(19%) sepia(96%) saturate(3956%) hue-rotate(355deg) brightness(105%) contrast(94%); } }
+      figure img { height: 2rem; }
     }
   }
-  &:hover .badgeEditControls { opacity: 1; }
 }
 
 //.badge-add { height: calc(100% - 4.8rem); }

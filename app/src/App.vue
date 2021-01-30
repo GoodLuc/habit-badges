@@ -109,6 +109,13 @@ button {
     grid-template-columns: calc(33.33% - .66rem) calc(33.33% - .66rem) calc(33.33% - .66rem); 
   }
   &.isEmpty { grid-template-rows: auto; }
+  @media (max-width: 400px) { 
+    grid-template-columns: 100%;
+    .badge, .edit, .badge-add { 
+      font-size: 1.2rem;
+      figure { width: 5rem; }
+    }  
+  }
 }
 .center { text-align: center; }
 .mb-1 { margin-bottom: 1rem; }
@@ -121,7 +128,7 @@ button {
 figure { margin: 0; padding: 0 }
 
 #nav {
-  background: $bg3;
+  background: $foreground2;
   h1 { font-size: 1rem; margin: 0 2rem 0 0; color: white; }
   a {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.48);
