@@ -128,13 +128,13 @@ button {
 figure { margin: 0; padding: 0 }
 
 #nav {
-  background: $foreground2;
+  background: $gold;
   h1 { font-size: 1rem; margin: 0 2rem 0 0; color: white; }
   a {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.48);
     font-weight: bold; margin-right: 0.714rem;
     padding: 1.3rem; text-decoration: none; color: white; 
-    &.router-link-exact-active { background: $link; }
+    &.router-link-exact-active { background: $azure; }
   }
   .container {
     .logout { margin-left: auto; }

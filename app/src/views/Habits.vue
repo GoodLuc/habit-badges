@@ -125,10 +125,11 @@ export default {
     button { display: block;
       width: auto; height: 4rem; border-radius: 0 0 .314rem .314rem;
       font-weight: 200; font-size: .9rem; margin: 0; border: none; 
-      background: none; box-shadow: none;
+      background: none; box-shadow: none; transition: transform .2s ease;
       &.edit { figure { filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); } }
       &.del { figure { filter: invert(19%) sepia(96%) saturate(3956%) hue-rotate(355deg) brightness(105%) contrast(94%); } }
       figure img { height: 2rem; }
+      &:hover { transform: scale(1.2); }
     }
   }
 }

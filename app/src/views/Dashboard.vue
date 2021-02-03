@@ -205,7 +205,7 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 .badge, .badge-add, .badge-edit {
   margin: 0;
   border-radius: .35rem; padding: 1rem; box-sizing: border-box; /*margin: 0 1.5rem 1.5rem 0;*/
-  width: 10rem; height: auto; text-align: center; color: black;
+  min-width: 10rem; height: auto; text-align: center; color: black;
   font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   display: flex; flex-direction: column; align-items: center; cursor: default;
   &.gold { background: $gold; border: 1px solid #fcc201; }
@@ -225,7 +225,8 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 .badge-add, .badge-edit {
   background: white; color: $link; cursor: pointer; font-weight: 200; display: flex; align-items: center;
   box-shadow: $inshadow;
-  figure { background: none; box-shadow: none; }
+  figure { background: none; box-shadow: none; filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); max-width: 60%; margin-top: auto; display: flex; align-items: center; img { max-height: 100%; } }
+  figcaption { margin-top: auto; }
   &:hover { background: $link; color: white; figure { filter: invert(1) brightness(100)} }
 }
 
