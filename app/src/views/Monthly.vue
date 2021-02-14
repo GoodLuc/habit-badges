@@ -11,8 +11,8 @@
 
       <h2>Monthly view:</h2>
       <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
-      <div class="month grid three" v-else>
-        <div class="box" v-for="n in date.day" :key="n">
+      <div class="month grid" v-else>
+        <div class="box day" v-for="n in date.day" :key="n">
           <h3 class="dayTitle">{{ dayName({year: date.year, month: date.month, day: n}) }} {{ date.month + "/" + n }}</h3>
           <div v-if="typeof(monthLoad.days[n]) !== 'undefined'" :class="['grid three', { isEmpty: !monthLoad.days[n].badges.length }]" >
             <div :class="['badge', user.habits[badge].material]" v-for="badge in monthLoad.days[n].badges" :key="badge">
@@ -59,15 +59,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.month { 
-  @media (max-width: 900px) { grid-template-columns: calc(50% - 1rem) calc(50% - 1rem); }
-  @media (max-width: 630px) { 
-    grid-template-columns: calc(100% - 1rem);
-    .grid.three { grid-template-columns: repeat(4, calc(25% - .75rem)) }
+.month {
+  &.grid {
+    grid-template-columns: repeat( 3, 1fr );
+    > .box.day .grid .badge { min-width: auto; max-width: 100%; padding: .5rem; }
   }
-  @media (max-width: 520px) { 
-    .grid.three { grid-template-columns: repeat(3, calc(33.33% - .67rem)); column-gap: 1rem !important; }
+  .day {
+    .grid {
+      grid-template-columns: repeat( 4, 1fr );
+      gap: 10px;
+    }
   }
+  @media (max-width: 1050px) { &.grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 750px) { &.grid { grid-template-columns: 1fr; } }
+  @media (max-width: 450px) { .day .grid { grid-template-columns: repeat(3, 1fr); } }
+  
   > .box {
     padding: 1.5rem; margin: 0;
     h3 { text-align: center; width: 100%; margin-bottom: 1rem; }

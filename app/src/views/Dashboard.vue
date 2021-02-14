@@ -182,11 +182,10 @@ export default {
 .box {
   background: $shine3; padding: 1.5rem 3rem;
   border-radius: 15px;
-  box-shadow: -1px 3px 11px 0px rgba(95,182,173,0.65);
   margin-bottom: 2rem;
   .grid { margin-bottom: 2rem; }
   .badge, .badge-add, .edit {
-    width: 100%;
+    width: 100%; box-sizing: border-box; 
   }
   @media (max-width: 770px) { padding: 1rem 2rem; }
   @media (max-width: 520px) { padding: .8rem 2rem; }
@@ -203,7 +202,7 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 }
 
 .badge, .badge-add, .badge-edit {
-  margin: 0;
+  margin: 0; box-sizing: border-box; 
   border-radius: .35rem; padding: 1rem; box-sizing: border-box; /*margin: 0 1.5rem 1.5rem 0;*/
   min-width: 10rem; height: auto; text-align: center; color: black;
   font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;

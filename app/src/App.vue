@@ -104,10 +104,8 @@ button {
 }
 .grid {
   display: grid; width: 100%; 
+  box-sizing: border-box; 
   grid-template-columns: repeat( auto-fill, minmax(10rem, 1fr) ); gap: 20px;
-  &.three { 
-    grid-template-columns: calc(33.33% - .66rem) calc(33.33% - .66rem) calc(33.33% - .66rem); 
-  }
   &.isEmpty { grid-template-rows: auto; }
   @media (max-width: 400px) { 
     grid-template-columns: 100%;
