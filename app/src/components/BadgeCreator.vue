@@ -5,11 +5,11 @@
         <div class="flex fw">
           <div class="tabs">
             <nav class="flex">
-              <button :class="[{ current: slide == 0}]" role="tab" @click="gotoSlide(0)">Habit name</button>
-              <button :class="[{ current: slide == 1}]" role="tab" @click="gotoSlide(1)">Icon</button>
-              <button :class="[{ current: slide == 2}]" role="tab" @click="gotoSlide(2)">Frame</button>
-              <button :class="[{ current: slide == 3}]" role="tab" @click="gotoSlide(3)">Material</button>
-              <button :class="[{ current: slide == 4}]" role="tab" @click="gotoSlide(4)">Value</button>
+              <button :class="[{ current: slide == 0 }]" role="tab" @click="gotoSlide(0)">Habit name</button>
+              <button :class="[{ current: slide == 1 }]" role="tab" @click="gotoSlide(1)">Icon</button>
+              <button :class="[{ current: slide == 2 }]" role="tab" @click="gotoSlide(2)">Frame</button>
+              <button :class="[{ current: slide == 3 }]" role="tab" @click="gotoSlide(3)">Material</button>
+              <button :class="[{ current: slide == 4 }]" role="tab" @click="gotoSlide(4)">Value</button>
             </nav>
             <div class="slide" v-if="slide == 0">
                 <h1>Describe your habit</h1>
