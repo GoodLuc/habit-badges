@@ -42,7 +42,7 @@ export default new Vuex.Store({
       } else {
         return false;
       }
-    }
+    },
 	},
   mutations: {
     // For login screen
@@ -127,7 +127,7 @@ export default new Vuex.Store({
     setUserLevel: (state) => {
       console.log('setting level')
       if (state.user.points < 100) {
-        Vue.set(state.user, "level", { nr: 1, percent: state.user.points, toNext: (100 - state.user.points), next: 100 })
+        Vue.set(state.user, "level", { nr: 1, percent: state.user.points, toNext: (100 - parseInt(state.user.points)), next: 100 })
       } else {
         let calcpoint = 100
         let increment = 80

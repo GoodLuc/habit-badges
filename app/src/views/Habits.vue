@@ -106,6 +106,10 @@ export default {
     }
   },
   components: { BadgeCreator, PulseLoader },
+  mounted() {
+    document.body.classList.remove('overlaid')
+    window.scrollTo(0, 0)
+  }
 }
 </script>
 
@@ -113,9 +117,7 @@ export default {
 
 .box {
   padding-top: 3rem;
-  .badge-add {
-    height: calc(100% - 3.7rem);
-  }
+  .badge-add { img { transform: scale(1.5); } }
 }
 .habit {
   background: cornsilk;

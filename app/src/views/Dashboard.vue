@@ -159,6 +159,9 @@ export default {
   mounted() {
     this.$store.dispatch('setCurrentDate')
     this.$store.dispatch('getMonth')
+    if (this.$store.state.user === false) {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
@@ -203,7 +206,7 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 
 .badge, .badge-add, .badge-edit {
   margin: 0; box-sizing: border-box; 
-  border-radius: .35rem; padding: 1rem; box-sizing: border-box; /*margin: 0 1.5rem 1.5rem 0;*/
+  border-radius: .35rem; padding: 1rem; box-sizing: border-box; 
   min-width: 10rem; height: auto; text-align: center; color: black;
   font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   display: flex; flex-direction: column; align-items: center; cursor: default;
@@ -222,12 +225,14 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 }
 
 .badge-add, .badge-edit {
+  min-height: 15.2rem;
   background: white; color: $link; cursor: pointer; font-weight: 200; display: flex; align-items: center;
   box-shadow: $inshadow;
   figure { background: none; box-shadow: none; filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); max-width: 60%; margin-top: auto; display: flex; align-items: center; img { max-height: 100%; } }
   figcaption { margin-top: auto; }
   &:hover { background: $link; color: white; figure { filter: invert(1) brightness(100)} }
 }
+.badge-edit { img { transform: scale(.82); } }
 
 .week {
   .isEmpty { 

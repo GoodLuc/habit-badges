@@ -7,7 +7,7 @@
           <h2>Saving...</h2>
           <pulse-loader :loading="loading"></pulse-loader>
         </div>
-        <div class="grid">
+        <div v-if="userHabits.length" class="grid">
           <div v-for="badge in userHabits" :key="badge._id" @click="toggleBadge(badge._id); coincount.cloneNode(true).play()">
             <div v-if="!badge.deleted" :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
               <figure>
@@ -18,6 +18,7 @@
             </div>
           </div>
         </div>
+        <div v-else><p>You have no created habits! Create a new Habit Badge from the <router-link to="/habits"><strong>Habits</strong></router-link> tab.</p></div>
       </div>
       <figure class="close" @click="saveAndClose"><img src="/assets/icons/close.svg" alt="Close"></figure>
     </div>

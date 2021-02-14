@@ -28,7 +28,7 @@
               </div>
               <div v-else>
                 <p v-if="!loading">No icons found under '{{ iconSearchTerm }}.' Please enter another search term. <br>
-                Tip: Try a simple noun.</p>
+                Tip: Try a simple noun like "exercise" or "music".</p>
               </div>
             </div>
             <div class="slide" v-if="slide == 2">
@@ -224,7 +224,9 @@ export default {
   width: 100%; flex-grow: 1; margin-right: 2rem; margin-top: 1rem;
   nav { 
     button {
-      border: none; background: $card; font-size: 1.6rem; border-radius: .314rem .314rem 0 0;
+      border: none; 
+      background: linear-gradient(180deg, rgba(255,255,255,1) 62%, rgba(217,217,217,.5) 100%);
+      font-size: 1.6rem; border-radius: .314rem .314rem 0 0;
       padding: 1rem; margin-right: .5rem; color: inherit; font-weight: 200; margin: 0 .5rem 0 0; box-shadow: none;
       &:last-of-type { margin: 0 }
       &.current { background: white; }
