@@ -77,7 +77,7 @@ router.post("/makeuser", async (req, res) => {
   try {
     const users = await getUsers();
     await users.insertOne(
-      { ...req.body.user, habits: {} },
+      { ...req.body.user, habits: {}, points: 0 },
     );
     res.status(201).send();
   } catch (error) {
