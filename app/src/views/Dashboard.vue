@@ -159,9 +159,6 @@ export default {
   mounted() {
     this.$store.dispatch('setCurrentDate')
     this.$store.dispatch('getMonth')
-    if (this.$store.state.user === false) {
-      this.$router.push('/login')
-    }
   }
 }
 </script>
@@ -179,7 +176,11 @@ export default {
   }
 }
 .entitlement {
-  strong { text-shadow: $textshadow; }
+	background: $azure;
+	border-radius: 3px;
+	display: inline-block;
+	padding: .7rem;
+	color: white;
 }
 
 .box {

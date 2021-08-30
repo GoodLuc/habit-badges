@@ -10,7 +10,7 @@
           <router-link @click.native="menuActive = false" to="/habits">Habits</router-link>
           <!--router-link to="/trinkets">Trinkets</router-link>
           <router-link to="/castle">Your castle</router-link-->
-          <a href="#" @click="logout" class="logout">Logout</a>
+          <a @click="logout" class="logout">Logout</a>
           <figure class="close" @click="menuActive = false"><img src="/assets/icons/close.svg" alt="Close"></figure>
         </div>
       </div>
@@ -65,7 +65,7 @@ body {
   //box-shadow: inset 5px 5px 15px 5px rgba(0,0,0,0.7);
   &.overlaid { overflow: hidden; }
 }
-a { color: $link; }
+a { color: $link; cursor: pointer; }
 h1 { 
   font-size: 3.2rem; color: $text; margin-bottom: 2rem; 
   @media (max-width: 640px) { font-size: 2.2rem; }

@@ -5,24 +5,41 @@
         <h1>This are your habits {{ user.name }}</h1>
         <p>Create your custom badges to track your daily progress</p>
         <div class="box">
-          <div class="grid" v-if="user">
-            <div class="habit" v-for="habit in userHabits" :key="habit._id">
-              <div :class="['badge', habit.material]">
-                <figure>
-                  <div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
-                  <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
-                </figure>
-                <figcaption>{{ habit.name }}</figcaption>
-              </div>
-              <div class="badgeEditControls">
-                <button class="edit" @click="editHabit(habit)" type="button">
-                  <figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
-                </button>
-                <button class="del" type="button" @click="delDialog = true; delHabit = habit">
-                  <figure><img src="/assets/badges/default/del.svg" alt="Delete"></figure>
-                </button>
-              </div>
-            </div>
+          <div class="flex wrap" v-if="user">
+            <div class="habit-row flex" v-for="habit in userHabits" :key="habit._id">
+							<div class="habit">
+								<div :class="['badge', habit.material]">
+									<figure>
+										<div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
+										<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
+									</figure>
+									<figcaption>{{ habit.name }}</figcaption>
+								</div>
+								<div class="badgeEditControls">
+									<button class="edit" @click="editHabit(habit)" type="button">
+										<figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
+									</button>
+									<button class="del" type="button" @click="delDialog = true; delHabit = habit">
+										<figure><img src="/assets/badges/default/del.svg" alt="Delete"></figure>
+									</button>
+								</div>
+							</div>
+							<div class="timeline">
+								<h3>Timeline</h3>
+								<div class="tablechart">
+									<div v-for="index in 30" :key="index">
+										<template v-if="todayNr+index < daysInMonth+1">
+											<span v-if="lastMonthLoad.days[todayNr+index] && monthLoad.days[todayNr+index].badges.includes(habit._id)" :class="[habit.material]">{{monthName(monthLoad.month - 1)}} {{todayNr+index}}</span>
+											<span v-else>{{monthName(monthLoad.month - 1)}} {{todayNr+index}}</span>
+										</template>
+										<template v-else>
+											<span v-if="monthLoad.days[todayNr+index-daysInMonth] && monthLoad.days[todayNr+index-daysInMonth].badges.includes(habit._id)" :class="[habit.material]">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth}}</span>
+											<span v-else>{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth}}</span>
+										</template>
+									</div>
+								</div>
+							</div>
+						</div>
             <button class="badge-add" @click="badgeCreator = true">
               <figure>
                 <img src="/assets/badges/default/add.svg" alt="Add new">
@@ -71,12 +88,16 @@ export default {
       delHabit: null,
       habit: {},
       loading: false,
-      confirmed: false
+      confirmed: false,
+			todayNr: new Date().getDate(),
     }
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user","monthLoad","lastMonthLoad"]),
     ...mapGetters(["userHabits"]),
+		daysInMonth: function() {
+			return new Date(new Date().getMonth(), new Date().getYear(), 0).getDate();
+		}
   },
   watch: {
     // Add overlay class to body if Badge Creator component is open
@@ -103,7 +124,11 @@ export default {
       await PostService.saveBadge({ user: this.user.token, habit: this.delHabit });
       this.loading = false
       this.confirmed = true
-    }
+    },
+		monthName: function(month) {
+			let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+			return months[month-1]
+		}
   },
   components: { BadgeCreator, PulseLoader },
   mounted() {
@@ -115,12 +140,19 @@ export default {
 
 <style scoped lang="scss">
 
+.habit-row { 
+	width: 100%; 
+	margin-bottom: 2rem; 
+	background: white;
+}
 .box {
   padding-top: 3rem;
   .badge-add { img { transform: scale(1.5); } }
 }
 .habit {
+	width: 10rem;
   background: cornsilk;
+	margin-right: 1rem;
   .badgeEditControls { 
     display: flex; justify-content: space-between; 
     width: 100%;
@@ -137,6 +169,23 @@ export default {
 }
 
 //.badge-add { height: calc(100% - 4.8rem); }
+
+.tablechart {
+	display: flex; flex-wrap: wrap;
+	div {
+		width: 5rem; height: 4rem; overflow: hidden;
+		border: 1px solid lightgoldenrodyellow; 
+		span {
+			padding: .5rem;
+			width: 100%;
+			height: 100%;
+			display: block;
+			&.gold { background: $gold; border: 1px solid #fcc201; }
+			&.silver { background: $silver; border: 3px solid #ffeac2; }
+			&.azure { background: $azure; color: white; border: 1px solid #185dfa; }
+		}
+	}
+}
 
 .delDialog { 
   text-align: center; 

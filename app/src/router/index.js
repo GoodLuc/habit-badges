@@ -17,14 +17,16 @@ const Router = new VueRouter({
 })
 
 Router.beforeEach((to, from, next) => {
-  
+  console.log('to is', from)
+
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if (requiresAuth) {
     let user = JSON.parse(localStorage.getItem('user'));
+		console.log('user is', user)
 
-    if (user === null) {
-      next('login')
+    if (user === null && to.path !== '/login') {
+      Router.push('/login')
     } else {
       next()
     }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import PostService from '../PostService'
+import titles from './titles'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,7 @@ export default new Vuex.Store({
 		monthLoad: { days: {}, loading: true },
     lastMonthLoad: { days:{} },
     badges: [],
-    titles: ['','Newborn','Habit pawn','Persistent ant','Rising cadet','Standard recruit','Potential prospect','Promising subject','Blue belt','Young acolyte','Apprentice of the good ways']
+    titles: titles
 	},
 	getters: {
     getDayLoad: state => {
