@@ -83,7 +83,7 @@ input[type=text], input[type=email], input[type=password] {
   box-shadow: $inshadow; background: $bg1;
 }
 button { 
-  background: $link; font-weight: 600; color: white; border: 4px solid rgba(222, 222, 222, .7); 
+  background: $link; font-weight: 600; color: white; border: 2px solid rgba(7,206,255,.5);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 5px 7px -3px;
   text-align: center; cursor: pointer; padding: 1rem;
   &:hover { background: $azure; }

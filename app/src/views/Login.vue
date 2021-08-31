@@ -1,7 +1,37 @@
 <template>
   <div class="container">
+		<article>
+			<h1>Press Start for the adventure of life!</h1>
+			<h2>Start gamifiyng your habits</h2>
+			<section class="flex">
+				<figure>
+					<img src="@/assets/img/step1.svg" alt="">	
+				</figure>
+				<div>
+					<h2>Create</h2>
+					<p>...a badge for a habit you want to complete on a regular basis. You can customize the icon, the frame and the material color. You will also assign it a value from 1 to 10 coins.</p>
+				</div>
+			</section>
+			<section class="flex">
+				<figure>
+					<img src="@/assets/img/step1.svg" alt="">	
+				</figure>
+				<div>
+					<h2>Check-in</h2>
+					<p>...daily to start tracking your progress, earning coins and leveling up yourself and your badges.</p>
+				</div>
+			</section>
+			<section class="flex">
+				<figure>
+					<img src="@/assets/img/step1.svg" alt="">	
+				</figure>
+				<div>
+					<h2>Set rewards</h2>
+					<p>...for yourself and spend your well earned coins on them. You can also spend them to create new badges or getting multipliers and bonuses for your achievements.</p>
+				</div>
+			</section>
+		</article>
     <div v-if="selector" class="selector flex wrap justify-center">
-      <h1>Welcome to Hero Badge</h1>
       <p>Register or login</p>
       <button type="button" @click="showRegister">Register</button>
       <button type="button" @click="showLogin">Login</button>

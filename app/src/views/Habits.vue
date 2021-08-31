@@ -2,8 +2,18 @@
   <div>
     <div class="container dash">
       <div class="main">
-        <h1>This are your habits {{ user.name }}</h1>
-        <p>Create your custom badges to track your daily progress</p>
+        <div class="flex justify-between">
+					<div>
+						<h1>This are your habits {{ user.name }}</h1>
+						<p>Create your custom badges to track your daily progress</p>
+					</div>
+					<button class="badge-add" @click="badgeCreator = true">
+						<figure>
+							<img src="/assets/badges/default/add.svg" alt="Add new">
+						</figure>
+						<figcaption>Create new</figcaption>
+					</button>
+				</div>
         <div class="box">
           <div class="flex wrap" v-if="user">
             <div class="habit-row flex" v-for="habit in userHabits" :key="habit._id">
@@ -25,27 +35,20 @@
 								</div>
 							</div>
 							<div class="timeline">
-								<h3>Timeline</h3>
 								<div class="tablechart">
 									<div v-for="index in 30" :key="index">
-										<template v-if="todayNr+index < daysInMonth+1">
-											<span v-if="lastMonthLoad.days[todayNr+index] && monthLoad.days[todayNr+index].badges.includes(habit._id)" :class="[habit.material]">{{monthName(monthLoad.month - 1)}} {{todayNr+index}}</span>
-											<span v-else>{{monthName(monthLoad.month - 1)}} {{todayNr+index}}</span>
+										<template v-if="todayNr+index < daysInMonth">
+											<span v-if="lastMonthLoad.days[todayNr+index+1] && monthLoad.days[todayNr+index+1].badges.includes(habit._id)" class="filled" :class="[habit.material]">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
+											<span v-else class="empty">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
 										</template>
 										<template v-else>
-											<span v-if="monthLoad.days[todayNr+index-daysInMonth] && monthLoad.days[todayNr+index-daysInMonth].badges.includes(habit._id)" :class="[habit.material]">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth}}</span>
-											<span v-else>{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth}}</span>
+											<span v-if="monthLoad.days[todayNr+index-daysInMonth+1] && monthLoad.days[todayNr+index-daysInMonth+1].badges.includes(habit._id)" class="filled" :class="[habit.material]">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
+											<span v-else class="empty">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
 										</template>
 									</div>
 								</div>
 							</div>
 						</div>
-            <button class="badge-add" @click="badgeCreator = true">
-              <figure>
-                <img src="/assets/badges/default/add.svg" alt="Add new">
-              </figure>
-              <figcaption>Create new</figcaption>
-            </button>
           </div>
         </div>
       </div>
@@ -152,7 +155,7 @@ export default {
 .habit {
 	width: 10rem;
   background: cornsilk;
-	margin-right: 1rem;
+	margin-right: 2rem;
   .badgeEditControls { 
     display: flex; justify-content: space-between; 
     width: 100%;
@@ -168,21 +171,36 @@ export default {
   }
 }
 
-//.badge-add { height: calc(100% - 4.8rem); }
+.badge-add { 
+	height: 5rem; width: 14rem; color: white; 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: auto;
+  figure { background: none; box-shadow: none; filter: invert(98%) sepia(0%) saturate(7493%) hue-rotate(213deg) brightness(103%) contrast(104%); width: 2rem; margin-left: -.4rem; margin-right: .8rem; display: flex; align-items: center; img { max-height: 100%; } }
+	figcaption { margin: .3rem 0 0; padding: 0; }
+}
 
 .tablechart {
-	display: flex; flex-wrap: wrap;
+	display: flex; flex-wrap: wrap; margin-top: 1.7rem;
 	div {
-		width: 5rem; height: 4rem; overflow: hidden;
-		border: 1px solid lightgoldenrodyellow; 
+		margin: 0 .3rem .3rem 0;
 		span {
+			border-radius: .5rem;
 			padding: .5rem;
-			width: 100%;
-			height: 100%;
-			display: block;
-			&.gold { background: $gold; border: 1px solid #fcc201; }
-			&.silver { background: $silver; border: 3px solid #ffeac2; }
-			&.azure { background: $azure; color: white; border: 1px solid #185dfa; }
+			width: 4rem; height: 3rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			&.gold { background: $gold;}
+			&.silver { background: $silver;}
+			&.azure { background: $azure; color: white;}
+			&.empty {
+				box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+			}
+			&.filled {
+				box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+			}
 		}
 	}
 }

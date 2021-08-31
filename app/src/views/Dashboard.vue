@@ -30,7 +30,7 @@
             </figure>
             <figcaption>{{ user.habits[badge].name }}</figcaption>
           </div>
-          <button class="badge-add" @click="addBadge">
+          <button class="badge-check" @click="checkIn">
             <figure>
               <img src="/assets/badges/default/check.svg" alt="Check in">
             </figure>
@@ -111,7 +111,7 @@ export default {
     },
   },
   methods: {
-    addBadge: function() { this.badgeSelector = true },
+    checkIn: function() { this.badgeSelector = true },
     // Set the date to edit with the Badge Selector component
     editDay: function(year, month, day) { 
       this.$store.dispatch('setDate', {year: year, month: month, day: day})
@@ -188,7 +188,7 @@ export default {
   border-radius: 15px;
   margin-bottom: 2rem;
   .grid { margin-bottom: 2rem; }
-  .badge, .badge-add, .edit {
+  .badge, .badge-check, .edit {
     width: 100%; box-sizing: border-box; 
   }
   @media (max-width: 770px) { padding: 1rem 2rem; }
@@ -205,7 +205,7 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
   }
 }
 
-.badge, .badge-add, .badge-edit {
+.badge, .badge-check, .badge-edit {
   margin: 0; box-sizing: border-box; 
   border-radius: .35rem; padding: 1rem; box-sizing: border-box; 
   min-width: 10rem; height: auto; text-align: center; color: black;
@@ -225,7 +225,7 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
   figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; height: 2.4em; }
 }
 
-.badge-add, .badge-edit {
+.badge-check, .badge-edit {
   min-height: 15.2rem;
   background: white; color: $link; cursor: pointer; font-weight: 200; display: flex; align-items: center;
   box-shadow: $inshadow;
