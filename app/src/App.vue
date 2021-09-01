@@ -8,6 +8,8 @@
           <router-link @click.native="menuActive = false" to="/">Dashboard</router-link> 
           <router-link @click.native="menuActive = false" to="/monthly">Monthly view</router-link> 
           <router-link @click.native="menuActive = false" to="/habits">Habits</router-link>
+          <router-link @click.native="menuActive = false" to="/rewards">Rewards</router-link>
+          <router-link @click.native="menuActive = false" to="/powerups">Power-Ups</router-link>
           <!--router-link to="/trinkets">Trinkets</router-link>
           <router-link to="/castle">Your castle</router-link-->
           <a @click="logout" class="logout">Logout</a>

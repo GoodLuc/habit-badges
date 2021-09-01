@@ -1,49 +1,12 @@
 <template>
   <div class="container">
-		<article>
-			<h1>Press Start for the adventure of life!</h1>
-			<h2>Start gamifiyng your habits</h2>
-			<section class="flex">
-				<figure>
-					<img src="@/assets/img/step1.svg" alt="">	
-				</figure>
-				<div>
-					<h2>Create</h2>
-					<p>...a badge for a habit you want to complete on a regular basis. You can customize the icon, the frame and the material color. You will also assign it a value from 1 to 10 coins.</p>
-				</div>
-			</section>
-			<section class="flex">
-				<figure>
-					<img src="@/assets/img/step1.svg" alt="">	
-				</figure>
-				<div>
-					<h2>Check-in</h2>
-					<p>...daily to start tracking your progress, earning coins and leveling up yourself and your badges.</p>
-				</div>
-			</section>
-			<section class="flex">
-				<figure>
-					<img src="@/assets/img/step1.svg" alt="">	
-				</figure>
-				<div>
-					<h2>Set rewards</h2>
-					<p>...for yourself and spend your well earned coins on them. You can also spend them to create new badges or getting multipliers and bonuses for your achievements.</p>
-				</div>
-			</section>
-		</article>
-    <div v-if="selector" class="selector flex wrap justify-center">
-      <p>Register or login</p>
-      <button type="button" @click="showRegister">Register</button>
-      <button type="button" @click="showLogin">Login</button>
-      <p><small>v0.1</small></p>
-    </div>
     <div v-if="register" class="register flex wrap justify-center">
       <h2>Register</h2>
       <p>
         <a href="#" @click="showLogin">Login instead?</a>
       </p>
       <input type="text" v-model="email" placeholder="Email">
-      <input type="text" v-model="name" placeholder="Name">
+      <input type="text" v-model="name" placeholder="Name" id="Name">
       <input @keyup.enter="makeUser" type="password" v-model="password" placeholder="Password">
       <p v-if="warn" class="warn">{{ warn_message }}</p>
       <p v-if="warn2" class="warn">That email is already registered. <a href="#" @click="showLogin">Login instead?</a></p>
@@ -80,9 +43,8 @@ export default {
       warn: false,
       warn2: false,
       warn_message: '',
-      selector: true,
       register: false,
-      login: false,
+      login: true,
       created: false,
       email: '',
       name: '',
@@ -91,12 +53,10 @@ export default {
   },
   methods: {
     showRegister: function() {
-      this.selector = false;
       this.register = true;
       this.login = false;
     },
     showLogin: function() {
-      this.selector = false;
       this.login = true;
       this.register = false;
     },
@@ -155,15 +115,23 @@ export default {
     }
   },
   components: { PulseLoader },
-  mounted() { this.$store.dispatch("centerLogo", true) },
+  mounted() { 
+		this.$store.dispatch("centerLogo", true); 
+		if (this.$route.query.register !== undefined) {
+			this.register = true
+			this.login = false
+		}
+	},
   beforeDestroy() { this.$store.dispatch("centerLogo", false) }
 }
 </script>
 
 <style scoped lang="scss">
-h1, p { margin-bottom: 2rem; width: 100%; text-align: center; }
-.selector, .created {
+h1, p { margin-bottom: 2rem; width: 100%; }
+.created {
+	margin-top: 4rem;
   button { margin: 1rem; max-width: 25rem; }
+	p { text-align: center; }
 }
 .login, .register, .created { 
   flex-direction: column; align-items: center; text-align: center;
@@ -173,5 +141,6 @@ h1, p { margin-bottom: 2rem; width: 100%; text-align: center; }
 small { color: orange; }
 
 button[disabled=disabled] { background: $ellis; }
+
 
 </style>
