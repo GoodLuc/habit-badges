@@ -5,11 +5,11 @@
         <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
         <a @click="menuActive = true" id="toggl" href="#"><figure><img src="/assets/icons/menu.svg" alt="Menu"></figure></a>
         <div :class="['flex grow',{ overlay: menuActive, show: menuActive }]" id="menu" v-if="user">
-          <router-link @click.native="menuActive = false" to="/">Dashboard</router-link> 
-          <router-link @click.native="menuActive = false" to="/monthly">Monthly view</router-link> 
-          <router-link @click.native="menuActive = false" to="/habits">Habits</router-link>
-          <router-link @click.native="menuActive = false" to="/rewards">Rewards</router-link>
-          <router-link @click.native="menuActive = false" to="/powerups">Power-Ups</router-link>
+          <router-link @click="menuActive = false" to="/">Dashboard</router-link> 
+          <router-link @click="menuActive = false" to="/monthly">Monthly view</router-link> 
+          <router-link @click="menuActive = false" to="/habits">Habits</router-link>
+          <router-link @click="menuActive = false" to="/rewards">Rewards</router-link>
+          <router-link @click="menuActive = false" to="/powerups">Power-Ups</router-link>
           <!--router-link to="/trinkets">Trinkets</router-link>
           <router-link to="/castle">Your castle</router-link-->
           <a @click="logout" class="logout">Logout</a>

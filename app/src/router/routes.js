@@ -22,6 +22,12 @@ const routes = [
     component: Habits
   },
   {
+    path: '/rewards',
+    meta: { requiresAuth: true },
+    name: 'Habits',
+    component: Habits
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login')
@@ -33,12 +39,5 @@ const routes = [
   }
 ]
 
-// Always leave this as last one
-if (process.env.MODE !== 'ssr') {
-  routes.push({
-    path: '*',
-    component: () => import('../pages/Error404.vue')
-  })
-}
 
 export default routes

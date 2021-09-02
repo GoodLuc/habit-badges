@@ -122,7 +122,7 @@ export default {
 			this.login = false
 		}
 	},
-  beforeDestroy() { this.$store.dispatch("centerLogo", false) }
+  beforeUnmount() { this.$store.dispatch("centerLogo", false) }
 }
 </script>
 

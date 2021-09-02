@@ -1,11 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import PostService from '../PostService'
 import titles from './titles'
 
-Vue.use(Vuex)
 
-export default new Vuex.Store({
+export default createStore({
   state: {
     user: false,
     centerLogo: false,
@@ -55,11 +53,11 @@ export default new Vuex.Store({
       state.date = { year: date.year, month: date.month, day: date.day }
       if (state.monthLoad.month == state.date.month) { 
         if (state.monthLoad.days[state.date.day] === undefined) {
-          Vue.set(state.monthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] })
+          state.monthLoad.days[state.date.day] = { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
         }
       } else if (state.lastMonthLoad.month == state.date.month) { 
         if (state.lastMonthLoad.days[state.date.day] === undefined) { 
-          Vue.set(state.lastMonthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }) 
+          state.lastMonthLoad.days[state.date.day] = { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
         }
       }
     },
@@ -69,7 +67,7 @@ export default new Vuex.Store({
     },
     setUserPoints: (state, points) => {
       console.log('setting points')
-      Vue.set(state.user, 'points', parseInt(points))
+      state.user['points'] = parseInt(points)
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     setBadges: (state, badges) => {
@@ -92,12 +90,12 @@ export default new Vuex.Store({
       if ((data !== undefined) && Object.keys(data).length) {
         state.monthLoad = data
         if (state.monthLoad.days[state.date.day] === undefined) {
-          Vue.set(state.monthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] })
+          state.monthLoad.days[state.date.day] = { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
         }
       } else {
         if (state.monthLoad.days[state.date.day] === undefined) {
-          Vue.set(state.monthLoad.days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] })
-          Vue.delete(state.monthLoad, "loading")
+          state.monthLoad.days[state.date.day] = { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }
+          delete state.monthLoad["loading"]
         }
       }
     },
@@ -108,7 +106,7 @@ export default new Vuex.Store({
       if (state.today.month == state.date.month) { monthToEdit = 'monthLoad'; } 
       else if (parseInt(state.today.month) === parseInt(state.date.month)+1) { monthToEdit = 'lastMonthLoad'; }
       
-      if (state[monthToEdit].days[state.date.day] === undefined) { Vue.set(state[monthToEdit].days, state.date.day, { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] }) }
+      if (state[monthToEdit].days[state.date.day] === undefined) { state[monthToEdit].days[state.date.day] = { points: 0, year: state.date.year, month: state.date.month, day: state.date.day, badges: [] } }
       
       if (state[monthToEdit].days[state.date.day].badges.find(badge => badge === badgeTo)) {
         state[monthToEdit].days[state.date.day].badges = state[monthToEdit].days[state.date.day].badges.filter(
@@ -128,7 +126,7 @@ export default new Vuex.Store({
     setUserLevel: (state) => {
       console.log('setting level')
       if (state.user.points < 100) {
-        Vue.set(state.user, "level", { nr: 1, percent: state.user.points, toNext: (100 - parseInt(state.user.points)), next: 100 })
+        state.user["level"] = { nr: 1, percent: state.user.points, toNext: (100 - parseInt(state.user.points)), next: 100 }
       } else {
         let calcpoint = 100
         let increment = 80
@@ -143,17 +141,17 @@ export default new Vuex.Store({
         var nextLevelPoints = calcpoint - prevLevelPoints
         var userBaseLevelPoints = state.user.points - prevLevelPoints
         var percentage = (userBaseLevelPoints / nextLevelPoints) * 100
-        Vue.set(state.user, "level", { nr: level, percent: percentage, toNext: (calcpoint - state.user.points), next: calcpoint })
+        state.user["level"] = { nr: level, percent: percentage, toNext: (calcpoint - state.user.points), next: calcpoint }
       }
     },
     saveBadgeToStore: (state, habit) => {
-      Vue.set(state.user.habits, habit._id, habit)
-      Vue.set(state, 'badges', state.user.habits)
+      state.user.habits[habit._id] = habit
+      state['badges'] = state.user.habits
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     updateBadgeInStore: (state, habit) => {
-      Vue.set(state.user.habits, habit._id, habit)
-      Vue.set(state, 'badges', state.user.habits)
+      state.user.habits[habit._id], habit
+      state['badges'] = state.user.habits
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     // Logout

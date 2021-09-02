@@ -53,7 +53,7 @@ export default {
   methods: {
   },
   mounted() { this.$store.dispatch("centerLogo", true) },
-  beforeDestroy() { this.$store.dispatch("centerLogo", false) }
+  beforeUnmount() { this.$store.dispatch("centerLogo", false) }
 }
 </script>
 

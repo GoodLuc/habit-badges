@@ -100,8 +100,7 @@ export default {
       default: false
     },
     habit: {
-      type: Object,
-      default: function() { return false }
+      type: Object
     }
   },
   data() {
