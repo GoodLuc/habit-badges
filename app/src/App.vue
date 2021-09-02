@@ -55,77 +55,7 @@ export default {
 </script>
 
 <style lang="scss">
-html {
-  font-size: 14px;
-  min-width: 320px;
-}
-body { 
-  margin: 0; font-family: 'Work Sans', sans-serif; font-feature-settings: "lnum";
-  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  color: $text; padding-bottom: 2.14rem; background: white;
-  min-width: 320px;
-  //box-shadow: inset 5px 5px 15px 5px rgba(0,0,0,0.7);
-  &.overlaid { overflow: hidden; }
-}
-a { color: $link; cursor: pointer; }
-h1 { 
-  font-size: 3.2rem; color: $text; margin-bottom: 2rem; 
-  @media (max-width: 640px) { font-size: 2.2rem; }
-}
-h2 { font-size: 2.2rem; font-weight: lighter }
-p { font-size: 1.28rem; }
-img { max-width: 100%; }
-ul { padding: 0; }
-
-input[type=text], input[type=email], input[type=password], button {
-  color: $text; margin-bottom: 1rem; width: 100%; max-width: 35.71rem;
-  font-size: 1.2rem; padding: .714rem; border-radius: .314rem; box-sizing: border-box;
-}
-input[type=text], input[type=email], input[type=password] {
-  box-shadow: $inshadow; background: $bg1;
-}
-button { 
-  background: $link; font-weight: 600; color: white; border: 2px solid rgba(7,206,255,.5);
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 5px 7px -3px;
-  text-align: center; cursor: pointer; padding: 1rem;
-  &:hover { background: $azure; }
-}
-.warn { color: red; }
-
-.flex { 
-  display: flex; 
-  &.align-bottom { align-items: flex-end; }
-  &.align-center { align-items: center; }
-  &.justify-left { justify-content: flex-start; }
-  &.justify-center { justify-content: center; }
-  &.justify-between { justify-content: space-between; }
-  &.column { flex-direction: column; }
-  &.wrap { flex-wrap: wrap; }
-  &.fw { width: 100%; }
-  &.grow { flex-grow: 1; }
-}
-.grid {
-  display: grid; width: 100%; 
-  box-sizing: border-box; 
-  grid-template-columns: repeat( auto-fill, minmax(10rem, 1fr) ); gap: 20px;
-  &.isEmpty { grid-template-rows: auto; }
-  @media (max-width: 400px) { 
-    grid-template-columns: 100%;
-    .badge, .edit, .badge-add { 
-      font-size: 1.2rem;
-      figure { width: 5rem; }
-    }  
-  }
-}
-.center { text-align: center; }
-.mb-1 { margin-bottom: 1rem; }
-.padyMed { padding-top: 2rem; padding-bottom: 2rem; }
-
-.container  {
-  max-width: 1100px; margin: auto;
-  padding-left: 1.42rem; padding-right: 1.42rem;
-}
-figure { margin: 0; padding: 0 }
+@import "~@/scss/_resets-utils.scss";
 
 #nav {
   background: $gold;
@@ -171,4 +101,56 @@ figure { margin: 0; padding: 0 }
     }
   }
 }
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+.coin {
+  position: relative; width: 40px; height: 40px;
+  figcaption {
+    position: absolute; top: 0; left: 0; color: white; font-size: 1.3rem; font-weight: bold;
+    width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center;
+  }
+}
+
+.badge, .badge-check, .badge-edit {
+  margin: 0; box-sizing: border-box; 
+  border-radius: .35rem; padding: 1rem; box-sizing: border-box; 
+  min-width: 10rem; height: auto; text-align: center; color: black;
+  font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  display: flex; flex-direction: column; align-items: center; cursor: default;
+  &.gold { background: $gold; border: 1px solid #fcc201; }
+  &.silver { background: $silver; border: 3px solid #ffeac2; }
+  &.azure { background: $azure; color: white; border: 1px solid #185dfa; }
+
+  > figure { 
+    border-radius: 50%; box-shadow: $outshadow; background: white; 
+    width: 100%; position: relative;
+    .frame { position: absolute; z-index: 1; top: 0; left: 0; }
+    .icon { z-index: 2; transform: scale(0.3); position: relative; }
+    img { display: block; width: 100%; height: auto; }
+  }
+  figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; height: 2.4em; }
+}
+
+.badge-check, .badge-edit {
+  min-height: 15.2rem;
+  background: white; color: $link; cursor: pointer; font-weight: 200; display: flex; align-items: center;
+  box-shadow: $inglow; border: 1px solid $link;
+  figure { background: none; box-shadow: none; filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); max-width: 60%; margin-top: auto; display: flex; align-items: center; img { max-height: 100%; } }
+  figcaption { margin-top: auto; }
+  &:hover { background: $link; color: white; figure { filter: invert(1) brightness(100)} }
+}
+.badge-edit { img { transform: scale(.82); } }
+
+.box {
+  background: $shine3; padding: 1.5rem 3rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  .grid { margin-bottom: 2rem; }
+  .badge, .badge-check, .edit {
+    width: 100%; box-sizing: border-box; 
+  }
+  @media (max-width: 770px) { padding: 1rem 2rem; }
+  @media (max-width: 520px) { padding: .8rem 2rem; }
+}
+
 </style>

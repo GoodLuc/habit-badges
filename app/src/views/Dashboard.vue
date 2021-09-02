@@ -163,7 +163,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .dash { h2 { margin: 2rem 0 1rem; font-weight: 200; } }
 
@@ -183,57 +183,7 @@ export default {
 	color: white;
 }
 
-.box {
-  background: $shine3; padding: 1.5rem 3rem;
-  border-radius: 15px;
-  margin-bottom: 2rem;
-  .grid { margin-bottom: 2rem; }
-  .badge, .badge-check, .edit {
-    width: 100%; box-sizing: border-box; 
-  }
-  @media (max-width: 770px) { padding: 1rem 2rem; }
-  @media (max-width: 520px) { padding: .8rem 2rem; }
-}
-
 h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
-
-.coin {
-  position: relative; width: 40px; height: 40px;
-  figcaption {
-    position: absolute; top: 0; left: 0; color: white; font-size: 1.3rem; font-weight: bold;
-    width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center;
-  }
-}
-
-.badge, .badge-check, .badge-edit {
-  margin: 0; box-sizing: border-box; 
-  border-radius: .35rem; padding: 1rem; box-sizing: border-box; 
-  min-width: 10rem; height: auto; text-align: center; color: black;
-  font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  display: flex; flex-direction: column; align-items: center; cursor: default;
-  &.gold { background: $gold; border: 1px solid #fcc201; }
-  &.silver { background: $silver; border: 3px solid #ffeac2; }
-  &.azure { background: $azure; color: white; border: 1px solid #185dfa; }
-
-  > figure { 
-    border-radius: 50%; box-shadow: $outshadow; background: white; 
-    width: 100%; position: relative;
-    .frame { position: absolute; z-index: 1; top: 0; left: 0; }
-    .icon { z-index: 2; transform: scale(0.3); position: relative; }
-    img { display: block; width: 100%; height: auto; }
-  }
-  figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; height: 2.4em; }
-}
-
-.badge-check, .badge-edit {
-  min-height: 15.2rem;
-  background: white; color: $link; cursor: pointer; font-weight: 200; display: flex; align-items: center;
-  box-shadow: $inshadow;
-  figure { background: none; box-shadow: none; filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); max-width: 60%; margin-top: auto; display: flex; align-items: center; img { max-height: 100%; } }
-  figcaption { margin-top: auto; }
-  &:hover { background: $link; color: white; figure { filter: invert(1) brightness(100)} }
-}
-.badge-edit { img { transform: scale(.82); } }
 
 .week {
   .isEmpty { 

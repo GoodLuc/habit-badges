@@ -11,7 +11,7 @@
       <p v-if="warn" class="warn">{{ warn_message }}</p>
       <p v-if="warn2" class="warn">That email is already registered. <a href="#" @click="showLogin">Login instead?</a></p>
       <pulse-loader :loading="loading"></pulse-loader>
-      <button :disabled="loading" type="button" @click="makeUser">Register</button>
+      <button class="button" :disabled="loading" type="button" @click="makeUser">Register</button>
     </div>
     <div v-if="login" class="login flex wrap justify-center">
       <h2>Login</h2>
@@ -22,12 +22,12 @@
       <input @keyup.enter="validateUser" type="password" v-model="password" placeholder="Password">
       <pulse-loader :loading="loading"></pulse-loader>
       <p v-if="warn" class="warn">{{ warn_message }}</p>
-      <button :disabled="loading" type="button" @click="validateUser">Login</button>
+      <button class="button" :disabled="loading" type="button" @click="validateUser">Login</button>
     </div>
     <div v-if="created" class="created">
       <h1>Welcome {{ name }}!</h1>
       <h2>Your user has been created.</h2>
-      <button type="button" @click="$router.push('/')">Go to Dashboard</button>
+      <button class="button" type="button" @click="$router.push('/')">Go to Dashboard</button>
     </div>
   </div>
 </template>

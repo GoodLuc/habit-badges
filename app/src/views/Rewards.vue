@@ -34,20 +34,6 @@
 									</button>
 								</div>
 							</div>
-							<div class="timeline">
-								<div class="tablechart">
-									<div v-for="index in 30" :key="index">
-										<template v-if="todayNr+index < daysInMonth">
-											<span v-if="lastMonthLoad.days[todayNr+index+1] && monthLoad.days[todayNr+index+1].badges.includes(habit._id)" class="filled" :class="[habit.material]">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
-											<span v-else class="empty">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
-										</template>
-										<template v-else>
-											<span v-if="monthLoad.days[todayNr+index-daysInMonth+1] && monthLoad.days[todayNr+index-daysInMonth+1].badges.includes(habit._id)" class="filled" :class="[habit.material]">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
-											<span v-else class="empty">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
-										</template>
-									</div>
-								</div>
-							</div>
 						</div>
           </div>
         </div>
@@ -83,7 +69,7 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
-  name: 'Habits',
+  name: 'Rewards',
   data() {
     return {
       badgeCreator: false,

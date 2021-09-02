@@ -34,8 +34,8 @@
     <div class="selector">
       <h2 class="center">Register or login to start logging your habits</h2>
       <div class="flex wrap justify-center">
-				<button type="button" @click="$router.push('/login?register')">Register</button>
-				<button type="button" @click="$router.push('/login')">Login</button>
+				<button type="button" class="button" @click="$router.push('/login?register')">Register</button>
+				<button type="button" class="button" @click="$router.push('/login')">Login</button>
 			</div>
       <p><small>v0.5b</small></p>
     </div>

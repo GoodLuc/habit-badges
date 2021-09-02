@@ -1,31 +1,28 @@
-import Dashboard from '../views/Dashboard.vue'
-import Habits from '../views/Habits.vue'
-import Monthly from '../views/Monthly.vue'
 
 const routes = [
   {
     path: '/',
     meta: { requiresAuth: true },
     name: 'Dashboard',
-    component: Dashboard
+    component: () => import('../views/Dashboard.vue'),
   },
   {
     path: '/monthly',
     meta: { requiresAuth: true },
     name: 'Monthly',
-    component: Monthly
+    component: () => import('../views/Monthly.vue'),
   },
   {
     path: '/habits',
     meta: { requiresAuth: true },
     name: 'Habits',
-    component: Habits
+    component: () => import('../views/Habits.vue'),
   },
   {
     path: '/rewards',
     meta: { requiresAuth: true },
-    name: 'Habits',
-    component: Habits
+    name: 'Rewards',
+    component: () => import('../views/Rewards.vue'),
   },
   {
     path: '/login',
