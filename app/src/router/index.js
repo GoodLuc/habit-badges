@@ -17,8 +17,8 @@ router.beforeEach((to, from, next) => {
     let user = JSON.parse(localStorage.getItem('user'));
 		console.log('user is', user)
 
-    if (user === null && to.path !== '/login') {
-      router.push('/login')
+    if (user === null && to.path !== '/intro') {
+      router.push('/intro')
     } else {
       next()
     }

@@ -1,5 +1,13 @@
 <template>
   <div class="container">
+		<div v-if="selector" class="selector">
+      <h2>Register or login</h2>
+      <div class="flex wrap justify-between">
+				<button class="button" @click="showRegister">Register</button>
+				<button class="button" @click="showLogin">Login</button>
+			</div>
+      <p><small>v0.5b</small></p>
+    </div>
     <div v-if="register" class="register flex wrap justify-center">
       <h2>Register</h2>
       <p>
@@ -43,8 +51,9 @@ export default {
       warn: false,
       warn2: false,
       warn_message: '',
+      selector: true,
       register: false,
-      login: true,
+      login: false,
       created: false,
       email: '',
       name: '',
@@ -53,10 +62,12 @@ export default {
   },
   methods: {
     showRegister: function() {
+      this.selector = false;
       this.register = true;
       this.login = false;
     },
     showLogin: function() {
+      this.selector = false;
       this.login = true;
       this.register = false;
     },
@@ -115,24 +126,29 @@ export default {
     }
   },
   components: { PulseLoader },
-  mounted() { 
-		this.$store.dispatch("centerLogo", true); 
-		if (this.$route.query.register !== undefined) {
-			this.register = true
-			this.login = false
-		}
-	},
+  mounted() { this.$store.dispatch("centerLogo", true) },
   beforeUnmount() { this.$store.dispatch("centerLogo", false) }
 }
 </script>
 
 <style scoped lang="scss">
 h1, p { margin-bottom: 2rem; width: 100%; }
+
+.container {
+	margin-top: 6rem;
+}
+
 .created {
 	margin-top: 4rem;
   button { margin: 1rem; max-width: 25rem; }
 	p { text-align: center; }
 }
+
+.selector, .created {
+	max-width: 700px; margin: auto; text-align: center;
+  button { margin: 1rem; max-width: calc(50% - 2rem); }
+}
+
 .login, .register, .created { 
   flex-direction: column; align-items: center; text-align: center;
   width: 100%; max-width: 35rem; margin: auto;

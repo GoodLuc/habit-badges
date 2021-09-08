@@ -1,78 +1,103 @@
 <template>
-  <div>
-    <div class="container dash">
-      <div class="main center">
-        <div v-if="getDayLoad">
-          <h1 v-if="user">Welcome back {{ user.name }}</h1>
-          <div v-if="user.level">
-            <p>Your are on level {{ user.level.nr }}. Points: {{ user.points }}. Collect {{ user.level.toNext }} more coins to level up!</p>
-            <div class="level"><div :style="'width:'+user.level.percent+'%'"></div></div>
-            <p class="entitlement">Level {{ user.level.nr }}: <strong>{{ titles[user.level.nr] }}</strong></p>
-          </div>
-        </div>
-      </div>
-
-      <h2>Earned Badges for Today:</h2>
-      <div v-if="getDayLoad" class="box flex wrap">
-        <div class="flex fw align-center justify-between mb-1">
-          <h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
-          <div class="coin"> 
-            <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
-            <figcaption>{{ dayPay(getDayLoad.badges) }}</figcaption>
-          </div>
-        </div>
-
-        <div class="grid">
-          <div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
-            <figure>
-              <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
-              <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
-            </figure>
-            <figcaption>{{ user.habits[badge].name }}</figcaption>
-          </div>
-          <button class="badge-check" @click="checkIn">
-            <figure>
-              <img src="/assets/badges/default/check.svg" alt="Check in">
-            </figure>
-            <figcaption>Check in <span v-if="getDayLoad.badges.length">/ edit</span></figcaption>
-          </button>
-        </div>
-      </div>
-      <div v-else><pulse-loader :loading="loading"></pulse-loader></div>
-
-      <h2>Last 7 days:</h2>
-      <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
-      <div class="week" v-else>
-        <div class="box flex wrap" v-for="day in week" :key="day.day">
-          <div class="flex fw align-center justify-between mb-1">
-            <h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
-            <div class="coin"> 
-              <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
-              <figcaption>{{ dayPay(day.badges) }}</figcaption>
-            </div>
-          </div>
-          <div :class="['grid', { isEmpty: !day.badges.length }]" >
-            <div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
-              <figure>
-                <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
-                <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
-              </figure>
-              <figcaption>{{ user.habits[badge].name }}</figcaption>
-            </div>
-            <button class="badge-edit" @click="editDay(day.year, day.month, day.day)">
-              <figure>
-                <img src="/assets/badges/default/edit.svg" alt="Edit">
-              </figure>
-              <figcaption>Edit</figcaption>
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
+	<div class="container flex justify-between">
+		<main class="dash">
+			<h1 v-if="user">Welcome back {{ user.name }}</h1>
+			<h2>Earned Badges for Today:</h2>
+			<div v-if="getDayLoad" class="box flex wrap">
+				<div class="flex fw align-center justify-between mb-1">
+					<h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
+					<div class="coin">
+						<figure><img src="@/assets/icons/coin.svg" alt="Coins"></figure>
+						<figcaption>{{ dayPay(getDayLoad.badges) }}</figcaption>
+					</div>
+				</div>
+				<div class="grid">
+					<div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
+						<figure>
+							<div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
+							<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
+						</figure>
+						<figcaption>{{ user.habits[badge].name }}</figcaption>
+					</div>
+					<button class="badge-check" @click="checkIn">
+						<figure>
+							<img src="/assets/badges/default/check.svg" alt="Check in">
+						</figure>
+						<figcaption>Check in <span v-if="getDayLoad.badges.length">/ edit</span></figcaption>
+					</button>
+				</div>
+			</div>
+			<div v-else><pulse-loader :loading="loading"></pulse-loader></div>
+			<h2>Last 7 days:</h2>
+			<div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
+			<div class="week" v-else>
+				<div class="box flex wrap" v-for="day in week" :key="day.day">
+					<div class="flex fw align-center justify-between mb-1">
+						<h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
+						<div class="coin">
+							<figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
+							<figcaption>{{ dayPay(day.badges) }}</figcaption>
+						</div>
+					</div>
+					<div :class="['grid', { isEmpty: !day.badges.length }]" >
+						<div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
+							<figure>
+								<div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
+								<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
+							</figure>
+							<figcaption>{{ user.habits[badge].name }}</figcaption>
+						</div>
+						<button class="badge-edit" @click="editDay(day.year, day.month, day.day)">
+							<figure>
+								<img src="/assets/badges/default/edit.svg" alt="Edit">
+							</figure>
+							<figcaption>Edit</figcaption>
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+		<aside>
+			<div class="flex justify-between mb-1">
+				<figure class="rankbadge">
+					<span>Rank</span>
+					<span>{{ user.level.nr }}</span>
+				</figure>
+				<div class="currency">
+					<figure class="coins">
+						<img src="@/assets/icons/coin.svg" alt="">
+						<span>{{ user.points }}</span>
+					</figure>
+					<figure class="rubys">
+						<img src="@/assets/icons/ruby.png" alt="">
+						<span>{{ user.rubys }}</span>
+					</figure>
+				</div>
+			</div>
+			<div v-if="user.level">
+				<div class="flex justify-between"><span>Points: {{ user.points }}</span><span>Next: {{ user.level.toNext }}</span></div>
+				<div class="level"><div :style="'width:'+user.level.percent+'%'"></div></div>
+				<p class="entitlement"><strong>{{ titles[user.level.nr] }}</strong></p>
+			</div>
+			<div class="reward-list">
+				<h3>Pending rewards</h3>
+				<article>
+					<figure><img src="@/assets/icons/treasure.png" alt="Reward"></figure>
+					<span>Reward 1</span>
+					<figure class="price">
+						<img src="@/assets/icons/ruby.png" alt="Price">
+						<figcaption>10</figcaption>
+					</figure>
+				</article>
+				<a href="">See rewards</a>
+			</div>
+			<div>
+				<h3>Latest achievements</h3>
+			</div>
+		</aside>
+	</div>
   
-    <BadgeSelector v-if="badgeSelector" @close="closeBadgeSelector" :day="dateToEdit" />
-  </div>
+	<BadgeSelector v-if="badgeSelector" @close="closeBadgeSelector" :day="dateToEdit" />
 </template>
 
 <script>
@@ -165,9 +190,41 @@ export default {
 
 <style lang="scss" scoped>
 
-.dash { h2 { margin: 2rem 0 1rem; font-weight: 200; } }
+.dash {
+	width: calc(80% - 3rem);
+	h2 { margin: 2rem 0 1rem; font-weight: 200; } 
+}
+
+aside {
+	background: #F4F4F4;
+	margin-top: 3rem;
+	width: 20%;
+	.rankbadge {
+		background: url('~@/assets/icons/shield.png') center/contain no-repeat;
+		width: 7rem;
+		height: 5rem; font-size: 1.3rem;
+		display: flex; flex-direction: column; justify-content: center; color: white; align-items: center;
+	}
+	.currency {
+		.coins, .rubys {
+			display: flex; flex-direction: row-reverse;
+			align-items: center;
+			img { width: 2rem; height: 2rem; margin-left: .2rem; }
+		}
+		.rubys img {
+			width: 2.5rem; height: 2.5rem;
+		}
+	}
+	.reward-list {
+		article {
+			display: flex;
+			figure { width: 3rem; height: 3rem; }
+		}
+	}
+}
 
 .level {
+	margin: 1rem 0;
   width: 100%; background: $background; height: 1.2rem; border-radius: .5rem;
   box-shadow: $inshadow; display: flex; align-items: center;
   div { 
@@ -176,11 +233,8 @@ export default {
   }
 }
 .entitlement {
-	background: $azure;
-	border-radius: 3px;
-	display: inline-block;
-	padding: .7rem;
-	color: white;
+	text-align: center;
+	color: #0065A5;
 }
 
 h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
