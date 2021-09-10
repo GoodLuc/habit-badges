@@ -3,6 +3,7 @@ html {
 	font-size: 14px;
   min-width: 320px;
 }
+
 body { 
 	margin: 0; font-family: 'Roboto', sans-serif; font-feature-settings: "lnum";
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
@@ -11,11 +12,14 @@ body {
   //box-shadow: inset 5px 5px 15px 5px rgba(0,0,0,0.7);
   &.overlaid { overflow: hidden; }
 }
+
 a { color: $link; cursor: pointer; }
+
 h1 { 
 	font-size: 3.2rem; color: $text; margin-bottom: 2rem; 
   @media (max-width: 640px) { font-size: 2.2rem; }
 }
+
 h2 { font-size: 2.2rem; font-weight: 300; }
 p { font-size: 1.28rem; }
 img { max-width: 100%; }
@@ -25,12 +29,15 @@ input[type=text], input[type=email], input[type=password], button {
 	color: $text; margin-bottom: 1rem; width: 100%; max-width: 35.71rem;
   font-size: 1.2rem; padding: .714rem; border-radius: .314rem; box-sizing: border-box;
 }
+
 input[type=text], input[type=email], input[type=password] {
 	box-shadow: $inshadow; background: $bg1;
 }
+
 button {
 	border: none; margin: 0;
 }
+
 figure { margin: 0; padding: 0 }
 
 .button { 
@@ -39,6 +46,7 @@ figure { margin: 0; padding: 0 }
   text-align: center; cursor: pointer; padding: 1rem;
   &:hover { background: $azure; }
 }
+
 .warn { color: red; }
 
 .flex { 
@@ -48,11 +56,13 @@ figure { margin: 0; padding: 0 }
   &.justify-left { justify-content: flex-start; }
   &.justify-center { justify-content: center; }
   &.justify-between { justify-content: space-between; }
+	&.full-center { justify-content: center; align-items: center; }
   &.column { flex-direction: column; }
   &.wrap { flex-wrap: wrap; }
   &.fw { width: 100%; }
   &.grow { flex-grow: 1; }
 }
+
 .grid {
   display: grid; width: 100%; 
   box-sizing: border-box; 
@@ -66,12 +76,27 @@ figure { margin: 0; padding: 0 }
     }  
   }
 }
-.center { text-align: center; }
-.mb-1 { margin-bottom: 1rem; }
-.mb-2 { margin-bottom: 2rem; }
+
+.text-center { text-align: center; }
+.mb1 { margin-bottom: 1rem; }
+.mb2 { margin-bottom: 2rem; }
 .padyMed { padding-top: 2rem; padding-bottom: 2rem; }
+.padAllMed { padding: 2rem; }
 
 .container  {
   max-width: 1800px; margin: auto;
   padding-left: 1.42rem; padding-right: 1.42rem;
+}
+
+.bgcont-wrap {
+	border-radius: 7px;
+	background: linear-gradient(180deg, rgba(255,228,187,1) 0%, rgba(255,214,68,1) 35%, rgba(255,255,255,1) 100%);
+	padding: 1px;
+	box-shadow: 0px 4px 3px 0px #CFCFCF8A;
+	.bgcont {
+		border-radius: 7px;
+		overflow: hidden;
+		background: #F4F4F4;
+		height: 100%;
+	}
 }

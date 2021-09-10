@@ -1,6 +1,6 @@
 import axios from 'axios'
-const url = 'http://ec2-13-58-174-58.us-east-2.compute.amazonaws.com/api/'
-//const url = 'http://localhost:5000/api/logs/'
+//const url = 'http://ec2-13-58-174-58.us-east-2.compute.amazonaws.com/api/'
+const url = 'http://localhost:5000/api/logs/'
 
 class PostService {
 

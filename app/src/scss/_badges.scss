@@ -1,0 +1,30 @@
+
+.badge, .badge-check, .badge-edit {
+  margin: 0; box-sizing: border-box; 
+  border-radius: .35rem; padding: 1rem; box-sizing: border-box; 
+  min-width: 10rem; height: auto; text-align: center; color: black;
+  font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  display: flex; flex-direction: column; align-items: center; cursor: default;
+  &.gold { background: $gold; border: 1px solid #fcc201; }
+  &.silver { background: $silver; border: 3px solid #ffeac2; }
+  &.azure { background: $azure; color: white; border: 1px solid #185dfa; }
+
+  > figure { 
+    border-radius: 50%; box-shadow: $outshadow; background: white; 
+    width: 100%; position: relative;
+    .frame { position: absolute; z-index: 1; top: 0; left: 0; }
+    .icon { z-index: 2; transform: scale(0.3); position: relative; }
+    img { display: block; width: 100%; height: auto; }
+  }
+  figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; height: 2.4em; }
+}
+
+.badge-check, .badge-edit {
+  min-height: 15.2rem;
+  background: white; color: #10D2FD; cursor: pointer; font-weight: 200; display: flex; align-items: center; font-size: 1.3rem;
+  box-shadow: 0px 3.790200710296631px 3.790200710296631px 0px #FFD64440 inset;
+  figure { background: none; box-shadow: none; filter: invert(66%) sepia(22%) saturate(5531%) hue-rotate(156deg) brightness(107%) contrast(98%);max-width: 60%; margin-top: auto; display: flex; align-items: center; img { max-height: 100%; } }
+  figcaption { margin-top: auto; }
+  &:hover { background: #10D2FD; color: white; figure { filter: invert(1) brightness(100)} }
+}
+.badge-edit { img { transform: scale(.82); } }

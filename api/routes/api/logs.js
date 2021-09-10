@@ -25,17 +25,37 @@ async function getPoints(action, userID) {
     let logsall = client.db('HeroBadge').collection('logs').find({ "user": userID })
     logsall = await logsall.toArray()
     let points = 0
+		let badges_levels = {}
     logsall.forEach(function(month) {
       for (const day in month.days) {
         points += parseInt(month.days[day].points)
+				month.days[day].badges.forEach(badge => {
+					badges_levels['habits.'+badge+'.count'] == undefined ? badges_levels['habits.'+badge+'.count'] = 1 : badges_levels['habits.'+badge+'.count'] += 1
+				})
       }
     })
+		updateBadgeLevels(userID, badges_levels)
     return points
   } else if (action == "getSavedPoints") {
     let user = client.db('HeroBadge').collection('users').find({ "_id": new mongoDB.ObjectID(userID) })
     user = await user.toArray()
     return user[0].points
   }
+}
+
+async function updateBadgeLevels(user, badges_levels) {
+	try {
+    const users = await getUsers();
+    await users.update(
+      // Filter
+      { _id: new mongoDB.ObjectID(user) },
+      { $set: badges_levels }
+    );
+    console.log('Badge levels saved')
+    res.status(201).send();
+  } catch (error) {
+    console.error(error)
+  } 
 }
 
 //// Update logs
