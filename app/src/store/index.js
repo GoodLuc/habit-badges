@@ -42,6 +42,14 @@ export default createStore({
         return false;
       }
     },
+		userHabitsByCount: (state, getters) => {
+			let userHabits = [...getters.userHabits]
+			console.log('user habits are', userHabits)
+			userHabits.sort((a, b) => {
+				return b.count - a.count
+			})
+			return userHabits
+		}
 	},
   mutations: {
     // For login screen

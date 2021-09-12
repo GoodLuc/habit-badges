@@ -5,9 +5,11 @@
   min-width: 10rem; height: auto; text-align: center; color: black;
   font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   display: flex; flex-direction: column; align-items: center; cursor: default;
-  &.gold { background: $gold; border: 1px solid #fcc201; }
-  &.silver { background: $silver; border: 3px solid #ffeac2; }
-  &.azure { background: $azure; color: white; border: 1px solid #185dfa; }
+  &.grade1 { background: $silver; border: 3px solid #ffeac2; }
+  &.grade2 { background: $gold; border: 1px solid #fcc201; }
+  &.grade3 { background: $azure; color: white; border: 1px solid #185dfa; }
+  &.grade4 { background: $rise; color: white; border: 1px solid #185dfa; }
+  &.grade5 { background: $pacific; color: white; border: 1px solid #185dfa; }
 
   > figure { 
     border-radius: 50%; box-shadow: $outshadow; background: white; 
@@ -20,6 +22,7 @@
 }
 
 .badge-check, .badge-edit {
+	border: 1px solid #10D2FD;
   min-height: 15.2rem;
   background: white; color: #10D2FD; cursor: pointer; font-weight: 200; display: flex; align-items: center; font-size: 1.3rem;
   box-shadow: 0px 3.790200710296631px 3.790200710296631px 0px #FFD64440 inset;

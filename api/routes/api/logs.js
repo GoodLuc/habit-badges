@@ -52,7 +52,7 @@ async function updateBadgeLevels(user, badges_levels) {
       { $set: badges_levels }
     );
     console.log('Badge levels saved')
-    res.status(201).send();
+		return
   } catch (error) {
     console.error(error)
   } 

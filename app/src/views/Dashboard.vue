@@ -3,8 +3,27 @@
 		<main class="dash">
 			<h1 v-if="user">Welcome back {{ user.name }}</h1>
 
-			<div>
-				<h3>Your top habits</h3>
+			<div class="top-habits">
+				<div class="title"><h2>Your top habits</h2><router-link class="see-more" to="/rewards">Manage habits</router-link></div>
+				<div v-if="getDayLoad" class="bgcont-wrap mb2">
+					<div class="bgcont flex wrap padAllMed">
+						<div class="grid">
+							<div v-for="badge in userHabitsByCount" :key="badge._id">
+								<div class="badge" :class="gradeByCount(badge.count)[0]">
+									<figure>
+										<div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge._id].frame+'.svg'" :alt="user.habits[badge._id].name"></div>
+										<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge._id].image" :alt="user.habits[badge._id].icon"></div>
+									</figure>
+									<figcaption>{{ user.habits[badge._id].name }}</figcaption>
+								</div>
+								<div class="badge-grade">
+									<h3>{{ gradeByCount(badge.count)[1] }}</h3>
+									<p>Done {{ badge.count }} times</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			
 			<h2>Check-in your completed badges for today:</h2>
@@ -18,7 +37,7 @@
 						</div>
 					</div>
 					<div class="grid">
-						<div :class="['badge', user.habits[badge].material]" v-for="badge in getDayLoad.badges" :key="badge">
+						<div class="badge" :class="gradeByCount(user.habits[badge].count)[0]" v-for="badge in getDayLoad.badges" :key="badge">
 							<figure>
 								<div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
 								<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
@@ -49,7 +68,7 @@
 							</div>
 						</div>
 						<div :class="['grid', { isEmpty: !day.badges.length }]" >
-							<div :class="['badge', user.habits[badge].material]" v-for="badge in day.badges" :key="badge">
+							<div class="badge" :class="gradeByCount(user.habits[badge].count)[0]" v-for="badge in day.badges" :key="badge">
 								<figure>
 									<div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
 									<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
@@ -129,7 +148,7 @@ export default {
   },
   computed: {
     ...mapState(["user","date","monthLoad","lastMonthLoad","titles"]),
-    ...mapGetters(["getDayLoad"]),
+    ...mapGetters(["getDayLoad","userHabitsByCount"]),
     // Set week logs, either from this month or previous one.
     week: function () {
       var week = {};
@@ -177,7 +196,21 @@ export default {
       } else {
         return '0'
       }
-    }
+    },
+		gradeByCount(count) {
+			const grades = [
+				[ 'grade1', 'Morning grade' ],
+				[ 'grade3', 'Azure grade' ],
+				[ 'grade2', 'Gold grade' ],
+				[ 'grade4', 'Rise grade' ],
+				[ 'grade5', 'Pacific grade' ]
+			]
+			if (count < 10) { return grades[0] } 
+			else if (count >= 10 && count < 30) { return grades[1] }
+			else if (count >= 30 && count < 60) { return grades[2] }
+			else if (count >= 60 && count < 120) { return grades[3] }
+			else if (count >= 120) { return grades[4] }
+		}
   },
   watch: {
     badgeSelector: function() {
@@ -204,9 +237,10 @@ export default {
 
 h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 
+
 .week {
 	.isEmpty { 
-    .edit {  height: 3rem; width: 3rem; padding: .1rem;
+		.edit {  height: 3rem; width: 3rem; padding: .1rem;
       figure, img { max-width: 100%; }
       figcaption { display: none; }
     }
@@ -219,7 +253,20 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 		font-size: 3.429rem;
 		font-weight: 400; margin-top: 4rem;
 	}
-	h2 { margin: 2rem 0 1rem; font-size: 1.714rem; font-weight: 400; } 
+	h2 { margin: 2rem 0 1rem; font-size: 1.714rem; font-weight: 400; }
+
+	.top-habits {
+		.title {
+			display: flex; justify-content: space-between; align-items: flex-end;
+			margin-bottom: 1rem;
+			h2 { font-size: 1.2rem; margin: 0; }
+		}
+		.badge-grade {
+			text-align: center;
+			h3 { font-size: 1.214rem; font-weight: 400; margin: 1rem 0 .3rem; }
+			p { font-size: 0.948rem; margin: 0; }
+		}
+	}
 }
 
 .dash-side {
@@ -283,14 +330,14 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 				color: white; font-weight: 600;
 			}
 		}
-		.see-more { 	
-			color: #0065A5;
-			float: right;
-			margin-top: .5rem;
-			text-decoration: none;
- 		}
 	}
+	.see-more { float: right; }
 }
 
+.see-more { 	
+	color: #0065A5;
+	margin: .5rem 0 0;
+	text-decoration: none;
+}
 
 </style>
