@@ -8,7 +8,7 @@
 				<div v-if="getDayLoad" class="bgcont-wrap mb2">
 					<div class="bgcont flex wrap padAllMed">
 						<div class="grid">
-							<div v-for="badge in userHabitsByCount" :key="badge._id">
+							<div v-for="badge in userHabitsByCount.slice(0,7)" :key="badge._id">
 								<div class="badge" :class="gradeByCount(badge.count)[0]">
 									<figure>
 										<div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge._id].frame+'.svg'" :alt="user.habits[badge._id].name"></div>
@@ -106,7 +106,7 @@
 					</div>
 				</div>
 				<div class="level-indicator" v-if="user.level">
-					<div class="flex justify-between"><span>Points: {{ user.points }}</span><span>Next: {{ user.level.toNext }}</span></div>
+					<div class="flex justify-between"><span>Points: {{ user.points }}</span><span>{{ user.level.toNext }} till next</span></div>
 					<div class="level"><div :style="'width:'+user.level.percent+'%'"></div></div>
 					<p class="entitlement"><strong>{{ titles[user.level.nr] }}</strong></p>
 				</div>
@@ -135,9 +135,15 @@
 import BadgeSelector from '@/components/BadgeSelector.vue'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { mapState, mapGetters } from "vuex";
+import { gradeByCount } from "@/components/useFunctions.js";
 
 export default {
   name: 'Dashboard',
+	setup() {
+		return {
+			gradeByCount
+		}
+	},
   data() {
     return {
       badgeSelector: false,
@@ -148,7 +154,7 @@ export default {
   },
   computed: {
     ...mapState(["user","date","monthLoad","lastMonthLoad","titles"]),
-    ...mapGetters(["getDayLoad","userHabitsByCount"]),
+    ...mapGetters(["getDayLoad","userHabitsByCount","gradeByCount"]),
     // Set week logs, either from this month or previous one.
     week: function () {
       var week = {};
@@ -196,21 +202,7 @@ export default {
       } else {
         return '0'
       }
-    },
-		gradeByCount(count) {
-			const grades = [
-				[ 'grade1', 'Morning grade' ],
-				[ 'grade3', 'Azure grade' ],
-				[ 'grade2', 'Gold grade' ],
-				[ 'grade4', 'Rise grade' ],
-				[ 'grade5', 'Pacific grade' ]
-			]
-			if (count < 10) { return grades[0] } 
-			else if (count >= 10 && count < 30) { return grades[1] }
-			else if (count >= 30 && count < 60) { return grades[2] }
-			else if (count >= 60 && count < 120) { return grades[3] }
-			else if (count >= 120) { return grades[4] }
-		}
+    }
   },
   watch: {
     badgeSelector: function() {
@@ -234,9 +226,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
-
 
 .week {
 	.isEmpty { 

@@ -5,12 +5,6 @@
   min-width: 10rem; height: auto; text-align: center; color: black;
   font-size: 1.1rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   display: flex; flex-direction: column; align-items: center; cursor: default;
-  &.grade1 { background: $silver; border: 3px solid #ffeac2; }
-  &.grade2 { background: $gold; border: 1px solid #fcc201; }
-  &.grade3 { background: $azure; color: white; border: 1px solid #185dfa; }
-  &.grade4 { background: $rise; color: white; border: 1px solid #185dfa; }
-  &.grade5 { background: $pacific; color: white; border: 1px solid #185dfa; }
-
   > figure { 
     border-radius: 50%; box-shadow: $outshadow; background: white; 
     width: 100%; position: relative;
@@ -18,8 +12,13 @@
     .icon { z-index: 2; transform: scale(0.3); position: relative; }
     img { display: block; width: 100%; height: auto; }
   }
-  figcaption { overflow: hidden; max-width: 100%; padding: 1rem .5rem .714rem; height: 2.4em; }
+  figcaption { overflow: hidden; max-width: 100%; padding: 1.2rem .5rem .714rem; height: 2em; }
 }
+.grade1 { background: $silver; border: 3px solid #ffeac2; }
+.grade2 { background: $gold; border: 1px solid #fcc201; }
+.grade3 { background: $azure; color: white; }
+.grade4 { background: $rise; color: white;  }
+.grade5 { background: $pacific; color: white; }
 
 .badge-check, .badge-edit {
 	border: 1px solid #10D2FD;

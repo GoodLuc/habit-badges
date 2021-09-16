@@ -7,50 +7,52 @@
 						<h1>This are your habits {{ user.name }}</h1>
 						<p>Create your custom badges to track your daily progress</p>
 					</div>
-					<button class="badge-add" @click="badgeCreator = true">
+					<button class="button badge-add" @click="badgeCreator = true">
 						<figure>
 							<img src="/assets/badges/default/add.svg" alt="Add new">
 						</figure>
 						<figcaption>Create new</figcaption>
 					</button>
 				</div>
-        <div class="box">
-          <div class="flex wrap" v-if="user">
-            <div class="habit-row flex" v-for="habit in userHabits" :key="habit._id">
-							<div class="habit">
-								<div :class="['badge', habit.material]">
-									<figure>
-										<div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
-										<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
-									</figure>
-									<figcaption>{{ habit.name }}</figcaption>
-								</div>
-								<div class="badgeEditControls">
-									<button class="edit" @click="editHabit(habit)" type="button">
-										<figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
-									</button>
-									<button class="del" type="button" @click="delDialog = true; delHabit = habit">
-										<figure><img src="/assets/badges/default/del.svg" alt="Delete"></figure>
-									</button>
-								</div>
+				<div class="flex wrap justify-between" v-if="user">
+					<div class="habit-row box flex" v-for="habit in userHabits" :key="habit._id">
+						<div class="habit">
+							<div  class="badge" :class="gradeByCount(habit.count)[0]">
+								<figure>
+									<div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
+									<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
+								</figure>
 							</div>
-							<div class="timeline">
-								<div class="tablechart">
-									<div v-for="index in 30" :key="index">
-										<template v-if="todayNr+index < daysInMonth">
-											<span v-if="lastMonthLoad.days[todayNr+index+1]?.badges.includes(habit._id)" class="filled" :class="[habit.material]">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
-											<span v-else class="empty">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
-										</template>
-										<template v-else>
-											<span v-if="monthLoad.days[todayNr+index-daysInMonth+1]?.badges.includes(habit._id)" class="filled" :class="[habit.material]">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
-											<span v-else class="empty">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
-										</template>
-									</div>
+							<div class="badgeEditControls">
+								<button class="edit" @click="editHabit(habit)" type="button">
+									<figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
+								</button>
+								<button class="del" type="button" @click="delDialog = true; delHabit = habit">
+									<figure><img src="/assets/badges/default/del.svg" alt="Delete"></figure>
+								</button>
+							</div>
+						</div>
+						<div class="timeline">
+							<h2>{{ habit.name }}</h2>
+							<div class="badge-grade flex justify-between">
+								<h3>{{ gradeByCount(habit.count)[1] }}</h3>
+								<p>Done {{ habit.count }} times</p>
+							</div>
+							<div class="tablechart">
+								<div v-for="index in 30" :key="index">
+									<template v-if="todayNr+index < daysInMonth">
+										<span v-if="lastMonthLoad.days[todayNr+index+1]?.badges.includes(habit._id)" class="filled" :class="gradeByCount(habit.count)[0]">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
+										<span v-else class="empty">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
+									</template>
+									<template v-else>
+										<span v-if="monthLoad.days[todayNr+index-daysInMonth+1]?.badges.includes(habit._id)" class="filled" :class="gradeByCount(habit.count)[0]">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
+										<span v-else class="empty">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
+									</template>
 								</div>
 							</div>
 						</div>
-          </div>
-        </div>
+					</div>
+				</div>
       </div>
 
     </div>
@@ -81,9 +83,15 @@ import PostService from '../PostService'
 import BadgeCreator from '@/components/BadgeCreator.vue'
 import { mapState, mapGetters, mapMutations } from "vuex";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import { gradeByCount } from "@/components/useFunctions.js";
 
 export default {
   name: 'Habits',
+	setup() {
+		return {
+			gradeByCount
+		}
+	},
   data() {
     return {
       badgeCreator: false,
@@ -146,7 +154,10 @@ export default {
 .habit-row { 
 	width: 100%; 
 	margin-bottom: 2rem; 
-	background: white;
+	max-width: calc(50% - 7rem);
+	h2 { margin: 0 0 .5rem; }
+	h3 { margin: 0 0 .5rem; }
+	p { margin: 0; font-size: 1rem; }
 }
 .box {
   padding-top: 3rem;
@@ -154,12 +165,14 @@ export default {
 }
 .habit {
 	width: 10rem;
-  background: cornsilk;
 	margin-right: 2rem;
+	.badge {
+		padding-bottom: 1.4rem;
+	}
   .badgeEditControls { 
     display: flex; justify-content: space-between; 
     width: 100%;
-    button { display: block;
+    button { display: block; cursor: pointer;
       width: auto; height: 4rem; border-radius: 0 0 .314rem .314rem;
       font-weight: 200; font-size: .9rem; margin: 0; border: none; 
       background: none; box-shadow: none; transition: transform .2s ease;
@@ -177,14 +190,16 @@ export default {
 	justify-content: center;
 	align-items: center;
 	margin-top: auto;
+	margin-bottom: 1rem;
   figure { background: none; box-shadow: none; filter: invert(98%) sepia(0%) saturate(7493%) hue-rotate(213deg) brightness(103%) contrast(104%); width: 2rem; margin-left: -.4rem; margin-right: .8rem; display: flex; align-items: center; img { max-height: 100%; } }
 	figcaption { margin: .3rem 0 0; padding: 0; }
 }
 
+.timeline { width: 100%; }
 .tablechart {
-	display: flex; flex-wrap: wrap; margin-top: 1.7rem;
+	margin-top: 1.7rem; width: 100%; display: grid;
+	grid-template-columns: repeat( auto-fill, minmax(4rem, 1fr) ); gap: 1.2rem; row-gap: .7rem;
 	div {
-		margin: 0 .3rem .3rem 0;
 		span {
 			border-radius: .5rem;
 			padding: .5rem;
@@ -192,11 +207,8 @@ export default {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			&.gold { background: $gold;}
-			&.silver { background: $silver;}
-			&.azure { background: $azure; color: white;}
 			&.empty {
-				box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+				box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; border: 1px solid #c2c2c2;
 			}
 			&.filled {
 				box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
