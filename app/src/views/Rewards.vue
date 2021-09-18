@@ -4,78 +4,42 @@
       <div class="main">
         <div class="flex justify-between">
 					<div>
-						<h1>This are your habits {{ user.name }}</h1>
-						<p>Create your custom badges to track your daily progress</p>
+						<h1>This are your pending rewards {{ user.name }}</h1>
+						<p>Create new ones or see your previously earned rewards</p>
 					</div>
-					<button class="badge-add" @click="badgeCreator = true">
+					<button class="button button-add" @click="rewardCreator = true">
 						<figure>
 							<img src="/assets/badges/default/add.svg" alt="Add new">
 						</figure>
 						<figcaption>Create new</figcaption>
 					</button>
 				</div>
-        <div class="box">
-          <div class="flex wrap" v-if="user">
-            <div class="habit-row flex" v-for="habit in userHabits" :key="habit._id">
-							<div class="habit">
-								<div :class="['badge', habit.material]">
-									<figure>
-										<div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
-										<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
-									</figure>
-									<figcaption>{{ habit.name }}</figcaption>
-								</div>
-								<div class="badgeEditControls">
-									<button class="edit" @click="editHabit(habit)" type="button">
-										<figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
-									</button>
-									<button class="del" type="button" @click="delDialog = true; delHabit = habit">
-										<figure><img src="/assets/badges/default/del.svg" alt="Delete"></figure>
-									</button>
-								</div>
-							</div>
-						</div>
-          </div>
-        </div>
+				<div v-if="user.rewards && Object.keys(user.rewards).length">
+					<article v-for="reward in user.rewards" :key="reward.id">
+						<h2>{{ reward.title }}</h2>
+					</article>
+				</div>
       </div>
 
     </div>
-
-  <div v-if="delDialog" class="delDialog overlay">
-    <div v-if="!confirmed" class="container">
-      <div>
-        <h1>Are you sure you wish to delete this badge?</h1>
-        <p>Any previous entries in the daily calendar will still be visible.</p>
-      </div>
-      <pulse-loader :loading="loading"></pulse-loader>
-      <div class="controls"><button :disabled="loading" class="del" @click="deleteHabit(delHabit)" type="button">Delete</button> <button type="button" @click="delDialog = false">Cancel</button></div>
-    </div>
-    <div else>
-      <h1>The selected badge has been deleted.</h1>
-      <div class="controls">
-        <button type="button" @click="delDialog = false; confirmed = false">Ok</button>
-      </div>
-    </div>
-  </div>
   
-  <BadgeCreator v-if="badgeCreator" @close="badgeCreator = false; habit = {}" :habit="habit" />
+  <RewardCreator v-if="rewardCreator" @close="rewardCreator = false; reward = {}" :reward="reward" />
   </div>
 </template>
 
 <script>
 import PostService from '../PostService'
-import BadgeCreator from '@/components/BadgeCreator.vue'
+import RewardCreator from '@/components/RewardCreator.vue'
 import { mapState, mapGetters, mapMutations } from "vuex";
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   name: 'Rewards',
   data() {
     return {
-      badgeCreator: false,
+      rewardCreator: false,
       delDialog: false,
       delHabit: null,
-      habit: {},
+      reward: {},
       loading: false,
       confirmed: false,
 			todayNr: new Date().getDate(),
@@ -119,7 +83,7 @@ export default {
 			return months[month-1]
 		}
   },
-  components: { BadgeCreator, PulseLoader },
+  components: { RewardCreator },
   mounted() {
     document.body.classList.remove('overlaid')
     window.scrollTo(0, 0)
@@ -157,15 +121,6 @@ export default {
   }
 }
 
-.badge-add { 
-	height: 5rem; width: 14rem; color: white; 
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: auto;
-  figure { background: none; box-shadow: none; filter: invert(98%) sepia(0%) saturate(7493%) hue-rotate(213deg) brightness(103%) contrast(104%); width: 2rem; margin-left: -.4rem; margin-right: .8rem; display: flex; align-items: center; img { max-height: 100%; } }
-	figcaption { margin: .3rem 0 0; padding: 0; }
-}
 
 .tablechart {
 	display: flex; flex-wrap: wrap; margin-top: 1.7rem;

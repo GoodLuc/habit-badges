@@ -9,7 +9,7 @@
         </div>
         <div v-if="userHabits.length" class="grid">
           <div v-for="badge in userHabits" :key="badge._id" @click="toggleBadge(badge._id); coincount.cloneNode(true).play()">
-            <div v-if="!badge.deleted" :class="['badge', user.habits[badge._id].material, { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
+            <div v-if="!badge.deleted" :class="['badge', gradeByCount(user.habits[badge._id].count)[0], { toAdd: !getDayLoad.badges.find((tbadge) => tbadge === badge._id )}]" >
               <figure>
                 <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge._id].frame+'.svg'" :alt="user.habits[badge._id].name"></div>
                 <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge._id].image" :alt="user.habits[badge._id].icon"></div>
@@ -27,9 +27,15 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import { gradeByCount } from "@/components/useFunctions.js";
 
 export default {
   props: ['status'],
+	setup() {
+		return {
+			gradeByCount
+		}
+	},
   data() {
     return {
       loading: false,

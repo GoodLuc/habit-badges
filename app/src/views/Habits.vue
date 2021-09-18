@@ -7,7 +7,7 @@
 						<h1>This are your habits {{ user.name }}</h1>
 						<p>Create your custom badges to track your daily progress</p>
 					</div>
-					<button class="button badge-add" @click="badgeCreator = true">
+					<button class="button button-add" @click="badgeCreator = true">
 						<figure>
 							<img src="/assets/badges/default/add.svg" alt="Add new">
 						</figure>
@@ -182,17 +182,6 @@ export default {
       &:hover { transform: scale(1.2); }
     }
   }
-}
-
-.badge-add { 
-	height: 5rem; width: 14rem; color: white; 
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: auto;
-	margin-bottom: 1rem;
-  figure { background: none; box-shadow: none; filter: invert(98%) sepia(0%) saturate(7493%) hue-rotate(213deg) brightness(103%) contrast(104%); width: 2rem; margin-left: -.4rem; margin-right: .8rem; display: flex; align-items: center; img { max-height: 100%; } }
-	figcaption { margin: .3rem 0 0; padding: 0; }
 }
 
 .timeline { width: 100%; }

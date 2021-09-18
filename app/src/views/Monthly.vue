@@ -15,12 +15,14 @@
         <div class="box day" v-for="n in date.day" :key="n">
           <h3 class="dayTitle">{{ dayName({year: date.year, month: date.month, day: n}) }} {{ date.month + "/" + n }}</h3>
           <div v-if="typeof(monthLoad.days[n]) !== 'undefined'" :class="['grid three', { isEmpty: !monthLoad.days[n].badges.length }]" >
-            <div :class="['badge', user.habits[badge].material]" v-for="badge in monthLoad.days[n].badges" :key="badge">
-              <figure>
-                <div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
-                <div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
-              </figure>
-            </div>
+            <template v-for="badge in monthLoad.days[n].badges" :key="badge">
+							<div class="badge" :class="gradeByCount(user.habits[badge].count)[0]">
+								<figure>
+									<div class="frame"><img :src="'/assets/badges/frame/frame'+user.habits[badge].frame+'.svg'" :alt="user.habits[badge].name"></div>
+									<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="user.habits[badge].image" :alt="user.habits[badge].icon"></div>
+								</figure>
+							</div>
+						</template>
           </div>
         </div>
       </div>
@@ -33,9 +35,15 @@
 <script>
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { mapState } from "vuex";
+import { gradeByCount } from "@/components/useFunctions.js";
 
 export default {
   name: 'Monthly',
+	setup() {
+		return {
+			gradeByCount
+		}
+	},
   data() {
     return {
       loading: true

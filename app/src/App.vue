@@ -78,6 +78,16 @@ export default {
 }
 .container.center { justify-content: center; }
 
+.button-add { 
+	height: 5rem; width: 14rem; color: white; 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: auto;
+  figure { background: none; box-shadow: none; filter: invert(98%) sepia(0%) saturate(7493%) hue-rotate(213deg) brightness(103%) contrast(104%); width: 2rem; margin-left: -.4rem; margin-right: .8rem; display: flex; align-items: center; img { max-height: 100%; } }
+	figcaption { margin: .3rem 0 0; padding: 0; }
+}
+
 .overlay { 
   position: fixed; top: 0; left: 0; bottom: 0; z-index: 3; width: 100%;
   min-height: 100vh; flex-direction: column; background: $bg2; overflow: hidden;
