@@ -12,7 +12,7 @@
     .icon { z-index: 2; transform: scale(0.3); position: relative; }
     img { display: block; width: 100%; height: auto; }
   }
-  figcaption { overflow: hidden; max-width: 100%; padding: 1.2rem .5rem .714rem; height: 2em; }
+  > figcaption { overflow: hidden; max-width: 100%; padding: 1.2rem .5rem .714rem; height: 4rem; }
 }
 .grade1 { background: $silver; border: 3px solid #ffeac2; }
 .grade2 { background: $gold; border: 1px solid #fcc201; }

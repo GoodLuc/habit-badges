@@ -1,23 +1,25 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <div :class="['container flex align-center',{ center: centerLogo }]">
-        <figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
-        <a @click="menuActive = true" id="toggl" href="#"><figure><img src="/assets/icons/menu.svg" alt="Menu"></figure></a>
-        <div :class="['flex grow',{ overlay: menuActive, show: menuActive }]" id="menu" v-if="user">
-          <router-link @click="menuActive = false" to="/">Dashboard</router-link> 
-          <router-link @click="menuActive = false" to="/monthly">Monthly view</router-link> 
-          <router-link @click="menuActive = false" to="/habits">Habits</router-link>
-          <router-link @click="menuActive = false" to="/rewards">Rewards</router-link>
-          <router-link @click="menuActive = false" to="/powerups">Power-Ups</router-link>
-          <!--router-link to="/trinkets">Trinkets</router-link>
-          <router-link to="/castle">Your castle</router-link-->
-          <a @click="logout" class="logout">Logout</a>
-          <figure class="close" @click="menuActive = false"><img src="/assets/icons/close.svg" alt="Close"></figure>
-        </div>
-      </div>
-    </div>
-    <router-view/>
+    <w-app>
+			<div id="nav">
+				<div :class="['container flex align-center',{ center: centerLogo }]">
+					<figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
+					<a @click="menuActive = true" id="toggl" href="#"><figure><img src="/assets/icons/menu.svg" alt="Menu"></figure></a>
+					<div :class="['flex grow',{ overlay: menuActive, show: menuActive }]" id="menu" v-if="user">
+						<router-link @click="menuActive = false" to="/">Dashboard</router-link>
+						<router-link @click="menuActive = false" to="/monthly">Monthly view</router-link>
+						<router-link @click="menuActive = false" to="/habits">Habits</router-link>
+						<router-link @click="menuActive = false" to="/rewards">Rewards</router-link>
+						<router-link @click="menuActive = false" to="/powerups">Power-Ups</router-link>
+						<!--router-link to="/trinkets">Trinkets</router-link>
+						<router-link to="/castle">Your castle</router-link-->
+						<a @click="logout" class="logout">Logout</a>
+						<figure class="close" @click="menuActive = false"><img src="/assets/icons/close.svg" alt="Close"></figure>
+					</div>
+				</div>
+			</div>
+			<router-view/>
+		</w-app>
   </div>
 </template>
 
@@ -114,10 +116,10 @@ export default {
 }
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-.coin {
+.icon-content {
   position: relative; width: 40px; height: 40px;
   figcaption {
-    position: absolute; top: 0; left: 0; color: white; font-size: 1.3rem; font-weight: bold;
+    position: absolute; top: 0; left: 0; color: white; font-size: 1.3rem; font-weight: bold; 
     width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center;
   }
 }

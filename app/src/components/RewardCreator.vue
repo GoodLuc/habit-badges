@@ -1,80 +1,68 @@
 <template>
   <div :class="['overlay', { show: status}]" ref="modal" id="badgesCreator" tabindex="0" @keydown.esc="$emit('close')">
     <div>
-      <div class="container">
+      <div class="container container-medium">
         <div class="flex fw">
           <div class="tabs">
             <nav class="flex">
-              <button :class="[{ current: slide == 0 }]" role="tab" @click="gotoSlide(0)">Habit name</button>
-              <button :class="[{ current: slide == 1 }]" role="tab" @click="gotoSlide(1)">Icon</button>
-              <button :class="[{ current: slide == 2 }]" role="tab" @click="gotoSlide(2)">Frame</button>
-              <button :class="[{ current: slide == 3 }]" role="tab" @click="gotoSlide(3)">Material</button>
-              <button :class="[{ current: slide == 4 }]" role="tab" @click="gotoSlide(4)">Value</button>
+              <button :class="[{ current: slide == 0 }]" role="tab" @click="gotoSlide(0)">Reward name</button>
+              <button :class="[{ current: slide == 1 }]" role="tab" @click="gotoSlide(1)">Cost</button>
+              <button :class="[{ current: slide == 2 }]" role="tab" @click="gotoSlide(2)">Recurrence</button>
             </nav>
             <div class="slide" v-if="slide == 0">
-                <h1>Describe your habit</h1>
-                <p v-if="warn" class="warn">Please enter the name of your habit</p>
-                <p class="input-button"><input @keyup.enter="selectIcon" v-model="habitName" type="text" placeholder="Ex. Work out"></p>
+                <h1>Describe your reward</h1>
+                <p v-if="warn" class="warn">Please enter the name of your reward</p>
+                <p class="input-button"><input @keyup.enter="selectIcon" v-model="rewardName" type="text" placeholder="Ex. Ice cream / New clothes"></p>
             </div>
             <div class="slide" v-if="slide == 1">
-              <h1>Choose an icon</h1>
-              <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button type="button" @click="getIcons(iconTerm)">Search</button></p>
-              <pulse-loader :loading="loading"></pulse-loader>
-              <div v-if="icons.length" class="box icons flex wrap">
-                <figure :class="[{ selected: icon.id == selectedIcon.id }]"
-                  v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
-                  <img :src="icon.preview_url" :alt="icon.attribution" crossorigin="anonymous">
-                </figure>
-              </div>
-              <div v-else>
-                <p v-if="!loading">No icons found under '{{ iconSearchTerm }}.' Please enter another search term. <br>
-                Tip: Try a simple noun like "exercise" or "music".</p>
-              </div>
-            </div>
-            <div class="slide" v-if="slide == 2">
-              <h1>Choose a badge frame</h1>
-              <div class="box frames flex wrap">
-                <figure :class="[{ selected: index == selectedFrameIndex }]" 
-                  v-for="index in 20" :key="index" @click="setFrame(index)">
-                  <img :src="'/assets/badges/frame/frame'+index+'.svg'">
-                </figure>
-              </div>
-            </div>
-            <div class="slide" v-if="slide == 3">
-              <h1>Choose a material for your badge</h1>
-              <div class="box materials flex wrap">
-                <div class="badge gold" @click="material = 'gold'"><figcaption>Gold</figcaption></div>
-                <div class="badge silver" @click="material = 'silver'"><figcaption>Silver</figcaption></div>
-                <div class="badge azure" @click="material = 'azure'"><figcaption>Azure</figcaption></div>
-              </div>
-            </div>
-            <div class="slide" v-if="slide == 4">
-              <h1>Assign a value</h1>
-              <p>Define how valuable completing this habit is.</p>
+              <h1>Assign a cost</h1>
+              <p class="mb4">Define how much should this cost you in habit currency</p>
+
               <div class="flex align-center justify-left">
                 <div class="slidecontainer">
-                  <input type="range" min="1" max="12" v-model="coins" class="slider" id="myRange">
+                  <input type="range" min="1" max="20" v-model="rubys" class="slider" id="myRange">
                 </div>
-                <div class="coin"> 
-                  <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
-                  <figcaption>{{ coins }}</figcaption>
+                <div class="icon-content"> 
+                  <figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
+                  <figcaption>{{ rubys }}</figcaption>
                 </div>
               </div>
+
+							<div class="flex align-center">
+								<div class="icon-content"> 
+                  <figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
+                  <figcaption>1</figcaption>
+                </div>
+								<span class="title3">&nbsp; = &nbsp;</span>
+								<div class="icon-content"> 
+                  <figure><img src="@/assets/icons/coin.svg" alt="Coins"></figure>
+                  <figcaption>100</figcaption>
+                </div>
+							</div>
+
+            </div>
+            <div class="slide" v-if="slide == 2">
+              <h1>Recurrence</h1>
+              <p class="mb4">Is this a one time reward only or can it be recurring?</p>
+              <div class="flex align-center">
+								<span>One time</span>
+								<w-switch class="ma2" :value="true" color="pink"></w-switch>
+								<span>Recurring</span>
+							</div>
             </div>
           </div>
           <div class="badgeHolder">
             <div>
               <div>
-                <div :class="['badge', material]">
+                <div>
                   <figure>
-                    <div class="frame"><img :src="badgeFrame" :alt="habitName"></div>
-                    <div class="icon"><img crossOrigin="anonymous" ref="badgeIcon" id="badgeIcon" :src="iconSrc" :alt="habitName"></div>
+                    <div class="frame"><img src="@/assets/icons/treasure.png" alt="Reward"></div>
                   </figure>
-                  <figcaption>{{ habitName }}</figcaption>
+                  <figcaption>{{ rewardName }}</figcaption>
                 </div>
                 <pulse-loader :loading="loading"></pulse-loader>
-                <p v-if="slide <= 3"><button type="button" @click="nextSlide">Next</button></p>
-                <p v-if="slide == 4"><button :disabled="loading" type="button" @click="saveBadge">Save</button></p>
+                <p v-if="slide <= 3"><button class="button" @click="nextSlide">Next</button></p>
+                <p v-if="slide == 4"><button :disabled="loading" type="button" @click="saveReward">Save</button></p>
               </div>
             </div>
           </div>
@@ -99,29 +87,20 @@ export default {
       type: Boolean,
       default: false
     },
-    habit: {
+    reward: {
       type: Object
     }
   },
   data() {
     return {
       nextButton: 'Next',
-      habitEdit: false,
-      habitName: '',
-      iconTerm: '',
-      iconSearchTerm: '',
+      rewardEdit: false,
+      rewardName: '',
       warn: false,
       warn2: false,
       loading: false,
-      icons: {},
-      selectedIconIndex: '',
-      selectedFrameIndex: 1,
       slide: 0,
-      selectedIcon: {},
-      iconSrc: '/assets/badges/default/default.svg',
-      badgeFrame: '/assets/badges/frame/frame1.svg',
-      material: 'silver',
-      coins: 5,
+      rubys: 5,
     }
   },
   methods: {
@@ -180,10 +159,10 @@ export default {
         imgCanvas.width = badgeIcon.width; imgCanvas.height = badgeIcon.height;
         imgContext.drawImage(badgeIcon, 0, 0, badgeIcon.width, badgeIcon.height);
         var imgAsDataURL = imgCanvas.toDataURL("image/png");
-        if (Object.keys(this.$props.habit).length) {
+        if (Object.keys(this.$props.reward).length) {
           // If this is the edition of a previously existing habit, update instead of saving as new.
           console.log("Updating")
-          let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material, value: this.coins }
+          let habit = { _id: this.$props.reward._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material, value: this.coins }
           await PostService.saveBadge({ user: user.token, habit: habit });
           this.updateBadgeInStore( habit )
         } else {
@@ -201,13 +180,13 @@ export default {
   mounted() {
     this.$refs.modal.focus()
     // Check if this is an edition of an existing habit as set by the props.
-    if (Object.keys(this.$props.habit).length) {
-      this.habitName = this.$props.habit.name
-      this.selectedFrameIndex = this.$props.habit.frame
-      this.iconSrc = this.$props.habit.image
+    if (Object.keys(this.$props.reward).length) {
+      this.habitName = this.$props.reward.name
+      this.selectedFrameIndex = this.$props.reward.frame
+      this.iconSrc = this.$props.reward.image
       this.badgeFrame = '/assets/badges/frame/frame'+this.selectedFrameIndex+'.svg'
-      this.material = this.$props.habit.material
-      this.coins = this.$props.habit.value
+      this.material = this.$props.reward.material
+      this.coins = this.$props.reward.value
     }
   }
 }
@@ -262,7 +241,7 @@ input { width: 40rem; max-width: 80%; background: $shine3; }
 
 .input-button { 
   display: flex; 
-  input[type=text] { border-radius: .314rem 0 0 .314rem; }
+  input[type=text] { border-radius: .314rem; }
   button { width: auto; }
 }
 

@@ -1,24 +1,44 @@
 <template>
-  <div :class="['overlay', { show: status}]" ref="modal" id="badgesCreator" tabindex="0" @keydown.esc="$emit('close')">
+  <div :class="['overlay', { show: status }]" ref="modal" id="badgesCreator" tabindex="0" @keydown.esc="$emit('close')">
     <div>
-      <div class="container">
+      <div class="container container-medium">
         <div class="flex fw">
+          <div class="badgeHolder">
+            <div>
+              <div>
+                <div class="badge grade1">
+                  <figure>
+                    <div class="frame"><img :src="badgeFrame" :alt="habitName"></div>
+                    <div class="icon"><img crossOrigin="anonymous" ref="badgeIcon" id="badgeIcon" :src="iconSrc" :alt="habitName"></div>
+                  </figure>
+                  <figcaption>{{ habitName }}</figcaption>
+									<div class="icon-content mta"> 
+										<figure><img src="@/assets/icons/coin.svg" alt="Coins"></figure>
+										<figcaption>{{ coins }}</figcaption>
+									</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="tabs">
             <nav class="flex">
               <button :class="[{ current: slide == 0 }]" role="tab" @click="gotoSlide(0)">Habit name</button>
               <button :class="[{ current: slide == 1 }]" role="tab" @click="gotoSlide(1)">Icon</button>
               <button :class="[{ current: slide == 2 }]" role="tab" @click="gotoSlide(2)">Frame</button>
-              <button :class="[{ current: slide == 3 }]" role="tab" @click="gotoSlide(3)">Material</button>
-              <button :class="[{ current: slide == 4 }]" role="tab" @click="gotoSlide(4)">Value</button>
+              <button :class="[{ current: slide == 3 }]" role="tab" @click="gotoSlide(3)">Value</button>
             </nav>
+
             <div class="slide" v-if="slide == 0">
-                <h1>Describe your habit</h1>
-                <p v-if="warn" class="warn">Please enter the name of your habit</p>
-                <p class="input-button"><input @keyup.enter="selectIcon" v-model="habitName" type="text" placeholder="Ex. Work out"></p>
+							<h1>Describe your habit</h1>
+							<p v-if="warn" class="warn">Please enter the name of your habit</p>
+							<p><input @keyup.enter="selectIcon" v-model="habitName" type="text" placeholder="Ex. Work out"></p>
+							<p><button class="button button-medium" @click="nextSlide">Next</button></p>
             </div>
+
             <div class="slide" v-if="slide == 1">
               <h1>Choose an icon</h1>
-              <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button type="button" @click="getIcons(iconTerm)">Search</button></p>
+              <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button class="button" @click="getIcons(iconTerm)">Search</button></p>
               <pulse-loader :loading="loading"></pulse-loader>
               <div v-if="icons.length" class="box icons flex wrap">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
@@ -26,6 +46,8 @@
                   <img :src="icon.preview_url" :alt="icon.attribution" crossorigin="anonymous">
                 </figure>
               </div>
+
+							<p v-if="slide <= 3"><button class="button" @click="nextSlide">Next</button></p>
               <div v-else>
                 <p v-if="!loading">No icons found under '{{ iconSearchTerm }}.' Please enter another search term. <br>
                 Tip: Try a simple noun like "exercise" or "music".</p>
@@ -39,43 +61,19 @@
                   <img :src="'/assets/badges/frame/frame'+index+'.svg'">
                 </figure>
               </div>
+              <p v-if="slide <= 3"><button class="button" @click="nextSlide">Next</button></p>
             </div>
             <div class="slide" v-if="slide == 3">
-              <h1>Choose a material for your badge</h1>
-              <div class="box materials flex wrap">
-                <div class="badge gold" @click="material = 'gold'"><figcaption>Gold</figcaption></div>
-                <div class="badge silver" @click="material = 'silver'"><figcaption>Silver</figcaption></div>
-                <div class="badge azure" @click="material = 'azure'"><figcaption>Azure</figcaption></div>
-              </div>
-            </div>
-            <div class="slide" v-if="slide == 4">
               <h1>Assign a value</h1>
-              <p>Define how valuable completing this habit is.</p>
-              <div class="flex align-center justify-left">
-                <div class="slidecontainer">
-                  <input type="range" min="1" max="12" v-model="coins" class="slider" id="myRange">
-                </div>
-                <div class="coin"> 
-                  <figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
-                  <figcaption>{{ coins }}</figcaption>
-                </div>
+              <p>Define how valuable is completing this habit</p>
+              <div class="flex column align-center slidecontainer">
+								<input type="range" min="1" max="12" v-model="coins" class="slider" id="myRange">
+								<div class="icon-content mt4"> 
+									<figure><img src="/assets/icons/coin.svg" alt="Coins"></figure>
+									<figcaption>{{ coins }}</figcaption>
+								</div>
               </div>
-            </div>
-          </div>
-          <div class="badgeHolder">
-            <div>
-              <div>
-                <div :class="['badge', material]">
-                  <figure>
-                    <div class="frame"><img :src="badgeFrame" :alt="habitName"></div>
-                    <div class="icon"><img crossOrigin="anonymous" ref="badgeIcon" id="badgeIcon" :src="iconSrc" :alt="habitName"></div>
-                  </figure>
-                  <figcaption>{{ habitName }}</figcaption>
-                </div>
-                <pulse-loader :loading="loading"></pulse-loader>
-                <p v-if="slide <= 3"><button type="button" @click="nextSlide">Next</button></p>
-                <p v-if="slide == 4"><button :disabled="loading" type="button" @click="saveBadge">Save</button></p>
-              </div>
+							<p><button :disabled="loading" class="button" @click="saveBadge">Save</button></p>
             </div>
           </div>
         </div>
@@ -143,10 +141,14 @@ export default {
       }
     },
     selectIcon() {
-      this.iconTerm = this.habitName
-      this.getIcons(this.iconTerm)
-      this.iconTerm = ''
-      this.gotoSlide(1)
+			if (this.habitName == '') {
+				this.warn = true
+			} else {
+				this.iconTerm = this.habitName
+				this.getIcons(this.iconTerm)
+				this.iconTerm = ''
+				this.gotoSlide(1)
+			}
     },
     gotoSlide: function(nr) {
       this.slide = nr
@@ -234,36 +236,28 @@ export default {
   }
   .slide {
     box-sizing: border-box;
-    h1 { margin: 0; }
+		input { text-align: center; }
+    h1 { margin: 0; text-align: center; font-weight: 300; }
+		p { margin-left: auto; margin-right: auto; text-align: center; }
   }
 }
 
 .badgeHolder > div {
-  margin-left: auto; padding-top: 5rem; position: relative;
-  width: 12rem; height: 16rem; display: block;
+  margin-right: 2rem; padding-top: 1rem; position: relative;
+  width: 12rem; height: 17rem; display: block;
   > div {
     position: fixed; width: 12rem;
-    button { width: 100%; }
+    button { width: 100%; margin-top: 2rem; }
   }
 }
 
-.badge {
-  cursor: pointer; margin-right: 0; width: auto; height: auto;
-}
-
-.materials {
-  padding-top: 3rem;
-  .badge { 
-    margin-right: 20px; min-width: 5rem; min-height: 5rem;  
-  }
-}
 
 input { width: 40rem; max-width: 80%; background: $shine3; }
 
 .input-button { 
   display: flex; 
-  input[type=text] { border-radius: .314rem 0 0 .314rem; }
-  button { width: auto; }
+  input[type=text] { border-radius: .314rem; }
+  button { width: auto; height: 3.2rem; margin-left: 1rem; padding: 1rem; }
 }
 
 .icons, .frames, .materials {
@@ -279,10 +273,10 @@ input { width: 40rem; max-width: 80%; background: $shine3; }
   img { filter: invert(0)}
 }
 
-.slidecontainer { width: calc(100% - 10rem); max-width: 35rem; margin-right: 1rem; input { max-width: 100%; } }
 .slider { -webkit-appearance: none; appearance: none; width: 100%;
   height: 25px; background: #d3d3d3; outline: none; opacity: 0.7;
   -webkit-transition: .2s; transition: opacity .2s; margin: 0;
+	width: calc(100% - 10rem); max-width: 35rem; margin: auto; 
 }
 .slider:hover { opacity: 1; }
 .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;

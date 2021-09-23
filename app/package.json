@@ -11,16 +11,17 @@
     "axios": "^0.21.1",
     "bulma": "^0.9.3",
     "core-js": "^3.17.1",
-    "postcss": "^7.0.35",
     "fetch-base64": "^2.1.2",
+    "postcss": "^7.0.35",
+    "register-service-worker": "^1.7.1",
     "the-noun-project": "^2.1.0",
     "vodal": "^2.4.0",
-    "register-service-worker": "^1.7.1",
     "vue": "^3.0.0",
     "vue-over-body": "0.0.5",
     "vue-router": "^4.0.0-0",
     "vue-spinner": "^1.0.4",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "wave-ui": "^2.24.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.13",
