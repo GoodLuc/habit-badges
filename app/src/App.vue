@@ -124,6 +124,11 @@ export default {
   }
 }
 
+h3.dayTitle { 
+	font-size: 1.5rem; text-shadow: $textshadow; 
+	span { font-weight: 300; }
+}
+
 .box {
   background: $shine3; padding: 1.5rem 3rem;
   border-radius: 15px;

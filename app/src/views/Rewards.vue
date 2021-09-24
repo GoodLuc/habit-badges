@@ -93,6 +93,8 @@ export default {
 
 <style scoped lang="scss">
 
+h1 { font-weight: 300; }
+
 .habit-row { 
 	width: 100%; 
 	margin-bottom: 2rem; 
@@ -114,7 +116,7 @@ export default {
       font-weight: 200; font-size: .9rem; margin: 0; border: none; 
       background: none; box-shadow: none; transition: transform .2s ease;
       &.edit { figure { filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); } }
-      &.del { figure { filter: invert(19%) sepia(96%) saturate(3956%) hue-rotate(355deg) brightness(105%) contrast(94%); } }
+      &.del { figure { filter: invert(51%) sepia(99%) saturate(405%) hue-rotate(354deg) brightness(90%) contrast(89%); } }
       figure img { height: 2rem; }
       &:hover { transform: scale(1.2); }
     }
@@ -151,7 +153,7 @@ export default {
   .controls {
     display: flex; justify-content: center;
     button { margin-right: 20px; width: auto; }
-    button.del { background: #F72616; }
+    button.del { background: #ce821f; }
   }
 }
 

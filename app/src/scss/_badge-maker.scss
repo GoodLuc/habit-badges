@@ -1,0 +1,74 @@
+
+.slide {
+  background: white; width: 100%; padding: 2rem; border-radius: 0 .314rem .314rem .314rem;
+  h1 { padding-bottom: 1.5rem; }
+}
+
+.tabs { 
+  width: 100%; flex-grow: 1; margin-right: 2rem; margin-top: 1rem;
+  nav { 
+    button {
+      border: none; 
+      background: linear-gradient(180deg, rgba(255,255,255,1) 62%, rgba(217,217,217,.5) 100%);
+      font-size: 1.6rem; border-radius: .314rem .314rem 0 0; cursor: pointer;
+      padding: 1rem; margin-right: .5rem; color: inherit; font-weight: 200; margin: 0 .5rem 0 0; box-shadow: none;
+      &:last-of-type { margin: 0 }
+      &.current { background: white; }
+      &:hover { background: $azure; color: white; }
+    }
+  }
+  .slide {
+    box-sizing: border-box;
+		input { text-align: center; }
+    h1 { margin: 0; text-align: center; font-weight: 300; }
+		p { margin-left: auto; margin-right: auto; text-align: center; }
+  }
+}
+
+.badgeHolder > div {
+  margin-right: 2rem; padding-top: 1rem; position: relative;
+  width: 12rem; height: 17rem; display: block;
+  > div {
+    position: fixed; width: 12rem;
+  }
+}
+.rewardHolder > div {
+	border-radius: .314rem;
+  margin-right: 2rem; padding-top: 1rem; position: relative;
+  width: 12rem; height: 20rem; display: block;
+	p { margin: 0 auto; }
+	.icon-content { margin: auto; }
+}
+
+
+input { width: 40rem; max-width: 80%; background: $shine3; }
+
+.input-button { 
+  display: flex; 
+  input[type=text] { border-radius: .314rem; }
+  button { width: auto; height: 3.2rem; margin-left: 1rem; padding: 1rem; }
+}
+
+.icons, .frames, .materials {
+  border-radius: .314rem; margin-top: 2rem;
+  figure {
+    padding: 1.2rem; box-sizing: border-box; border-radius: .314rem;
+    margin-right: 1rem; width: 8rem;
+    &:hover, &.selected {
+      background: $azure; cursor: pointer;
+      img { filter: invert(1) }
+    }
+  }
+  img { filter: invert(0)}
+}
+
+.slider { -webkit-appearance: none; appearance: none; width: 100%;
+  height: 25px; background: #d3d3d3; outline: none; opacity: 0.7;
+  -webkit-transition: .2s; transition: opacity .2s; margin: 0;
+	width: calc(100% - 10rem); max-width: 35rem; margin: auto; 
+}
+.slider:hover { opacity: 1; }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;
+  width: 25px; height: 25px; background: #4CAF50; cursor: pointer;
+}
+.slider::-moz-range-thumb { width: 25px; height: 25px; background: #4CAF50; cursor: pointer; }

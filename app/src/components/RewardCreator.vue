@@ -1,34 +1,47 @@
 <template>
   <div :class="['overlay', { show: status}]" ref="modal" id="badgesCreator" tabindex="0" @keydown.esc="$emit('close')">
     <div>
-      <div class="container container-medium">
+      <div class="container medium">
+
         <div class="flex fw">
+
+          <div class="rewardHolder">
+						<div class="mt8 grade1">
+							<figure><div class="frame"><img src="@/assets/icons/treasure.png" alt="Reward"></div></figure>
+							<p class="text-center">{{ rewardName }}</p>
+							<div class="icon-content mt4"> 
+								<figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
+								<figcaption>{{ rubys }}</figcaption>
+							</div>
+						</div>
+          </div>
+
           <div class="tabs">
             <nav class="flex">
               <button :class="[{ current: slide == 0 }]" role="tab" @click="gotoSlide(0)">Reward name</button>
               <button :class="[{ current: slide == 1 }]" role="tab" @click="gotoSlide(1)">Cost</button>
               <button :class="[{ current: slide == 2 }]" role="tab" @click="gotoSlide(2)">Recurrence</button>
             </nav>
+
             <div class="slide" v-if="slide == 0">
                 <h1>Describe your reward</h1>
                 <p v-if="warn" class="warn">Please enter the name of your reward</p>
-                <p class="input-button"><input @keyup.enter="selectIcon" v-model="rewardName" type="text" placeholder="Ex. Ice cream / New clothes"></p>
+                <p><input class="mxa" @keyup.enter="selectIcon" v-model="rewardName" type="text" placeholder="Ex. Ice cream / New clothes"></p>
+								<p><button class="button medium" @click="nextSlide">Next</button></p>
             </div>
+
             <div class="slide" v-if="slide == 1">
               <h1>Assign a cost</h1>
               <p class="mb4">Define how much should this cost you in habit currency</p>
-
-              <div class="flex align-center justify-left">
-                <div class="slidecontainer">
-                  <input type="range" min="1" max="20" v-model="rubys" class="slider" id="myRange">
-                </div>
-                <div class="icon-content"> 
-                  <figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
+							<div class="flex column align-center slidecontainer">
+								<input type="range" min="1" max="20" v-model="rubys" class="slider" id="myRange">
+								<div class="icon-content mt4"> 
+									<figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
                   <figcaption>{{ rubys }}</figcaption>
-                </div>
+								</div>
               </div>
 
-							<div class="flex align-center">
+							<div class="flex align-center justify-center my8">
 								<div class="icon-content"> 
                   <figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
                   <figcaption>1</figcaption>
@@ -40,30 +53,19 @@
                 </div>
 							</div>
 
+							<p><button class="button medium" @click="nextSlide">Next</button></p>
             </div>
+
             <div class="slide" v-if="slide == 2">
               <h1>Recurrence</h1>
               <p class="mb4">Is this a one time reward only or can it be recurring?</p>
-              <div class="flex align-center">
+              <div class="flex align-center justify-center">
 								<span>One time</span>
 								<w-switch class="ma2" :value="true" color="pink"></w-switch>
 								<span>Recurring</span>
 							</div>
-            </div>
-          </div>
-          <div class="badgeHolder">
-            <div>
-              <div>
-                <div>
-                  <figure>
-                    <div class="frame"><img src="@/assets/icons/treasure.png" alt="Reward"></div>
-                  </figure>
-                  <figcaption>{{ rewardName }}</figcaption>
-                </div>
-                <pulse-loader :loading="loading"></pulse-loader>
-                <p v-if="slide <= 3"><button class="button" @click="nextSlide">Next</button></p>
-                <p v-if="slide == 4"><button :disabled="loading" type="button" @click="saveReward">Save</button></p>
-              </div>
+
+							<p><button :disabled="loading" class="button medium" @click="saveReward">Save</button></p>
             </div>
           </div>
         </div>
@@ -77,7 +79,6 @@
 <script>
 
 import PostService from '../PostService'
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { mapMutations } from "vuex";
 
 export default {
@@ -176,7 +177,6 @@ export default {
       }
     },
   },
-  components: { PulseLoader },
   mounted() {
     this.$refs.modal.focus()
     // Check if this is an edition of an existing habit as set by the props.
@@ -191,82 +191,8 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
-
-.slide {
-  background: white; width: 100%; padding: 2rem; border-radius: 0 .314rem .314rem .314rem;
-  h1 { padding-bottom: 1.5rem; }
-}
-
-.tabs { 
-  width: 100%; flex-grow: 1; margin-right: 2rem; margin-top: 1rem;
-  nav { 
-    button {
-      border: none; 
-      background: linear-gradient(180deg, rgba(255,255,255,1) 62%, rgba(217,217,217,.5) 100%);
-      font-size: 1.6rem; border-radius: .314rem .314rem 0 0;
-      padding: 1rem; margin-right: .5rem; color: inherit; font-weight: 200; margin: 0 .5rem 0 0; box-shadow: none;
-      &:last-of-type { margin: 0 }
-      &.current { background: white; }
-      &:hover { background: $azure; color: white; }
-    }
-  }
-  .slide {
-    box-sizing: border-box;
-    h1 { margin: 0; }
-  }
-}
-
-.badgeHolder > div {
-  margin-left: auto; padding-top: 5rem; position: relative;
-  width: 12rem; height: 16rem; display: block;
-  > div {
-    position: fixed; width: 12rem;
-    button { width: 100%; }
-  }
-}
-
-.badge {
-  cursor: pointer; margin-right: 0; width: auto; height: auto;
-}
-
-.materials {
-  padding-top: 3rem;
-  .badge { 
-    margin-right: 20px; min-width: 5rem; min-height: 5rem;  
-  }
-}
-
-input { width: 40rem; max-width: 80%; background: $shine3; }
-
-.input-button { 
-  display: flex; 
-  input[type=text] { border-radius: .314rem; }
-  button { width: auto; }
-}
-
-.icons, .frames, .materials {
-  border-radius: .314rem; margin-top: 2rem;
-  figure {
-    padding: 1.2rem; box-sizing: border-box; border-radius: .314rem;
-    margin-right: 1rem; width: 8rem;
-    &:hover, &.selected {
-      background: $azure; cursor: pointer;
-      img { filter: invert(1) }
-    }
-  }
-  img { filter: invert(0)}
-}
-
-.slidecontainer { width: calc(100% - 10rem); max-width: 35rem; margin-right: 1rem; input { max-width: 100%; } }
-.slider { -webkit-appearance: none; appearance: none; width: 100%;
-  height: 25px; background: #d3d3d3; outline: none; opacity: 0.7;
-  -webkit-transition: .2s; transition: opacity .2s; margin: 0;
-}
-.slider:hover { opacity: 1; }
-.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;
-  width: 25px; height: 25px; background: #4CAF50; cursor: pointer;
-}
-.slider::-moz-range-thumb { width: 25px; height: 25px; background: #4CAF50; cursor: pointer; }
+@import "~@/scss/_badge-maker.scss";
 
 </style>

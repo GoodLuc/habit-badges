@@ -14,7 +14,7 @@
 						<figcaption>Create new</figcaption>
 					</button>
 				</div>
-				<div class="flex wrap justify-between" v-if="user">
+				<div class="flex wrap justify-between mt4" v-if="user">
 					<div class="habit-row box flex" v-for="habit in userHabits" :key="habit._id">
 						<div class="habit">
 							<div  class="badge" :class="gradeByCount(habit.count)[0]">
@@ -23,21 +23,34 @@
 									<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
 								</figure>
 							</div>
-							<div class="badgeEditControls">
-								<button class="edit" @click="editHabit(habit)" type="button">
-									<figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
-								</button>
-								<button class="del" type="button" @click="delDialog = true; delHabit = habit">
-									<figure><img src="/assets/badges/default/del.svg" alt="Delete"></figure>
-								</button>
-							</div>
-						</div>
-						<div class="timeline">
-							<h2>{{ habit.name }}</h2>
-							<div class="badge-grade flex justify-between">
+							<div class="badge-grade mt2 text-center">
 								<h3>{{ gradeByCount(habit.count)[1] }}</h3>
 								<p>Done {{ habit.count }} times</p>
 							</div>
+						</div>
+						<div class="timeline">
+							<div class="flex justify-between align-bottom">
+								<h2>{{ habit.name }}</h2>
+								<div class="badgeEditControls">
+									<w-tooltip top color="white" bg-color="grey-dark5">
+										<template #activator="{ on }">
+											<button v-on="on" class="edit" @click="editHabit(habit)" type="button">
+												<figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
+											</button>
+										</template>
+										Edit
+									</w-tooltip>
+									<w-tooltip top color="white" bg-color="grey-dark5">
+										<template #activator="{ on }">
+											<button v-on="on" class="del" type="button" @click="delDialog = true; delHabit = habit">
+												<figure><img src="@/assets/icons/archive.svg" alt="Delete"></figure>
+											</button>
+										</template>
+										Archive
+									</w-tooltip>
+								</div>
+							</div>
+
 							<div class="tablechart">
 								<div v-for="index in 30" :key="index">
 									<template v-if="todayNr+index < daysInMonth">
@@ -151,16 +164,18 @@ export default {
 
 <style scoped lang="scss">
 
+h1 { font-weight: 300; }
+
 .habit-row { 
 	width: 100%; 
 	margin-bottom: 2rem; 
-	max-width: calc(50% - 7rem);
-	h2 { margin: 0 0 .5rem; }
+	max-width: calc(50% - 1rem);
+	h2 { margin: 0; }
 	h3 { margin: 0 0 .5rem; }
 	p { margin: 0; font-size: 1rem; }
 }
 .box {
-  padding-top: 3rem;
+	padding: 2rem;
   .badge-add { img { transform: scale(1.5); } }
 }
 .habit {
@@ -169,31 +184,32 @@ export default {
 	.badge {
 		padding-bottom: 1.4rem;
 	}
-  .badgeEditControls { 
-    display: flex; justify-content: space-between; 
-    width: 100%;
-    button { display: block; cursor: pointer;
-      width: auto; height: 4rem; border-radius: 0 0 .314rem .314rem;
-      font-weight: 200; font-size: .9rem; margin: 0; border: none; 
-      background: none; box-shadow: none; transition: transform .2s ease;
-      &.edit { figure { filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); } }
-      &.del { figure { filter: invert(19%) sepia(96%) saturate(3956%) hue-rotate(355deg) brightness(105%) contrast(94%); } }
-      figure img { height: 2rem; }
-      &:hover { transform: scale(1.2); }
-    }
-  }
+}
+.badgeEditControls { 
+	display: flex; justify-content: flex-end; 
+	margin-top: 1rem; margin-left: auto;
+	button { display: block; cursor: pointer; margin-left: 1rem;
+		width: auto; border-radius: 0 0 .314rem .314rem;
+		font-weight: 200; font-size: .9rem; border: none; 
+		padding: 0;
+		background: none; box-shadow: none; transition: transform .2s ease;
+		&.edit { figure { filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); } }
+		&.del { figure { filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); } }
+		figure img { height: 2rem; }
+		&:hover { transform: scale(1.2); }
+	}
 }
 
 .timeline { width: 100%; }
 .tablechart {
 	margin-top: 1.7rem; width: 100%; display: grid;
-	grid-template-columns: repeat( auto-fill, minmax(4rem, 1fr) ); gap: 1.2rem; row-gap: .7rem;
+	grid-template-columns: repeat( auto-fill, minmax(5rem, 1fr) ); gap: 1.2rem; row-gap: .7rem;
 	div {
 		span {
 			border-radius: .5rem;
 			padding: .5rem;
-			width: 4rem; height: 3rem;
-			display: flex;
+			display: flex; width: 100%; height: 3rem;
+			text-align: center;
 			justify-content: center;
 			align-items: center;
 			&.empty {

@@ -1,7 +1,7 @@
 <template>
   <div :class="['overlay', { show: status}]" id="badgesSelector">
     <div>
-      <div v-if="getDayLoad" class="container">
+      <div v-if="getDayLoad" class="container medium mt4">
         <h1>What have you done to improve yourself <span v-if="getDayLoad.day == today.day">today</span><span v-else>on {{ dayName({day: getDayLoad.day, month: getDayLoad.month, year: getDayLoad.year}) }}</span>?</h1>
         <div v-if="loading" class="flex align-center column padyMed">
           <h2>Saving...</h2>
@@ -66,7 +66,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-h1 { padding-right: 5rem; }
+h1 { font-weight: 300; text-align: center; }
 
 .badge { cursor: pointer; }
 .badge, .badge-add, .edit {

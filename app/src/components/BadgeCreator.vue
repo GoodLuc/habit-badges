@@ -1,23 +1,21 @@
 <template>
   <div :class="['overlay', { show: status }]" ref="modal" id="badgesCreator" tabindex="0" @keydown.esc="$emit('close')">
     <div>
-      <div class="container container-medium">
+      <div class="container medium">
         <div class="flex fw">
           <div class="badgeHolder">
-            <div>
-              <div>
-                <div class="badge grade1">
-                  <figure>
-                    <div class="frame"><img :src="badgeFrame" :alt="habitName"></div>
-                    <div class="icon"><img crossOrigin="anonymous" ref="badgeIcon" id="badgeIcon" :src="iconSrc" :alt="habitName"></div>
-                  </figure>
-                  <figcaption>{{ habitName }}</figcaption>
-									<div class="icon-content mta"> 
-										<figure><img src="@/assets/icons/coin.svg" alt="Coins"></figure>
-										<figcaption>{{ coins }}</figcaption>
-									</div>
-                </div>
-              </div>
+            <div class="mt8">
+							<div class="badge grade1">
+								<figure>
+									<div class="frame"><img :src="badgeFrame" :alt="habitName"></div>
+									<div class="icon"><img crossOrigin="anonymous" ref="badgeIcon" id="badgeIcon" :src="iconSrc" :alt="habitName"></div>
+								</figure>
+								<figcaption>{{ habitName }}</figcaption>
+								<div class="icon-content mta"> 
+									<figure><img src="@/assets/icons/coin.svg" alt="Coins"></figure>
+									<figcaption>{{ coins }}</figcaption>
+								</div>
+							</div>
             </div>
           </div>
 
@@ -33,7 +31,7 @@
 							<h1>Describe your habit</h1>
 							<p v-if="warn" class="warn">Please enter the name of your habit</p>
 							<p><input @keyup.enter="selectIcon" v-model="habitName" type="text" placeholder="Ex. Work out"></p>
-							<p><button class="button button-medium" @click="nextSlide">Next</button></p>
+							<p><button class="button medium" @click="nextSlide">Next</button></p>
             </div>
 
             <div class="slide" v-if="slide == 1">
@@ -45,14 +43,15 @@
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
                   <img :src="icon.preview_url" :alt="icon.attribution" crossorigin="anonymous">
                 </figure>
+								<p><button class="button" @click="nextSlide">Next</button></p>
               </div>
 
-							<p v-if="slide <= 3"><button class="button" @click="nextSlide">Next</button></p>
               <div v-else>
                 <p v-if="!loading">No icons found under '{{ iconSearchTerm }}.' Please enter another search term. <br>
                 Tip: Try a simple noun like "exercise" or "music".</p>
               </div>
             </div>
+
             <div class="slide" v-if="slide == 2">
               <h1>Choose a badge frame</h1>
               <div class="box frames flex wrap">
@@ -63,6 +62,7 @@
               </div>
               <p v-if="slide <= 3"><button class="button" @click="nextSlide">Next</button></p>
             </div>
+
             <div class="slide" v-if="slide == 3">
               <h1>Assign a value</h1>
               <p>Define how valuable is completing this habit</p>
@@ -75,6 +75,7 @@
               </div>
 							<p><button :disabled="loading" class="button" @click="saveBadge">Save</button></p>
             </div>
+						
           </div>
         </div>
         
@@ -214,74 +215,9 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
+@import "~@/scss/_badge-maker.scss";
 
-.slide {
-  background: white; width: 100%; padding: 2rem; border-radius: 0 .314rem .314rem .314rem;
-  h1 { padding-bottom: 1.5rem; }
-}
-
-.tabs { 
-  width: 100%; flex-grow: 1; margin-right: 2rem; margin-top: 1rem;
-  nav { 
-    button {
-      border: none; 
-      background: linear-gradient(180deg, rgba(255,255,255,1) 62%, rgba(217,217,217,.5) 100%);
-      font-size: 1.6rem; border-radius: .314rem .314rem 0 0;
-      padding: 1rem; margin-right: .5rem; color: inherit; font-weight: 200; margin: 0 .5rem 0 0; box-shadow: none;
-      &:last-of-type { margin: 0 }
-      &.current { background: white; }
-      &:hover { background: $azure; color: white; }
-    }
-  }
-  .slide {
-    box-sizing: border-box;
-		input { text-align: center; }
-    h1 { margin: 0; text-align: center; font-weight: 300; }
-		p { margin-left: auto; margin-right: auto; text-align: center; }
-  }
-}
-
-.badgeHolder > div {
-  margin-right: 2rem; padding-top: 1rem; position: relative;
-  width: 12rem; height: 17rem; display: block;
-  > div {
-    position: fixed; width: 12rem;
-    button { width: 100%; margin-top: 2rem; }
-  }
-}
-
-
-input { width: 40rem; max-width: 80%; background: $shine3; }
-
-.input-button { 
-  display: flex; 
-  input[type=text] { border-radius: .314rem; }
-  button { width: auto; height: 3.2rem; margin-left: 1rem; padding: 1rem; }
-}
-
-.icons, .frames, .materials {
-  border-radius: .314rem; margin-top: 2rem;
-  figure {
-    padding: 1.2rem; box-sizing: border-box; border-radius: .314rem;
-    margin-right: 1rem; width: 8rem;
-    &:hover, &.selected {
-      background: $azure; cursor: pointer;
-      img { filter: invert(1) }
-    }
-  }
-  img { filter: invert(0)}
-}
-
-.slider { -webkit-appearance: none; appearance: none; width: 100%;
-  height: 25px; background: #d3d3d3; outline: none; opacity: 0.7;
-  -webkit-transition: .2s; transition: opacity .2s; margin: 0;
-	width: calc(100% - 10rem); max-width: 35rem; margin: auto; 
-}
-.slider:hover { opacity: 1; }
-.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;
-  width: 25px; height: 25px; background: #4CAF50; cursor: pointer;
-}
-.slider::-moz-range-thumb { width: 25px; height: 25px; background: #4CAF50; cursor: pointer; }
 
 </style>

@@ -3,7 +3,7 @@
 		<main class="dash">
 			<h1 v-if="user">Welcome back {{ user.name }}</h1>
 
-			<div class="top-habits">
+			<div v-if="false" class="top-habits">
 				<div class="title"><h2>Your top habits</h2><router-link class="see-more" to="/rewards">Manage habits</router-link></div>
 				<div v-if="getDayLoad" class="bgcont-wrap mb2">
 					<div class="bgcont flex wrap padAllMed">
@@ -28,10 +28,10 @@
 			
 			<h2>Check-in your completed badges for today:</h2>
 			<div v-if="getDayLoad" class="bgcont-wrap mb2">
-				<div class="bgcont flex wrap padAllMed">
+				<div class="bgcont flex wrap padAllMed pt2">
 					<div class="flex fw align-center justify-between mb-1">
-						<h3 class="dayTitle">{{ dayName(date) }} {{ date.month + "/" + date.day }}</h3>
-						<div class="coin">
+						<h3 class="dayTitle">{{ dayName(date) }} <span>{{ date.month + "/" + date.day }}</span></h3>
+						<div class="icon-content">
 							<figure><img src="@/assets/icons/coin.svg" alt="Coins"></figure>
 							<figcaption>{{ dayPay(getDayLoad.badges) }}</figcaption>
 						</div>
@@ -59,10 +59,10 @@
 			<div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
 			<div class="week" v-else>
 				<div class="bgcont-wrap mb2" v-for="day in week" :key="day.day">
-					<div class="bgcont flex wrap padAllMed">
-						<div class="flex fw align-center justify-between mb-1">
-							<h3 class="dayTitle">{{ dayName(day) }} {{ day.month + "/" + day.day }}</h3>
-							<div class="coin">
+					<div class="bgcont flex wrap padAllMed pt2">
+						<div class="flex fw align-center justify-between mb1">
+							<h3 class="dayTitle">{{ dayName(day) }} <span>{{ day.month + "/" + day.day }}</span></h3>
+							<div class="icon-content">
 								<figure><img src="@/assets/icons/coin.svg" alt="Coins"></figure>
 								<figcaption>{{ dayPay(day.badges) }}</figcaption>
 							</div>
@@ -226,7 +226,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 
 .week {
 	.isEmpty { 
@@ -241,9 +240,9 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 	width: calc(80% - 3rem);
 	h1 { 
 		font-size: 3.429rem;
-		font-weight: 400; margin-top: 4rem;
+		font-weight: 300; margin-top: 4rem;
 	}
-	h2 { margin: 2rem 0 1rem; font-size: 1.714rem; font-weight: 400; }
+	h2 { margin: 4rem 0 1rem; font-size: 1.714rem; font-weight: 400; }
 
 	.top-habits {
 		.title {
@@ -276,12 +275,8 @@ h3.dayTitle { margin: 0; font-size: 1.5rem; text-shadow: $textshadow; }
 	.currency {
 		margin-top: .5rem;
 		.coins, .rubys {
-			display: flex; flex-direction: row-reverse;	align-items: center;
+			display: flex; flex-direction: row-reverse;	align-items: center; margin-bottom: .2rem;
 			img { width: 2rem; height: 2rem; margin-left: .2rem; }
-		}
-		.rubys {
-			position: relative;	right: -3px;
-			img {	width: 2.5rem; height: 2.5rem; }
 		}
 	}
 

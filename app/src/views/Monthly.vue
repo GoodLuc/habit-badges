@@ -1,19 +1,12 @@
 <template>
   <div>
     <div class="container dash">
-      <div class="main center">
-        <div v-if="user.level">
-          <p>Your are on level {{ user.level.nr }}. Points: {{ user.points }}. Collect {{ user.level.toNext }} more coins to level up!</p>
-          <div class="level"><div :style="'width:'+user.level.percent+'%'"></div></div>
-          <p class="entitlement">Level {{ user.level.nr }}: <strong>{{ titles[user.level.nr] }}</strong></p>
-        </div>
-      </div>
 
-      <h2>Monthly view:</h2>
+      <h2>Monthly view</h2>
       <div v-if="monthLoad.loading"><pulse-loader :loading="loading"></pulse-loader></div>
       <div class="month grid" v-else>
         <div class="box day" v-for="n in date.day" :key="n">
-          <h3 class="dayTitle">{{ dayName({year: date.year, month: date.month, day: n}) }} {{ date.month + "/" + n }}</h3>
+          <h3 class="dayTitle">{{ dayName({year: date.year, month: date.month, day: n}) }} <span>{{ date.month + "/" + n }}</span></h3>
           <div v-if="typeof(monthLoad.days[n]) !== 'undefined'" :class="['grid three', { isEmpty: !monthLoad.days[n].badges.length }]" >
             <template v-for="badge in monthLoad.days[n].badges" :key="badge">
 							<div class="badge" :class="gradeByCount(user.habits[badge].count)[0]">
@@ -70,9 +63,10 @@ export default {
 .month {
   &.grid {
     grid-template-columns: repeat( 3, 1fr );
-    > .box.day .grid .badge { min-width: auto; max-width: 100%; padding: .5rem; }
+    > .box.day .grid .badge { min-width: auto; max-width: 100%; padding: 1rem; }
   }
   .day {
+		h3.dayTitle { margin-top: 0; }
     .grid {
       grid-template-columns: repeat( 4, 1fr );
       gap: 10px;

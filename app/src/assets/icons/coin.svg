@@ -1,37 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="45" viewBox="0 0 41 45">
-  <defs>
-    <ellipse id="ellipse-1" cx="20.5" cy="20.5" rx="20.5" ry="20.5"/>
-    <filter id="filter-2" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-      <feOffset dx="0" dy="4" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
-      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="0"/>
-      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0.6509803921568628  0 0 0 0 0.5098039215686274  0 0 0 0 0.00392156862745098  0 0 0 1 0"/>
-    </filter>
-    <ellipse id="ellipse-3" cx="20.5" cy="20.5" rx="15.5" ry="15.5"/>
-    <filter id="filter-4" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-      <feOffset dx="0" dy="1" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
-      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="0"/>
-      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.1 0"/>
-      <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadow-2-feOffset-shadow"/>
-      <feGaussianBlur in="shadow-2-feOffset-shadow" result="shadow-2-feGaussianBlur-shadow" stdDeviation="0"/>
-      <feColorMatrix in="shadow-2-feGaussianBlur-shadow" result="shadow-2-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.1 0"/>
-      <feMerge>
-        <feMergeNode in="shadow-1-feColorMatrix-shadow"/>
-        <feMergeNode in="shadow-2-feColorMatrix-shadow"/>
-      </feMerge>
-    </filter>
-    <radialGradient id="radialGradient-5" cx="20.5" cy="5" r="31" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="rgb(255,226,31)"/>
-      <stop offset="1" stop-color="rgb(255,207,0)"/>
-    </radialGradient>
-  </defs>
-  <g>
-    <g>
-      <use fill="black" stroke="black" stroke-opacity="0" stroke-width="0" filter="url(#filter-2)" xlink:href="#ellipse-1"/>
-      <use fill="rgb(242,191,10)" xlink:href="#ellipse-1"/>
-    </g>
-    <g>
-      <use fill="black" stroke="black" stroke-opacity="0" stroke-width="0" filter="url(#filter-4)" xlink:href="#ellipse-3"/>
-      <use fill="url(#radialGradient-5)" xlink:href="#ellipse-3"/>
-    </g>
-  </g>
+<svg width="364" height="391" viewBox="0 0 364 391" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0)">
+<g filter="url(#filter0_d)">
+<ellipse cx="182" cy="215.452" rx="182" ry="176.279" fill="#A68201"/>
+<ellipse cx="182" cy="176.279" rx="182" ry="176.279" fill="#F2BF0A"/>
+<ellipse cx="179.753" cy="174.103" rx="148.296" ry="143.635" fill="#FFD307"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d" x="-4" y="0" width="372" height="399.731" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<clipPath id="clip0">
+<rect width="364" height="391" fill="white"/>
+</clipPath>
+</defs>
 </svg>
