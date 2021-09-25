@@ -16,6 +16,7 @@
 									<figcaption>{{ coins }}</figcaption>
 								</div>
 							</div>
+							<p v-if="slide == 1 || slide == 2"><button class="button medium" @click="nextSlide">Next</button></p>
             </div>
           </div>
 
@@ -37,13 +38,14 @@
             <div class="slide" v-if="slide == 1">
               <h1>Choose an icon</h1>
               <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button class="button" @click="getIcons(iconTerm)">Search</button></p>
-              <pulse-loader :loading="loading"></pulse-loader>
+              <div class="text-center">
+								<pulse-loader :loading="loading"></pulse-loader>
+							</div>
               <div v-if="icons.length" class="box icons flex wrap">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
                   <img :src="icon.preview_url" :alt="icon.attribution" crossorigin="anonymous">
                 </figure>
-								<p><button class="button" @click="nextSlide">Next</button></p>
               </div>
 
               <div v-else>
@@ -60,7 +62,6 @@
                   <img :src="'/assets/badges/frame/frame'+index+'.svg'">
                 </figure>
               </div>
-              <p v-if="slide <= 3"><button class="button" @click="nextSlide">Next</button></p>
             </div>
 
             <div class="slide" v-if="slide == 3">
@@ -73,7 +74,7 @@
 									<figcaption>{{ coins }}</figcaption>
 								</div>
               </div>
-							<p><button :disabled="loading" class="button" @click="saveBadge">Save</button></p>
+							<p><button :disabled="loading" class="button medium" @click="saveBadge">Save</button></p>
             </div>
 						
           </div>
@@ -119,8 +120,8 @@ export default {
       selectedIcon: {},
       iconSrc: '/assets/badges/default/default.svg',
       badgeFrame: '/assets/badges/frame/frame1.svg',
-      material: 'silver',
       coins: 5,
+			count: 0
     }
   },
   methods: {
@@ -186,13 +187,13 @@ export default {
         if (Object.keys(this.$props.habit).length) {
           // If this is the edition of a previously existing habit, update instead of saving as new.
           console.log("Updating")
-          let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material, value: this.coins }
+          let habit = { _id: this.$props.habit._id, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, value: this.coins, count: this.count }
           await PostService.saveBadge({ user: user.token, habit: habit });
           this.updateBadgeInStore( habit )
         } else {
           console.log("Saving as new")
           var uniqueId = Math.floor(Date.now() / 1000);
-          let habit = { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, material: this.material, value: this.coins }
+          let habit = { _id: uniqueId, icon: this.selectedIcon.id, name: this.habitName, frame: this.selectedFrameIndex, image: imgAsDataURL, value: this.coins, count: this.count }
           await PostService.saveBadge({ user: user.token, habit: habit });
           this.saveBadgeToStore(habit)
         }
@@ -209,8 +210,8 @@ export default {
       this.selectedFrameIndex = this.$props.habit.frame
       this.iconSrc = this.$props.habit.image
       this.badgeFrame = '/assets/badges/frame/frame'+this.selectedFrameIndex+'.svg'
-      this.material = this.$props.habit.material
       this.coins = this.$props.habit.value
+			this.count = this.$props.habit.count
     }
   }
 }

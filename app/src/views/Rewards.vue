@@ -4,7 +4,7 @@
       <div class="main">
         <div class="flex justify-between">
 					<div>
-						<h1>This are your pending rewards {{ user.name }}</h1>
+						<h1>This are your rewards {{ user.name }}</h1>
 						<p>Create new ones or see your previously earned rewards</p>
 					</div>
 					<button class="button button-add" @click="rewardCreator = true">
@@ -14,11 +14,32 @@
 						<figcaption>Create new</figcaption>
 					</button>
 				</div>
-				<div v-if="user.rewards && Object.keys(user.rewards).length">
-					<article v-for="reward in user.rewards" :key="reward.id">
-						<h2>{{ reward.title }}</h2>
-					</article>
+				
+				<div class="flex justify-between">
+					<section>
+						<h2>Pending</h2>
+
+						<div v-if="user.rewards && Object.keys(user.rewards).length">
+							<article class="reward grade1" v-for="reward in user.rewards" :key="reward.id">
+								<figure><div class="frame"><img src="@/assets/icons/treasure.png" alt="Reward"></div></figure>
+								<p class="text-center">{{ reward.name }}</p>
+								<button class="button gold flex column align-center">
+									<div class="icon-content mb1"> 
+										<figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
+										<figcaption>{{ reward.value }}</figcaption> 
+									</div>
+									Unlock
+								</button>
+							</article>
+						</div>
+					</section>
+
+					<section>
+						<h2>Earned</h2>
+
+					</section>
 				</div>
+				
       </div>
 
     </div>
@@ -95,19 +116,17 @@ export default {
 
 h1 { font-weight: 300; }
 
-.habit-row { 
-	width: 100%; 
-	margin-bottom: 2rem; 
-	background: white;
-}
-.box {
-  padding-top: 3rem;
-  .badge-add { img { transform: scale(1.5); } }
-}
-.habit {
-	width: 10rem;
-  background: cornsilk;
+.reward {
+	width: 14rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	margin-right: 2rem;
+	padding: 1rem;
+	button {
+		padding-top: .5rem;
+		width: 100%;
+	}
   .badgeEditControls { 
     display: flex; justify-content: space-between; 
     width: 100%;
@@ -121,31 +140,6 @@ h1 { font-weight: 300; }
       &:hover { transform: scale(1.2); }
     }
   }
-}
-
-
-.tablechart {
-	display: flex; flex-wrap: wrap; margin-top: 1.7rem;
-	div {
-		margin: 0 .3rem .3rem 0;
-		span {
-			border-radius: .5rem;
-			padding: .5rem;
-			width: 4rem; height: 3rem;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			&.gold { background: $gold;}
-			&.silver { background: $silver;}
-			&.azure { background: $azure; color: white;}
-			&.empty {
-				box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-			}
-			&.filled {
-				box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-			}
-		}
-	}
 }
 
 .delDialog { 

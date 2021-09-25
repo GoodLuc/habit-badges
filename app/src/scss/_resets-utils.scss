@@ -47,9 +47,17 @@ figure { margin: 0; padding: 0 }
 .button { 
   background: $link; font-weight: 600; color: white; border: 2px solid rgba(7,206,255,.5);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 5px 7px -3px; width: auto; 
-  text-align: center; cursor: pointer; padding: 1rem;
+  text-align: center; cursor: pointer; padding: 1rem; max-width: 100%;
 	&.medium {
 		width: 20rem;
+	}
+	&.gold {
+		color: #DF2A8C;
+		background: $gold;
+		border: 2px solid rgba(248, 211, 3, 0.5);
+		&:hover {
+			background: $gold2
+		}
 	}
   &:hover { background: $azure; }
 }
@@ -63,6 +71,7 @@ figure { margin: 0; padding: 0 }
   &.justify-left { justify-content: flex-start; }
   &.justify-center { justify-content: center; }
   &.justify-between { justify-content: space-between; }
+  &.justify-around { justify-content: space-around; }
 	&.full-center { justify-content: center; align-items: center; }
   &.column { flex-direction: column; }
   &.wrap { flex-wrap: wrap; }

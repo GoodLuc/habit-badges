@@ -25,9 +25,9 @@
   }
 }
 
-.badgeHolder > div {
-  margin-right: 2rem; padding-top: 1rem; position: relative;
-  width: 12rem; height: 17rem; display: block;
+.badgeHolder {
+  padding-top: 1rem; position: relative;
+  width: 17rem; height: 17rem; display: block;
   > div {
     position: fixed; width: 12rem;
   }
@@ -35,7 +35,8 @@
 .rewardHolder > div {
 	border-radius: .314rem;
   margin-right: 2rem; padding-top: 1rem; position: relative;
-  width: 12rem; height: 20rem; display: block;
+  width: 12rem; height: 19rem; display: block;
+	> figure { padding: 1rem 1rem 0; }
 	p { margin: 0 auto; }
 	.icon-content { margin: auto; }
 }
@@ -44,9 +45,9 @@
 input { width: 40rem; max-width: 80%; background: $shine3; }
 
 .input-button { 
-  display: flex; 
+  display: flex; justify-content: center;
   input[type=text] { border-radius: .314rem; }
-  button { width: auto; height: 3.2rem; margin-left: 1rem; padding: 1rem; }
+  button { width: auto; height: 3.2rem; margin-left: 1rem; padding: 1rem; line-height: 1.2rem; }
 }
 
 .icons, .frames, .materials {

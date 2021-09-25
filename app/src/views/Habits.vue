@@ -73,14 +73,14 @@
   <div v-if="delDialog" class="delDialog overlay">
     <div v-if="!confirmed" class="container">
       <div>
-        <h1>Are you sure you wish to delete this badge?</h1>
+        <h1>Are you sure you wish to archive this badge?</h1>
         <p>Any previous entries in the daily calendar will still be visible.</p>
       </div>
       <pulse-loader :loading="loading"></pulse-loader>
-      <div class="controls"><button :disabled="loading" class="del" @click="deleteHabit(delHabit)" type="button">Delete</button> <button type="button" @click="delDialog = false">Cancel</button></div>
+      <div class="controls"><button :disabled="loading" class="del" @click="deleteHabit(delHabit)" type="button">Archive</button> <button type="button" @click="delDialog = false">Cancel</button></div>
     </div>
     <div else>
-      <h1>The selected badge has been deleted.</h1>
+      <h1>The selected badge has been archived.</h1>
       <div class="controls">
         <button type="button" @click="delDialog = false; confirmed = false">Ok</button>
       </div>
@@ -226,8 +226,8 @@ h1 { font-weight: 300; }
   text-align: center; 
   .controls {
     display: flex; justify-content: center;
-    button { margin-right: 20px; width: auto; }
-    button.del { background: #F72616; }
+    button { margin-right: 20px; width: auto; cursor: pointer; }
+    button.del { background: #f7b016; }
   }
 }
 

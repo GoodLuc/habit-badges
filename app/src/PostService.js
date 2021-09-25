@@ -101,6 +101,15 @@ class PostService {
   static saveBadge(load) {
     return axios.post(url+'savebadge/', {load})
   }
+
+	///////////////////////////////////////
+  /////// R E W A R D S  ////////////////
+  ///////////////////////////////////////
+  
+  //// Save Reward
+  static saveReward(load) {
+    return axios.post(url+'savereward/', {load})
+  }
 }
 
 

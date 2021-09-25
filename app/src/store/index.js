@@ -157,9 +157,17 @@ export default createStore({
       state['badges'] = state.user.habits
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
+    saveRewardToStore: (state, reward) => {
+      state.user.rewards[reward._id] = reward
+      localStorage.setItem("user", JSON.stringify({ ...state.user }))
+    },
     updateBadgeInStore: (state, habit) => {
-      state.user.habits[habit._id], habit
+      state.user.habits[habit._id] = habit
       state['badges'] = state.user.habits
+      localStorage.setItem("user", JSON.stringify({ ...state.user }))
+    },
+    updateRewardInStore: (state, reward) => {
+      state.user.rewards[reward._id] = reward
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
     // Logout

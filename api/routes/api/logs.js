@@ -97,7 +97,7 @@ router.post("/makeuser", async (req, res) => {
   try {
     const users = await getUsers();
     await users.insertOne(
-      { ...req.body.user, habits: {}, points: 0 },
+      { ...req.body.user, habits: {}, points: 0, rewards: {} },
     );
     res.status(201).send();
   } catch (error) {
@@ -199,6 +199,30 @@ router.post("/savebadge", async (req, res) => {
       // Filter
       { _id: new mongoDB.ObjectID(req.body.load.user) },
       habitsId,
+    );
+    console.log('Badge saved')
+    res.status(201).send();
+  } catch (error) {
+    console.error(error)
+  }
+});
+
+///////////////////////////////////////
+/////// R E W A R D S /////////////////
+///////////////////////////////////////
+
+//// New reward
+router.post("/savereward", async (req, res) => {
+  console.log('Saving reward')
+  console.log(req.body.load)
+  try {
+    const users = await getUsers();
+    var rewardsId = { $set: {} };
+    rewardsId.$set['rewards.' + req.body.load.reward._id] = req.body.load.reward; 
+    await users.updateOne(
+      // Filter
+      { _id: new mongoDB.ObjectID(req.body.load.user) },
+      rewardsId,
     );
     console.log('Badge saved')
     res.status(201).send();

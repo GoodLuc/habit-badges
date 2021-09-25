@@ -2,9 +2,9 @@
   <div class="container">
 		<div v-if="selector" class="selector">
       <h2>Register or login</h2>
-      <div class="flex wrap justify-between">
-				<button class="button" @click="showRegister">Register</button>
-				<button class="button" @click="showLogin">Login</button>
+      <div class="flex wrap justify-center">
+				<button class="button medium ml2" @click="showRegister">Register</button>
+				<button class="button medium" @click="showLogin">Login</button>
 			</div>
       <p><small>v0.5b</small></p>
     </div>
