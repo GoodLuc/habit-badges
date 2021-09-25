@@ -25,9 +25,16 @@
 
             <div class="slide" v-if="slide == 0">
                 <h1>Describe your reward</h1>
-                <p v-if="warn" class="warn">Please enter the name of your reward</p>
+                <p v-if="warn" class="warn">Please describe what would be your reward</p>
                 <p><input class="mxa" @keyup.enter="nextSlide" v-model="rewardName" type="text" placeholder="Ex. Ice cream / New clothes"></p>
 								<p><button class="button medium" @click="nextSlide">Next</button></p>
+								<article>
+									<h3>See reward ideas:</h3>
+									<ul>
+										<li>Go on a trip</li>
+										<li></li>
+									</ul>
+								</article>
             </div>
 
             <div class="slide" v-if="slide == 1">
@@ -102,7 +109,8 @@ export default {
       loading: false,
       slide: 0,
       rubys: 4,
-			recurring: false
+			recurring: false,
+			completed: false
     }
   },
   methods: {
@@ -133,13 +141,13 @@ export default {
         if (Object.keys(this.$props.reward).length) {
           // If this is the edition of a previously existing reward, update instead of saving as new.
           console.log("Updating")
-          let reward = { _id: this.$props.reward._id, name: this.rewardName, value: this.rubys, recurring: this.recurring }
+          let reward = { _id: this.$props.reward._id, name: this.rewardName, value: this.rubys, recurring: this.recurring, completed: this.completed }
           await PostService.saveReward({ user: user.token, reward: reward });
           this.updateRewardInStore( reward )
         } else {
           console.log("Saving as new")
           var uniqueId = Math.floor(Date.now() / 1000);
-          let reward = { _id: uniqueId, name: this.rewardName, value: this.rubys, recurring: this.recurring }
+          let reward = { _id: uniqueId, name: this.rewardName, value: this.rubys, recurring: this.recurring, completed: false }
           await PostService.saveReward({ user: user.token, reward: reward });
           this.saveRewardToStore(reward)
         }
@@ -151,8 +159,10 @@ export default {
     this.$refs.modal.focus()
     // Check if this is an edition of an existing habit as set by the props.
     if (Object.keys(this.$props.reward).length) {
-      this.habitName = this.$props.reward.name
+      this.rewardName = this.$props.reward.name
       this.rubys = this.$props.reward.value
+			this.recurring = this.$props.reward.recurring
+			this.completed = this.$props.reward.completed
     }
   }
 }

@@ -141,4 +141,30 @@ h3.dayTitle {
   @media (max-width: 520px) { padding: .8rem 2rem; }
 }
 
+
+
+.currency {
+	margin-top: .5rem;
+	.coins, .rubys {
+		display: flex; flex-direction: row-reverse;	align-items: center; margin-bottom: .2rem;
+		img { width: 2rem; height: 2rem; margin-left: .2rem; }
+	}
+}
+
+.reward-list {
+	article {
+		padding: 1rem;
+		display: flex; justify-content: space-between; align-items: center;
+		background: white;
+		border-radius: 6px;
+		box-shadow: 0px 4px 3px 0px #CFCFCF8A;
+		figure { width: 3rem; height: 3rem; }
+		.price {
+			background: url('~@/assets/icons/ruby.png') center/contain no-repeat;
+			display: flex; justify-content: center; align-items: center;
+			color: white; font-weight: 600;
+		}
+	}
+}
+
 </style>

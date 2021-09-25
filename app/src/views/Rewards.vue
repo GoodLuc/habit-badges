@@ -15,28 +15,41 @@
 					</button>
 				</div>
 				
-				<div class="flex justify-between">
-					<section>
-						<h2>Pending</h2>
+				<div class="flex justify-between mt8">
+					<section class="bgcont-wrap">
+						<div class="bgcont">
+							<div class="flex justify-between">
+								<h2>Pending</h2>
+								<div class="currency">
+									<figure class="coins">
+										<img src="@/assets/icons/coin.svg" alt="">
+										<span>{{ user.points }}</span>
+									</figure>
+								</div>
+							</div>
 
-						<div v-if="user.rewards && Object.keys(user.rewards).length">
-							<article class="reward grade1" v-for="reward in user.rewards" :key="reward.id">
-								<figure><div class="frame"><img src="@/assets/icons/treasure.png" alt="Reward"></div></figure>
-								<p class="text-center">{{ reward.name }}</p>
-								<button class="button gold flex column align-center">
-									<div class="icon-content mb1"> 
-										<figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
-										<figcaption>{{ reward.value }}</figcaption> 
+							<div class="reward-list" v-if="user.rewards && Object.keys(user.rewards).length">
+								<article class="reward" v-for="reward in user.rewards" :key="reward.id">
+									<div class="flex justify-between">
+										<figure><img src="@/assets/icons/treasure_closed.png" alt="Reward"></figure>
+										<p class="text-center">{{ reward.name }}</p>
+										<button @click="unlockReward = reward; buyReward = true" class="button gold flex column align-center">
+											<div class="icon-content mb1">
+												<figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
+												<figcaption>{{ reward.value }}</figcaption>
+											</div>
+											Unlock
+										</button>
 									</div>
-									Unlock
-								</button>
-							</article>
+								</article>
+							</div>
 						</div>
 					</section>
 
-					<section>
-						<h2>Earned</h2>
-
+					<section class="bgcont-wrap">
+						<div class="bgcont">
+							<h2>Earned</h2>
+						</div>
 					</section>
 				</div>
 				
@@ -45,33 +58,29 @@
     </div>
   
   <RewardCreator v-if="rewardCreator" @close="rewardCreator = false; reward = {}" :reward="reward" />
+	<BuyReward v-if="buyReward" @close="buyReward = false" :reward="unlockReward" />
   </div>
 </template>
 
 <script>
-import PostService from '../PostService'
 import RewardCreator from '@/components/RewardCreator.vue'
-import { mapState, mapGetters, mapMutations } from "vuex";
+import BuyReward from '@/components/BuyReward.vue'
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: 'Rewards',
   data() {
     return {
       rewardCreator: false,
+			buyReward: false,
       delDialog: false,
-      delHabit: null,
-      reward: {},
+      unlockReward: {},
       loading: false,
       confirmed: false,
-			todayNr: new Date().getDate(),
     }
   },
   computed: {
-    ...mapState(["user","monthLoad","lastMonthLoad"]),
-    ...mapGetters(["userHabits"]),
-		daysInMonth: function() {
-			return new Date(new Date().getMonth(), new Date().getYear(), 0).getDate();
-		}
+    ...mapState(["user"]),
   },
   watch: {
     // Add overlay class to body if Badge Creator component is open
@@ -82,29 +91,21 @@ export default {
       } else {
         bod.classList.remove('overlaid')
       }
-    }
+    },
+		buyReward: function() {
+			const bod = document.body
+      if (this.buyReward) {
+        bod.classList.add('overlaid')
+      } else {
+        bod.classList.remove('overlaid')
+      }
+		}
   },
   methods: {
     ...mapMutations(['updateBadgeInStore']),
-    editHabit: function(habit) {
-      this.habit = habit
-      this.badgeCreator = true
-    },
-    // Set habit to hidden in DB with the *deleted* attribute
-    deleteHabit: async function() {
-      this.loading = true
-      this.delHabit = { ...this.delHabit, deleted: true }
-      this.updateBadgeInStore( this.delHabit )
-      await PostService.saveBadge({ user: this.user.token, habit: this.delHabit });
-      this.loading = false
-      this.confirmed = true
-    },
-		monthName: function(month) {
-			let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-			return months[month-1]
-		}
+    
   },
-  components: { RewardCreator },
+  components: { RewardCreator, BuyReward },
   mounted() {
     document.body.classList.remove('overlaid')
     window.scrollTo(0, 0)
@@ -116,16 +117,30 @@ export default {
 
 h1 { font-weight: 300; }
 
+section {
+	width: calc(50% - 1rem);
+	h2 { margin: 0 0 1rem; }
+	> div { padding: 2rem; }
+}
+
 .reward {
-	width: 14rem;
+	width: calc(50% - 1rem);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-between;
 	margin-right: 2rem;
-	padding: 1rem;
+	padding: 0rem;
+	border-radius: .314rem;
+	background: white;
+	> div:first-of-type { 
+		align-items: center;
+		width: 100%;
+		> figure { width: 6rem; height: 6rem; padding: .5rem .5rem .5rem 1rem; display: flex; align-items: center; flex-shrink: 0; }
+		> p { padding: .5rem; font-size: 1rem; }
+	}
 	button {
 		padding-top: .5rem;
-		width: 100%;
 	}
   .badgeEditControls { 
     display: flex; justify-content: space-between; 
