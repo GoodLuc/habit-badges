@@ -136,9 +136,8 @@ export default {
         this.slide = 0
         this.warn = true
       } else {
-        // This saves the selected icon PNG image as a base64 string to embed in the DB
         var user = JSON.parse(localStorage.getItem("user"))
-        if (Object.keys(this.$props.reward).length) {
+        if (this.$props.reward && Object.keys(this.$props.reward).length) {
           // If this is the edition of a previously existing reward, update instead of saving as new.
           console.log("Updating")
           let reward = { _id: this.$props.reward._id, name: this.rewardName, value: this.rubys, recurring: this.recurring, completed: this.completed }
@@ -158,7 +157,7 @@ export default {
   mounted() {
     this.$refs.modal.focus()
     // Check if this is an edition of an existing habit as set by the props.
-    if (Object.keys(this.$props.reward).length) {
+    if (this.$props.reward && Object.keys(this.$props.reward).length) {
       this.rewardName = this.$props.reward.name
       this.rubys = this.$props.reward.value
 			this.recurring = this.$props.reward.recurring

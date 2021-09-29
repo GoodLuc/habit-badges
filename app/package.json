@@ -17,6 +17,7 @@
     "the-noun-project": "^2.1.0",
     "vodal": "^2.4.0",
     "vue": "^3.0.0",
+    "vue-confetti": "^2.2.2",
     "vue-over-body": "0.0.5",
     "vue-router": "^4.0.0-0",
     "vue-spinner": "^1.0.4",

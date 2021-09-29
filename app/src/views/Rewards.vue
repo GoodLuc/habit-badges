@@ -19,7 +19,7 @@
 					<section class="bgcont-wrap">
 						<div class="bgcont">
 							<div class="flex justify-between">
-								<h2>Pending</h2>
+								<h2>Pending / Recurring</h2>
 								<div class="currency">
 									<figure class="coins">
 										<img src="@/assets/icons/coin.svg" alt="">
@@ -29,7 +29,8 @@
 							</div>
 
 							<div class="reward-list" v-if="user.rewards && Object.keys(user.rewards).length">
-								<article class="reward" v-for="reward in user.rewards" :key="reward.id">
+								
+								<article class="reward" v-for="reward in pending" :key="reward.id">
 									<div class="flex justify-between">
 										<figure><img src="@/assets/icons/treasure_closed.png" alt="Reward"></figure>
 										<p class="text-center">{{ reward.name }}</p>
@@ -49,6 +50,23 @@
 					<section class="bgcont-wrap">
 						<div class="bgcont">
 							<h2>Earned</h2>
+
+							<div class="reward-list" v-if="user.rewards && Object.keys(user.rewards).length">
+								
+								<article class="reward" v-for="reward in completed" :key="reward.id">
+									<div class="flex justify-between">
+										<figure><img src="@/assets/icons/treasure_closed.png" alt="Reward"></figure>
+										<p class="text-center">{{ reward.name }}</p>
+										<button @click="unlockReward = reward; buyReward = true" class="button gold flex column align-center">
+											<div class="icon-content mb1">
+												<figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
+												<figcaption>{{ reward.value }}</figcaption>
+											</div>
+											Unlock
+										</button>
+									</div>
+								</article>
+							</div>
 						</div>
 					</section>
 				</div>
@@ -63,12 +81,31 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 import RewardCreator from '@/components/RewardCreator.vue'
 import BuyReward from '@/components/BuyReward.vue'
 import { mapState, mapMutations } from "vuex";
 
 export default {
   name: 'Rewards',
+	setup() {
+		const store = useStore()
+
+		return {
+			pending: computed(() => {
+				return Object.values(store.state.user.rewards).filter(
+					reward => (reward.completed == false || reward.recurring == true)
+				)
+			}),
+			completed: computed(() => {
+				return Object.values(store.state.user.rewards).filter(
+					reward => (reward.completed == true)
+				)
+			}),
+			
+		}
+	},
   data() {
     return {
       rewardCreator: false,

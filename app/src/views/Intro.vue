@@ -28,7 +28,7 @@
 					<img src="@/assets/img/step3.png" alt="">	
 				</figure>
 				<div>
-					<h2>3. Create rewards to motivate yourself</h2>
+					<h2>3. Optionally, create rewards to motivate yourself</h2>
 					<p>Decide how you will reward yourself for being consistent. <br>
 						How much habit currency should it cost you to unlock each reward?</p>
 				</div>

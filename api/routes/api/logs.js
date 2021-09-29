@@ -224,7 +224,7 @@ router.post("/savereward", async (req, res) => {
       { _id: new mongoDB.ObjectID(req.body.load.user) },
       rewardsId,
     );
-    console.log('Badge saved')
+    console.log('Reward saved')
     res.status(201).send();
   } catch (error) {
     console.error(error)
