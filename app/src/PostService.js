@@ -110,6 +110,11 @@ class PostService {
   static saveReward(load) {
     return axios.post(url+'savereward/', {load})
   }
+
+  //// Charge tab
+  static chargeTab(load) {
+    return axios.post(url+'updatetabs/', {load})
+  }
 }
 
 

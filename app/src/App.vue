@@ -145,6 +145,7 @@ h3.dayTitle {
 
 .currency {
 	margin-top: .5rem;
+	display: flex; align-items: center;
 	.coins, .rubys {
 		display: flex; flex-direction: row-reverse;	align-items: center; margin-bottom: .2rem;
 		img { width: 2rem; height: 2rem; margin-left: .2rem; }

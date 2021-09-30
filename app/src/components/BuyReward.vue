@@ -8,7 +8,7 @@
 					<p class="mr4">Your balance is </p>
 					<div class="currency">
 						<figure class="coins">
-							<span>{{ user.points }}</span>
+							<span>{{ user.points - user.tab }}</span>
 							<img src="@/assets/icons/coin.svg" alt="">
 						</figure>
 					</div>
@@ -83,18 +83,20 @@ export default {
 		let loading = ref(false)
 
 		const saveReward = async function() {
-      loading.value = true
 			var user = JSON.parse(localStorage.getItem("user"))
 			console.log("Updating")
-			let reward = { _id: props.reward._id, name: props.reward.name, value: props.reward.rubys, recurring: props.reward.recurring, completed: true }
+			let reward = { _id: props.reward._id, name: props.reward.name, value: props.reward.value, recurring: props.reward.recurring, completed: true }
 			await PostService.saveReward({ user: user.token, reward: reward });
 			store.commit('updateRewardInStore', reward )
-			loading.value = false
     }
 
 		const unlock = async () => {
+			loading.value = true
 			await saveReward()
+			await PostService.chargeTab({ user: store.state.user._id, charge: store.state.user.tab+(props.reward.value*100) })
 			confetti();
+			store.commit('updateTab', store.state.user.tab+(props.reward.value*100))
+			loading.value = false
 			unlocked.value = true
 			success.cloneNode(true).play()
 		}

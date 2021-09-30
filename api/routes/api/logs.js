@@ -231,4 +231,19 @@ router.post("/savereward", async (req, res) => {
   }
 });
 
+//// Update logs
+router.post("/updatetabs", async (req, res) => {
+  try {
+    const users = await getUsers();
+    await users.updateOne(
+      // Filter
+      { _id: new mongoDB.ObjectID(req.body.load.user) },
+      { $set: { tab: parseInt(req.body.load.charge) } },
+    );
+    res.status(201).send();
+  } catch (error) {
+    console.error(error)
+  }
+});
+
 module.exports = router;

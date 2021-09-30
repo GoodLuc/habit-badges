@@ -161,6 +161,10 @@ export default createStore({
       state.user.rewards[reward._id] = reward
       localStorage.setItem("user", JSON.stringify({ ...state.user }))
     },
+    updateTab: (state, tab) => {
+      state.user.tab = tab
+      localStorage.setItem("user", JSON.stringify({ ...state.user }))
+    },
     updateBadgeInStore: (state, habit) => {
       state.user.habits[habit._id] = habit
       state['badges'] = state.user.habits

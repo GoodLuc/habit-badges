@@ -72,6 +72,11 @@
 								<span>Recurring</span>
 							</div>
 
+							<div v-if="loading" class="flex align-center column padyMed">
+								<h2>Saving...</h2>
+								<pulse-loader :loading="loading"></pulse-loader>
+							</div>
+
 							<p><button :disabled="loading" class="button medium" @click="saveReward">Save</button></p>
             </div>
           </div>
@@ -84,7 +89,7 @@
 </template>
 
 <script>
-
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import PostService from '../PostService'
 import { mapMutations } from "vuex";
 
@@ -150,6 +155,7 @@ export default {
           await PostService.saveReward({ user: user.token, reward: reward });
           this.saveRewardToStore(reward)
         }
+				this.loading = false
         this.$emit('close')
       }
     },
@@ -163,8 +169,9 @@ export default {
 			this.recurring = this.$props.reward.recurring
 			this.completed = this.$props.reward.completed
     }
-  }
-}
+  },
+	components: { PulseLoader }
+}  
 </script>
 
 <style scoped lang="scss">

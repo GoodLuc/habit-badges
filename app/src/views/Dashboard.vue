@@ -97,12 +97,12 @@
 					<div class="currency">
 						<figure class="coins">
 							<img src="@/assets/icons/coin.svg" alt="">
-							<span>{{ user.points }}</span>
+							<span>{{ user.points - user.tab }}</span>
 						</figure>
-						<figure class="rubys">
+						<!-- <figure class="rubys">
 							<img src="@/assets/icons/ruby.png" alt="">
 							<span>10</span>
-						</figure>
+						</figure> -->
 					</div>
 				</div>
 				<div class="level-indicator" v-if="user.level">
@@ -112,11 +112,11 @@
 				</div>
 				<div class="reward-list">
 					<h3>Pending rewards</h3>
-					<article>
+					<article class="reward" v-for="reward in pending" :key="reward.id">
 						<figure><img src="@/assets/icons/treasure.png" alt="Reward"></figure>
-						<span>Reward 1</span>
+						<span>{{ reward.name }}</span>
 						<figure class="price">
-							<figcaption>10</figcaption>
+							<figcaption>{{ reward.value }}</figcaption>
 						</figure>
 					</article>
           <router-link class="see-more" to="/rewards">See rewards</router-link>
@@ -132,6 +132,8 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 import BadgeSelector from '@/components/BadgeSelector.vue'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { mapState, mapGetters } from "vuex";
@@ -140,7 +142,14 @@ import { gradeByCount } from "@/components/useFunctions.js";
 export default {
   name: 'Dashboard',
 	setup() {
+		const store = useStore()
+
 		return {
+			pending: computed(() => {
+				return Object.values(store.state.user.rewards).filter(
+					reward => (reward.completed == false || reward.recurring == true) && !reward.deleted
+				)
+			}),
 			gradeByCount
 		}
 	},
