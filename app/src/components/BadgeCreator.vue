@@ -16,7 +16,9 @@
 									<figcaption>{{ coins }}</figcaption>
 								</div>
 							</div>
-							<p v-if="slide == 1 || slide == 2"><button class="button medium" @click="nextSlide">Next</button></p>
+							<p v-if="slide == 1 || slide == 2"><button class="button medium pulse" @click="nextSlide">Next</button></p>
+
+
             </div>
           </div>
 
@@ -33,11 +35,30 @@
 							<p v-if="warn" class="warn">Please enter the name of your habit</p>
 							<p><input @keyup.enter="selectIcon" v-model="habitName" type="text" placeholder="Ex. Work out"></p>
 							<p><button class="button medium" @click="nextSlide">Next</button></p>
+							
+							<div class="ideas flex column align-center">
+								<div class="flex column align-center" @click="ideas = !ideas">
+									<figure><img src="@/assets/icons/ideas.svg" alt="See ideas"></figure>
+									<figcaption>See ideas</figcaption>
+								</div>
+								<ul v-if="ideas">
+									<li>Running</li>
+									<li>Skating</li>
+									<li>Drawing</li>
+									<li>Writing</li>
+									<li>Cleaning the house</li>
+									<li>Practicing an instrument</li>
+									<li>Diet</li>
+									<li>Taking pictures</li>
+									<li>Working on a new project</li>
+								</ul>
+							</div>
             </div>
 
             <div class="slide" v-if="slide == 1">
               <h1>Choose an icon</h1>
-              <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Or enter term to search for another icon..."><button class="button" @click="getIcons(iconTerm)">Search</button></p>
+							<p class="text-center">Or type a different term for your icon search. After selecting, click the 'Next' button under the badge.</p>
+              <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Search term"><button class="button" @click="getIcons(iconTerm)">Search</button></p>
               <div class="text-center">
 								<pulse-loader :loading="loading"></pulse-loader>
 							</div>
@@ -74,8 +95,17 @@
 									<figcaption>{{ coins }}</figcaption>
 								</div>
               </div>
+							<div v-if="loading" class="flex align-center column padyMed">
+								<h2>Saving...</h2>
+								<pulse-loader :loading="loading"></pulse-loader>
+							</div>
 							<p><button :disabled="loading" class="button medium" @click="saveBadge">Save</button></p>
             </div>
+
+						<div class="slide" v-if="slide == 4">
+							<h1>Habit Badge Saved!</h1>
+							<p>Go to your <router-link to="/" class="link">Dashboard</router-link> to check-in!</p>
+						</div>
 						
           </div>
         </div>
@@ -121,7 +151,8 @@ export default {
       iconSrc: '/assets/badges/default/default.svg',
       badgeFrame: '/assets/badges/frame/frame1.svg',
       coins: 5,
-			count: 0
+			count: 0,
+			ideas: false
     }
   },
   methods: {
@@ -148,7 +179,7 @@ export default {
 			} else {
 				this.iconTerm = this.habitName
 				this.getIcons(this.iconTerm)
-				this.iconTerm = ''
+				//this.iconTerm = ''
 				this.gotoSlide(1)
 			}
     },
@@ -197,7 +228,8 @@ export default {
           await PostService.saveBadge({ user: user.token, habit: habit });
           this.saveBadgeToStore(habit)
         }
-        this.$emit('close')
+        //this.$emit('close')
+				this.slide = 4
       }
     },
   },
@@ -219,6 +251,10 @@ export default {
 
 <style scoped lang="scss">
 @import "~@/scss/_badge-maker.scss";
+@import "~@/scss/animate.css";
 
+.pulse {
+	animation: pulse 2s infinite;
+}
 
 </style>

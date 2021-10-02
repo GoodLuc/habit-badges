@@ -18,7 +18,7 @@
             </div>
           </div>
         </div>
-        <div v-else><p>You have no created habits! Create a new Habit Badge from the <router-link to="/habits"><strong>Habits</strong></router-link> tab.</p></div>
+        <div v-else><p class="text-center">You have no created habits! Create a new Habit Badge from the <router-link to="/habits"><strong>Habits</strong></router-link> tab.</p></div>
       </div>
       <figure class="close" @click="saveAndClose"><img src="/assets/icons/close.svg" alt="Close"></figure>
     </div>

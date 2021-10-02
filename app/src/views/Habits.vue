@@ -14,7 +14,7 @@
 						<figcaption>Create new</figcaption>
 					</button>
 				</div>
-				<div class="flex wrap justify-between mt4" v-if="user">
+				<div class="flex wrap justify-between mt4" v-if="user && userHabits.length">
 					<div class="habit-row box flex" v-for="habit in userHabits" :key="habit._id">
 						<div class="habit">
 							<div  class="badge" :class="gradeByCount(habit.count)[0]">
@@ -53,18 +53,21 @@
 
 							<div class="tablechart">
 								<div v-for="index in 30" :key="index">
-									<template v-if="todayNr+index < daysInMonth">
+									<template v-if="todayNr+index < daysInMonth(lastMonthLoad.month, lastMonthLoad.year)">
 										<span v-if="lastMonthLoad.days[todayNr+index+1]?.badges.includes(habit._id)" class="filled" :class="gradeByCount(habit.count)[0]">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
 										<span v-else class="empty">{{monthName(monthLoad.month - 1)}} {{todayNr+index+1}}</span>
 									</template>
 									<template v-else>
-										<span v-if="monthLoad.days[todayNr+index-daysInMonth+1]?.badges.includes(habit._id)" class="filled" :class="gradeByCount(habit.count)[0]">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
-										<span v-else class="empty">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth+1}}</span>
+										<span v-if="monthLoad.days[todayNr+index-daysInMonth(lastMonthLoad.month, lastMonthLoad.year)+1]?.badges.includes(habit._id)" class="filled" :class="gradeByCount(habit.count)[0]">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth(lastMonthLoad.month, lastMonthLoad.year)+1}}</span>
+										<span v-else class="empty">{{monthName(monthLoad.month)}} {{todayNr+index-daysInMonth(lastMonthLoad.month, lastMonthLoad.year)+1}}</span>
 									</template>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
+				<div v-else>
+					<p>No habits created. <span class="link" @click="badgeCreator = true">Create your first badge!</span></p>
 				</div>
       </div>
 
@@ -94,15 +97,19 @@
 <script>
 import PostService from '../PostService'
 import BadgeCreator from '@/components/BadgeCreator.vue'
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { useStore, mapState, mapMutations } from "vuex";
+import { computed } from 'vue'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { gradeByCount } from "@/components/useFunctions.js";
 
 export default {
   name: 'Habits',
 	setup() {
+		const store = useStore()
+
 		return {
-			gradeByCount
+			gradeByCount,
+			userHabits: computed(() => store.getters.userHabits)
 		}
 	},
   data() {
@@ -118,10 +125,6 @@ export default {
   },
   computed: {
     ...mapState(["user","monthLoad","lastMonthLoad"]),
-    ...mapGetters(["userHabits"]),
-		daysInMonth: function() {
-			return new Date(new Date().getMonth(), new Date().getYear(), 0).getDate();
-		}
   },
   watch: {
     // Add overlay class to body if Badge Creator component is open
@@ -152,6 +155,9 @@ export default {
 		monthName: function(month) {
 			let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 			return months[month-1]
+		},
+		daysInMonth: function(month, year) {
+			return new Date(year, month, 0).getDate();
 		}
   },
   components: { BadgeCreator, PulseLoader },

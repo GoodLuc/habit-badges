@@ -53,6 +53,16 @@ class PostService {
     }
   }
 
+	// Get user data by token id
+  static async getUserData(data) {
+    const res = await axios.post(url+'getuserdata/', data)
+    try {
+      return res.data
+    } catch (err) {
+      return err
+    }
+  }
+
   // Get user points
   static async getUserPoints(user) {
     const res = await axios.post(url+'getpoints/', { user })

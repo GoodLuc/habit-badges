@@ -53,7 +53,7 @@
 												</w-tooltip>
 											</div>
 										</div>
-										<button @click="unlockReward = reward; buyReward = true" class="button gold flex justify-center align-center fw">
+										<button @click="unlockReward = reward; buyReward = true" class="button unlock gold flex justify-center align-center fw">
 											<div class="icon-content mb1 mr2">
 												<figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
 												<figcaption>{{ reward.value }}</figcaption>
@@ -62,6 +62,9 @@
 										</button>
 									</div>
 								</article>
+							</div>
+							<div v-else>
+								<p>No pending or recurring rewards.</p>
 							</div>
 
 						</div>
@@ -98,6 +101,9 @@
 										</div>
 									</div>
 								</article>
+							</div>
+							<div v-else>
+								<p>No earned rewards.</p>
 							</div>
 							
 						</div>
@@ -239,8 +245,10 @@ section {
 		align-items: center;
 		width: 100%;
 		p.title { padding: .5rem; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; }
-	}
-	button {
+		.unlock {
+			border-radius: 0 0 .314rem .314rem;
+			padding: .2rem;
+		}
 	}
   .badgeEditControls { 
     display: flex; flex-direction: column; justify-content: center;

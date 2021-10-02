@@ -97,7 +97,7 @@ router.post("/makeuser", async (req, res) => {
   try {
     const users = await getUsers();
     await users.insertOne(
-      { ...req.body.user, habits: {}, points: 0, rewards: {} },
+      { ...req.body.user, habits: {}, points: 0, rewards: {}, tab: 0 },
     );
     res.status(201).send();
   } catch (error) {
@@ -118,7 +118,7 @@ router.get('/checkuser/:email', async (req, res) => {
   }
 });
 
-//// Add logs
+//// Validate and Get user
 router.post("/validateuser", async (req, res) => {
   const user = await getUser(req.body.email, req.body.password, 'full');
   if (user) {
@@ -128,18 +128,34 @@ router.post("/validateuser", async (req, res) => {
   }
 });
 
-async function getUser(email, password, action) {
+//// Get user data by token (id)
+router.post("/getuserdata", async (req, res) => {
+	const user = await getUser(req.body.token, null, 'dataByToken')
+	if (user) {
+		res.send(user)
+	} else {
+		res.sendStatus(500)
+	}
+})
+
+async function getUser(identifier, password, action) {
   if (action === 'full') {
-    let user = client.db('HeroBadge').collection('users').find({ email: email, password: password })
+    let user = client.db('HeroBadge').collection('users').find({ email: identifier, password: password })
+		delete user.password
     return await user.toArray()
   } else if (action === 'check') {
-    let user = client.db('HeroBadge').collection('users').find({ email: email })
+    let user = client.db('HeroBadge').collection('users').find({ email: identifier })
     user = await user.toArray()
     if (await user.length) {
       return true
     } else {
       return false
     }
+  } else if (action === 'dataByToken') {
+    let user = client.db('HeroBadge').collection('users').find({ _id: new mongoDB.ObjectID(identifier) })
+		delete user.password
+    user = await user.toArray()
+    return user
   }
 }
 

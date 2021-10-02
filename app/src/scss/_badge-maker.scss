@@ -42,6 +42,21 @@
 }
 
 
+.ideas {
+	> div {
+		filter: invert(39%) sepia(46%) saturate(1381%) hue-rotate(327deg) brightness(95%) contrast(97%);
+		cursor: pointer;
+		margin-bottom: 1rem;
+	}
+	figure { max-width: 3rem; }
+	ul {
+		border: 1px solid #E64C3C;
+		border-radius: 5px;
+		padding: 1rem 2rem;
+		color: #686868;
+	}
+}
+
 input { width: 40rem; max-width: 80%; background: $shine3; }
 
 .input-button { 

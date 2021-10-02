@@ -1,8 +1,8 @@
 <template>
   <div class="container">
 		<article class="intro">
-			<h1 class="center">Press Start for the adventure of life</h1>
-			<h2 class="center">Start gamifiyng your habits</h2>
+			<h1 class="text-center">Press Start for the adventure of life</h1>
+			<h2 class="text-center">Gamify your habits</h2>
 			<section class="flex">
 				<figure>
 					<img src="@/assets/img/step1.png" alt="">	
@@ -29,12 +29,12 @@
 				</figure>
 				<div>
 					<h2>3. Optionally, create rewards to motivate yourself</h2>
-					<p>Decide how you will reward yourself for being consistent. <br>
-						How much habit currency should it cost you to unlock each reward?</p>
+					<p>Decide how you will reward yourself for being consistent. 
+						How much should it cost you to unlock each reward?</p>
 				</div>
 			</section>
-			<p class="center">
-				<button type="button" class="button" @click="$router.push('/login?register')">Start</button>
+			<p class="text-center">
+				<button type="button" class="button medium" @click="$router.push('/login?register')">Start</button>
 			</p>
 		</article>
     

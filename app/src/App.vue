@@ -3,14 +3,14 @@
     <w-app>
 			<div id="nav">
 				<div :class="['container flex align-center',{ center: centerLogo }]">
-					<figure id="logo"><img src="/assets/badges/default/wings.svg" alt="Habit Badges"></figure> <h1>Hero Badge</h1>
+					<figure id="logo"><img src="@/assets/icons/wings.png" alt="Habit Badges"></figure> <h1>Habit Hero</h1>
 					<a @click="menuActive = true" id="toggl" href="#"><figure><img src="/assets/icons/menu.svg" alt="Menu"></figure></a>
 					<div :class="['flex grow',{ overlay: menuActive, show: menuActive }]" id="menu" v-if="user">
 						<router-link @click="menuActive = false" to="/">Dashboard</router-link>
 						<router-link @click="menuActive = false" to="/monthly">Monthly view</router-link>
 						<router-link @click="menuActive = false" to="/habits">Habits</router-link>
 						<router-link @click="menuActive = false" to="/rewards">Rewards</router-link>
-						<router-link @click="menuActive = false" to="/powerups">Power-Ups</router-link>
+						<!-- <router-link @click="menuActive = false" to="/powerups">Power-Ups</router-link> -->
 						<!--router-link to="/trinkets">Trinkets</router-link>
 						<router-link to="/castle">Your castle</router-link-->
 						<a @click="logout" class="logout">Logout</a>
@@ -61,8 +61,12 @@ export default {
 @import "~@/scss/_badges.scss";
 
 #nav {
+	padding: .7rem;
   background: $gold;
-  h1 { font-size: 1rem; margin: 0 2rem 0 0; color: white; }
+  h1 { 
+		font-size: 1rem; margin: 0 2rem 0 0; color: white; 
+		text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.48);
+	}
   a {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.48);
     font-weight: bold; margin-right: 0.714rem;
@@ -73,8 +77,9 @@ export default {
     .logout { margin-left: auto; }
   }
   #logo, #toggl {
-    filter: invert(1); width: 3.57rem; margin-right: 0.714rem; flex-shrink: 0;
+    /* filter: invert(1); width: 3.57rem; */ margin-right: 0.714rem; flex-shrink: 0;
   }
+	#logo { width: 4rem; }
   #toggl { display: none; margin-left: auto; width: 2.57rem; padding: 0; }
   .close { display: none; }
 }

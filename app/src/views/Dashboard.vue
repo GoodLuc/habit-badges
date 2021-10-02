@@ -112,17 +112,29 @@
 				</div>
 				<div class="reward-list">
 					<h3>Pending rewards</h3>
-					<article class="reward" v-for="reward in pending" :key="reward.id">
+					<template v-if="pending.length">
+						<article class="reward" v-for="reward in pending" :key="reward.id">
+							<figure><img src="@/assets/icons/treasure.png" alt="Reward"></figure>
+							<span>{{ reward.name }}</span>
+							<figure class="price">
+								<figcaption>{{ reward.value }}</figcaption>
+							</figure>
+						</article>
+          	<router-link class="see-more" to="/rewards">See rewards</router-link>
+					</template>
+					<template v-else>
+						<p class="text-normal">You can create <router-link to="/rewards" class="link">rewards</router-link>.</p>
+					</template>
+				</div>
+				<div class="reward-list" v-if="completed.length">
+					<h3>Latest achievements</h3>
+					<article class="reward" v-for="reward in completed" :key="reward.id">
 						<figure><img src="@/assets/icons/treasure.png" alt="Reward"></figure>
 						<span>{{ reward.name }}</span>
 						<figure class="price">
 							<figcaption>{{ reward.value }}</figcaption>
 						</figure>
 					</article>
-          <router-link class="see-more" to="/rewards">See rewards</router-link>
-				</div>
-				<div>
-					<h3>Latest achievements</h3>
 				</div>
 			</div>
 		</aside>
@@ -148,6 +160,11 @@ export default {
 			pending: computed(() => {
 				return Object.values(store.state.user.rewards).filter(
 					reward => (reward.completed == false || reward.recurring == true) && !reward.deleted
+				)
+			}),
+			completed: computed(() => {
+				return Object.values(store.state.user.rewards).filter(
+					reward => (reward.completed == true) && !reward.deleted
 				)
 			}),
 			gradeByCount
@@ -230,6 +247,7 @@ export default {
   mounted() {
     this.$store.dispatch('setCurrentDate')
     this.$store.dispatch('getMonth')
+		document.body.classList.remove('overlaid')
   }
 }
 </script>
@@ -278,6 +296,7 @@ export default {
 		background: url('~@/assets/icons/shield.png') center/contain no-repeat;
 		font-weight: 600; color: white; 
 		height: 5rem; width: 3.8rem; 
+		font-size: 1.3rem;
 		display: flex; flex-direction: column; justify-content: center; align-items: center;
 	}
 

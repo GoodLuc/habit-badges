@@ -180,7 +180,10 @@ export default createStore({
       state.lastMonthLoad = { days:{} }
     }
 	},
+
+
   actions: {
+
     // For login screen
     centerLogo({commit}, value) {
       commit("centerLogo", value)
@@ -218,7 +221,9 @@ export default createStore({
       // Write to DB
       await PostService.updateLog({ user: this.state.user.token, date: { year: this.state.date.year, month: this.state.date.month }, monthLoad: monthToEdit});
       let points = await PostService.getUserPoints(this.state.user.token)
+			let user = await PostService.getUserData({ token: this.state.user.token })
       commit("setUserPoints", points)
+			commit("setUser", { ...user[0], token: user[0]._id})
       commit("setUserLevel")
       return true
     },
