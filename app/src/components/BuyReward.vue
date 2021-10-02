@@ -13,6 +13,8 @@
 						</figure>
 					</div>
 				</div>
+
+				<p class="text-center" v-if="!((user.points - user.tab) > (reward.value * 100)) && !unlocked">Your balance is not enough to unlock this reward! Keep completing your habits in order to earn it.</p>
 				
         <div v-if="loading" class="flex align-center column padyMed">
           <h2>Opening...</h2>
@@ -47,7 +49,7 @@
 								</div>
 								{{ reward.name }}
 							</h2>
-							<button v-if="!unlocked" @click="unlock" class="button gold flex align-center">
+							<button :disabled="!((user.points - user.tab) > (reward.value * 100))" v-if="!unlocked" @click="unlock" class="button gold flex align-center">
 								<span class="mr2">Unlock for </span>
 								<div class="icon-content mb1">
 									<figure><img src="@/assets/icons/coin.svg" alt="Coins"></figure>
@@ -139,6 +141,8 @@ button {
 	box-shadow: 0px 4px 3px 0px #CFCFCF8A;
 	margin: auto auto 2rem;
 }
+
+button[disabled], button[disabled]:hover { background: lightgray; }
 
 .currency {
 	font-weight: 400;

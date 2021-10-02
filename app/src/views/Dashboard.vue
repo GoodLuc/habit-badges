@@ -110,7 +110,7 @@
 					<div class="level"><div :style="'width:'+user.level.percent+'%'"></div></div>
 					<p class="entitlement"><strong>{{ titles[user.level.nr] }}</strong></p>
 				</div>
-				<div class="reward-list">
+				<div class="reward-list mb4">
 					<h3>Pending rewards</h3>
 					<template v-if="pending.length">
 						<article class="reward" v-for="reward in pending" :key="reward.id">

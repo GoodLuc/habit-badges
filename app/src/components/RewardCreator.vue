@@ -28,13 +28,22 @@
                 <p v-if="warn" class="warn">Please describe what would be your reward</p>
                 <p><input class="mxa" @keyup.enter="nextSlide" v-model="rewardName" type="text" placeholder="Ex. Ice cream / New clothes"></p>
 								<p><button class="button medium" @click="nextSlide">Next</button></p>
-								<article>
-									<h3>See reward ideas:</h3>
-									<ul>
-										<li>Go on a trip</li>
-										<li></li>
+								<div class="ideas flex column align-center">
+									<div class="flex column align-center" @click="ideas = !ideas">
+										<figure><img src="@/assets/icons/ideas.svg" alt="See ideas"></figure>
+										<figcaption>See ideas</figcaption>
+									</div>
+									<ul v-if="ideas">
+										<li>A treat</li>
+										<li>Something you've been meaning to buy</li>
+										<li>A trip somewhere</li>
+										<li>Going to the movies</li>
+										<li>Eating out</li>
+										<li>Something you collect</li>
+										<li>A pet</li>
+										<li>Starting a new project</li>
 									</ul>
-								</article>
+								</div>
             </div>
 
             <div class="slide" v-if="slide == 1">
@@ -115,7 +124,8 @@ export default {
       slide: 0,
       rubys: 4,
 			recurring: false,
-			completed: false
+			completed: false,
+			ideas: false
     }
   },
   methods: {
@@ -176,5 +186,9 @@ export default {
 
 <style scoped lang="scss">
 @import "~@/scss/_badge-maker.scss";
+@import "~@/scss/animate.css";
 
+.pulse {
+	animation: pulse 2s infinite;
+}
 </style>
