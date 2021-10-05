@@ -4,7 +4,7 @@
 			<div id="nav">
 				<div :class="['container flex align-center',{ center: centerLogo }]">
 					<figure id="logo"><img src="@/assets/icons/wings.png" alt="Habit Badges"></figure> <h1>Habit Hero</h1>
-					<a @click="menuActive = true" id="toggl" href="#"><figure><img src="/assets/icons/menu.svg" alt="Menu"></figure></a>
+					<a v-if="user" @click="menuActive = true" id="toggl" href="#"><figure><img src="@/assets/icons/menu.svg" alt="Menu"></figure></a>
 					<div :class="['flex grow',{ overlay: menuActive, show: menuActive }]" id="menu" v-if="user">
 						<router-link @click="menuActive = false" to="/">Dashboard</router-link>
 						<router-link @click="menuActive = false" to="/monthly">Monthly view</router-link>
@@ -61,7 +61,7 @@ export default {
 @import "~@/scss/_badges.scss";
 
 #nav {
-	padding: .7rem;
+	padding: .3rem;
   background: $gold;
   h1 { 
 		font-size: 1rem; margin: 0 2rem 0 0; color: white; 
@@ -71,7 +71,8 @@ export default {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.48);
     font-weight: bold; margin-right: 0.714rem;
     padding: 1.3rem; text-decoration: none; color: white; 
-    &.router-link-exact-active { background: $azure; }
+		border-radius: .314rem;
+    &.router-link-exact-active { background: $azure; box-shadow: inset 0px 0px 6px 0px #545454; }
   }
   .container {
     .logout { margin-left: auto; }
@@ -80,7 +81,7 @@ export default {
     /* filter: invert(1); width: 3.57rem; */ margin-right: 0.714rem; flex-shrink: 0;
   }
 	#logo { width: 4rem; }
-  #toggl { display: none; margin-left: auto; width: 2.57rem; padding: 0; }
+  #toggl { display: none; margin-left: auto; width: 2.57rem; padding: 0; filter: invert(100%) sepia(14%) saturate(7494%) hue-rotate(298deg) brightness(113%) contrast(112%); }
   .close { display: none; }
 }
 .container.center { justify-content: center; }
@@ -164,7 +165,7 @@ h3.dayTitle {
 		background: white;
 		border-radius: 6px;
 		box-shadow: 0px 4px 3px 0px #CFCFCF8A;
-		figure { width: 3rem; height: 3rem; }
+		figure { width: 3rem; flex-shrink: 0; min-height: 3rem; }
 		.price {
 			background: url('~@/assets/icons/ruby.png') center/contain no-repeat;
 			display: flex; justify-content: center; align-items: center;

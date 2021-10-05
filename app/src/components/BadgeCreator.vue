@@ -51,6 +51,7 @@
 									<li>Diet</li>
 									<li>Taking pictures</li>
 									<li>Working on a new project</li>
+									<li>Doing something new</li>
 								</ul>
 							</div>
             </div>

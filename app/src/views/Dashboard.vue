@@ -1,5 +1,36 @@
 <template>
 	<div class="container flex justify-between">
+		<aside class="bgcont-wrap dash-side">
+			<div class="bgcont">
+				<div class="reward-list mb4">
+					<h3>Pending rewards</h3>
+					<template v-if="pending.length">
+						<article class="reward" v-for="reward in pending" :key="reward.id">
+							<figure><img src="@/assets/icons/treasure.png" alt="Reward"></figure>
+							<span>{{ reward.name }}</span>
+							<figure class="price">
+								<figcaption>{{ reward.value }}</figcaption>
+							</figure>
+						</article>
+          	<router-link class="see-more" to="/rewards">See rewards</router-link>
+					</template>
+					<template v-else>
+						<p class="text-normal">You can create <router-link to="/rewards" class="link">rewards</router-link>.</p>
+					</template>
+				</div>
+				<div class="reward-list" v-if="completed.length">
+					<h3>Latest achievements</h3>
+					<article class="reward" v-for="reward in completed" :key="reward.id">
+						<figure><img src="@/assets/icons/treasure.png" alt="Reward"></figure>
+						<span>{{ reward.name }}</span>
+						<figure class="price">
+							<figcaption>{{ reward.value }}</figcaption>
+						</figure>
+					</article>
+				</div>
+			</div>
+		</aside>
+
 		<main class="dash">
 			<h1 v-if="user">Welcome back {{ user.name }}</h1>
 
@@ -254,6 +285,14 @@ export default {
 
 <style lang="scss" scoped>
 
+.container {
+	@media (max-width: 1200px) {
+		flex-wrap: wrap;
+		flex-direction: column-reverse;
+		.dash-side:last-of-type .reward-list { display: none; }
+	}
+}
+
 .week {
 	.isEmpty { 
 		.edit {  height: 3rem; width: 3rem; padding: .1rem;
@@ -264,7 +303,10 @@ export default {
 }
 
 .dash {
-	width: calc(80% - 3rem);
+	width: calc(75% - 3rem);
+	@media (max-width: 1200px) {
+		width: 100%;
+	}
 	h1 { 
 		font-size: 3.429rem;
 		font-weight: 300; margin-top: 4rem;
@@ -287,7 +329,10 @@ export default {
 
 .dash-side {
 	margin: 3rem 0 auto;
-	width: 20%;
+	width: 25%;
+	@media (max-width: 1200px) { 
+		width: 100%;
+	}
 	.bgcont > div {
 		padding: 1.5rem;
 	}
@@ -319,6 +364,10 @@ export default {
 			text-align: center;	color: #0065A5;
 			margin: 0;
 		}
+
+	}
+	.reward-list {
+		span { padding: .5rem; display: block; text-align: center; }
 	}
 
 	.see-more { float: right; }
