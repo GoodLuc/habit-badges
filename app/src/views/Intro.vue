@@ -34,7 +34,8 @@
 				</div>
 			</section>
 			<p class="text-center">
-				<button type="button" class="button medium" @click="$router.push('/login?register')">Start</button>
+				<button v-if="!user" type="button" class="button medium" @click="$router.push('/login?register')">Start</button>
+				<button v-else type="button" class="button medium" @click="$router.push('/')">Start</button>
 			</p>
 		</article>
     
@@ -42,6 +43,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -49,6 +51,9 @@ export default {
     }
   },
   methods: {
+  },
+	computed: {
+    ...mapState(["user","centerLogo"]),
   },
   mounted() { this.$store.dispatch("centerLogo", true) },
   beforeUnmount() { this.$store.dispatch("centerLogo", false) }
@@ -84,6 +89,16 @@ button[disabled=disabled] { background: $ellis; }
 			p { font-size: 1.714rem; font-weight: 300; line-height: 2.5rem; max-width: 60rem; margin: 0; }
 			display: flex; flex-direction: column; justify-content: center;
 			padding: 1rem;
+		}
+	}
+	@media (max-width: 700px) {
+		> h1 { font-size: 2.5rem; } 
+		> h2 { font-size: 2rem; }
+		section {
+			flex-direction: column; align-items: center;
+			text-align: center;
+			> div h2 { font-size: 1.5rem; }
+			> div p { font-size: 1.2rem; }
 		}
 	}
 }

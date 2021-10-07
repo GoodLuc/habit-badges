@@ -59,7 +59,9 @@ export default {
 <style lang="scss">
 @import "~@/scss/_resets-utils.scss";
 @import "~@/scss/_badges.scss";
-
+html {
+  scroll-behavior: smooth;
+}
 #nav {
 	padding: .3rem;
   background: $gold;
@@ -92,8 +94,12 @@ export default {
 	justify-content: center;
 	align-items: center;
 	margin-top: auto;
-  figure { background: none; box-shadow: none; filter: invert(98%) sepia(0%) saturate(7493%) hue-rotate(213deg) brightness(103%) contrast(104%); width: 2rem; margin-left: -.4rem; margin-right: .8rem; display: flex; align-items: center; img { max-height: 100%; } }
-	figcaption { margin: .3rem 0 0; padding: 0; }
+  figure { background: none; box-shadow: none; filter: invert(98%) sepia(0%) saturate(7493%) hue-rotate(213deg) brightness(103%) contrast(104%); width: 2rem; margin-left: -.4rem; display: flex; align-items: center; img { max-height: 100%; } }
+	figcaption { margin: .3rem 0 0 .8rem; padding: 0; }
+	@media (max-width: 500px) {
+		width: auto;
+		figure { margin: auto; }
+	}
 }
 
 .overlay { 
@@ -105,10 +111,13 @@ export default {
     background: $background; position: fixed; top: 0; right: 0; z-index: 10;
     width: 5.71rem; height: 5.71rem; cursor: pointer; padding: 1rem; box-sizing: border-box;
     img { filter: invert(1); }
+		@media (max-width: 1000px) {
+			width: 3.5rem; height: 3.5rem;
+		}
   }
 }
 
-@media (max-width: 670px) {
+@media (max-width: 740px) {
   #nav #toggl { display: block; }
   #menu {
     display: none;
@@ -136,15 +145,15 @@ h3.dayTitle {
 }
 
 .box {
-  background: $shine3; padding: 1.5rem 3rem;
+  background: $shine3; padding: 1.5rem;
   border-radius: 15px;
   margin-bottom: 2rem;
   .grid { margin-bottom: 2rem; }
   .badge, .badge-check, .edit {
     width: 100%; box-sizing: border-box; 
   }
-  @media (max-width: 770px) { padding: 1rem 2rem; }
-  @media (max-width: 520px) { padding: .8rem 2rem; }
+  @media (max-width: 770px) { padding: 1rem; }
+  @media (max-width: 520px) { padding: .8rem; }
 }
 
 
@@ -155,6 +164,18 @@ h3.dayTitle {
 	.coins, .rubys {
 		display: flex; flex-direction: row-reverse;	align-items: center; margin-bottom: .2rem;
 		img { width: 2rem; height: 2rem; margin-left: .2rem; }
+	}
+}
+
+.dash {
+	h1 { 
+		font-size: 3.429rem;
+		font-weight: 300; margin-top: 4rem;
+	}
+	h2 { margin: 4rem 0 1rem; font-size: 1.714rem; font-weight: 400; }
+	@media (max-width: 700px) { 
+		h1 { font-size: 2.5rem; }
+		h2 { font-size: 1.5rem;}
 	}
 }
 

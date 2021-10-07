@@ -231,16 +231,13 @@ export default createStore({
     async getMonth({ commit }) {
       let monthLoad = await PostService.getMonth({ user: this.state.user.token, date: { year: this.state.date.year, month: this.state.date.month}})
       commit("setMonthLoad", monthLoad[0]);
-      // If date is earlier than the 7th, also get last month's load to display in "Last week."
-      if (this.state.date.day < 7) {
-        let lastMonthLoad = await PostService.getMonth({ user: this.state.user.token, date: { year: this.state.date.year, month: (parseInt(this.state.date.month) - 1)}})
-        // if nothing is found set defaults.
-        if (lastMonthLoad[0] === undefined) {
-          commit("setLastMonthLoad", { days:{}, year: this.state.date.year, month: (parseInt(this.state.date.month) - 1) });
-        } else {
-          commit("setLastMonthLoad", lastMonthLoad[0]);
-        }
-      }
+			let lastMonthLoad = await PostService.getMonth({ user: this.state.user.token, date: { year: this.state.date.year, month: (parseInt(this.state.date.month) - 1)}})
+			// if nothing is found set defaults.
+			if (lastMonthLoad[0] === undefined) {
+				commit("setLastMonthLoad", { days:{}, year: this.state.date.year, month: (parseInt(this.state.date.month) - 1) });
+			} else {
+				commit("setLastMonthLoad", lastMonthLoad[0]);
+			}
     },
 	},
 });

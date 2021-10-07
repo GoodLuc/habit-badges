@@ -2,36 +2,53 @@
   <div>
     <div class="container dash">
       <div class="main">
+				<h1>This are your habits {{ user.name }}</h1>
         <div class="flex justify-between">
-					<div>
-						<h1>This are your habits {{ user.name }}</h1>
-						<p>Create your custom badges to track your daily progress</p>
-					</div>
+					<p class="pr4">Create your custom badges to track your daily progress</p>
 					<button class="button button-add" @click="badgeCreator = true">
 						<figure>
 							<img src="/assets/badges/default/add.svg" alt="Add new">
 						</figure>
-						<figcaption>Create new</figcaption>
+						<figcaption class="xs-hide">Create new</figcaption>
 					</button>
 				</div>
 				<div class="flex wrap justify-between mt4" v-if="user && userHabits.length">
 					<div class="habit-row box flex" v-for="habit in userHabits" :key="habit._id">
-						<div class="habit">
-							<div  class="badge" :class="gradeByCount(habit.count)[0]">
+						<div class="habit mdd-d-flex">
+							<div class="badge" :class="gradeByCount(habit.count)[0]">
 								<figure>
 									<div class="frame"><img :src="'/assets/badges/frame/frame'+habit.frame+'.svg'" :alt="habit.name"></div>
 									<div class="icon"><img crossOrigin="anonymous" id="badgeIcon" :src="habit.image" :alt="habit.icon"></div>
 								</figure>
 							</div>
 							<div class="badge-grade mt2 text-center">
+								<h2 class="lgu-hide">{{ habit.name }}</h2>
 								<h3>{{ gradeByCount(habit.count)[1] }}</h3>
 								<p>Done {{ habit.count }} times</p>
 							</div>
+							<div class="badgeEditControls first">
+									<w-tooltip top color="white" bg-color="grey-dark5">
+										<template #activator="{ on }">
+											<button v-on="on" class="edit" @click="editHabit(habit)" type="button">
+												<figure><img src="/assets/badges/default/edit.svg" alt="Edit"></figure>
+											</button>
+										</template>
+										Edit
+									</w-tooltip>
+									<w-tooltip top color="white" bg-color="grey-dark5">
+										<template #activator="{ on }">
+											<button v-on="on" class="del" type="button" @click="delDialog = true; delHabit = habit">
+												<figure><img src="@/assets/icons/archive.svg" alt="Delete"></figure>
+											</button>
+										</template>
+										Archive
+									</w-tooltip>
+								</div>
 						</div>
 						<div class="timeline">
 							<div class="flex justify-between align-bottom">
-								<h2>{{ habit.name }}</h2>
-								<div class="badgeEditControls">
+								<h2 class="mdd-hide">{{ habit.name }}</h2>
+								<div class="badgeEditControls second">
 									<w-tooltip top color="white" bg-color="grey-dark5">
 										<template #activator="{ on }">
 											<button v-on="on" class="edit" @click="editHabit(habit)" type="button">
@@ -176,6 +193,29 @@ h1 { font-weight: 300; }
 	width: 100%; 
 	margin-bottom: 2rem; 
 	max-width: calc(50% - 1rem);
+	@media (max-width: 1200px) {
+		max-width: 100%;
+		flex-direction: column;
+		.habit { 
+			width: 100%;
+			justify-content: space-between;
+			.badge {
+				width: auto;
+				max-width: 10rem;
+				margin-right: 1rem;
+			}
+			.badge-grade { margin: auto; flex-grow: 1; }
+		}
+	}
+	@media (max-width: 600px) {
+		.habit {
+			flex-direction: column;
+			align-items: center;
+			.badge {
+				margin: auto auto 1rem;
+			}
+		}
+	}
 	h2 { margin: 0; }
 	h3 { margin: 0 0 .5rem; }
 	p { margin: 0; font-size: 1rem; }
@@ -194,6 +234,7 @@ h1 { font-weight: 300; }
 .badgeEditControls { 
 	display: flex; justify-content: flex-end; 
 	margin-top: 1rem; margin-left: auto;
+	&.first { display: none; }
 	button { display: block; cursor: pointer; margin-left: 1rem;
 		width: auto; border-radius: 0 0 .314rem .314rem;
 		font-weight: 200; font-size: .9rem; border: none; 
@@ -203,6 +244,17 @@ h1 { font-weight: 300; }
 		&.del { figure { filter: invert(36%) sepia(66%) saturate(7120%) hue-rotate(219deg) brightness(99%) contrast(97%); } }
 		figure img { height: 2rem; }
 		&:hover { transform: scale(1.2); }
+	}
+	@media (max-width: 1200px) {
+		&.first { display: flex; }
+		&.second { display: none; }
+	}
+	@media (max-width: 600px) {
+		justify-content: center;
+		width: 100%;
+		button {
+			margin: 0 .5rem;
+		}
 	}
 }
 

@@ -2,23 +2,21 @@
   <div>
     <div class="container dash">
       <div class="main">
+				<h1>This are your rewards {{ user.name }}</h1>
         <div class="flex justify-between">
-					<div>
-						<h1>This are your rewards {{ user.name }}</h1>
-						<p>Create new ones or see your previously earned rewards</p>
-					</div>
+					<p class="pr4">Create new ones or see your previously earned rewards</p>
 					<button class="button button-add" @click="rewardCreator = true">
 						<figure>
 							<img src="/assets/badges/default/add.svg" alt="Add new">
 						</figure>
-						<figcaption>Create new</figcaption>
+						<figcaption class="xs-hide">Create new</figcaption>
 					</button>
 				</div>
 				
-				<div class="flex justify-between mt8">
+				<div class="flex justify-between wrap mt8">
 					<section class="bgcont-wrap">
 						<div class="bgcont">
-							<div class="flex justify-between">
+							<div class="flex justify-between align-bottom mb4">
 								<h2>Pending / Recurring</h2>
 								<div class="currency">
 									<figure class="coins">
@@ -72,7 +70,7 @@
 
 					<section class="bgcont-wrap">
 						<div class="bgcont">
-							<h2>Earned</h2>
+							<h2 class="mb4">Earned</h2>
 
 							<div class="reward-list" v-if="user.rewards && Object.keys(user.rewards).length">
 								<article class="reward" v-for="reward in completed" :key="reward.id">
@@ -226,12 +224,21 @@ h1 { font-weight: 300; }
 
 section {
 	width: calc(50% - 1rem);
-	h2 { margin: 0 0 1rem; }
+	h2 { margin: 0 0 0; }
 	> div { padding: 2rem; }
+	@media (max-width: 1000px) {
+		width: 100%;
+		flex-wrap: wrap;
+		margin-bottom: 2rem;
+	}
+}
+
+.currency {
+	margin: 0;
 }
 
 .reward {
-	width: calc(50% - 1rem);
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -249,6 +256,9 @@ section {
 			border-radius: 0 0 .314rem .314rem;
 			padding: .2rem;
 		}
+		@media (max-width: 500px) {
+			> div { flex-direction: column; align-items: center; }
+		}
 	}
   .badgeEditControls { 
     display: flex; flex-direction: column; justify-content: center;
@@ -261,6 +271,9 @@ section {
       figure img { height: 2rem; }
       &:hover { transform: scale(1.2); }
     }
+		@media (max-width: 500px) {
+			flex-direction: row; margin-bottom: 1rem;
+		}
   }
 }
 
@@ -269,7 +282,7 @@ section {
   .controls {
     display: flex; justify-content: center;
     button { margin-right: 20px; width: auto; }
-    button.del { background: #ce821f; }
+    button.del { background: #f7b016; }
   }
 }
 

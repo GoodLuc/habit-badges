@@ -5,7 +5,7 @@
 }
 
 .tabs { 
-  width: 100%; flex-grow: 1; margin-right: 2rem; margin-top: 1rem;
+  width: 100%; flex-grow: 1; margin-right: 5rem; margin-top: 1rem;
   nav { 
     button {
       border: none; 
@@ -23,6 +23,13 @@
     h1 { margin: 0; text-align: center; font-weight: 300; }
 		p { margin-left: auto; margin-right: auto; text-align: center; }
   }
+	@media (max-width: 1000px) {
+		margin-right: 3rem;
+	}
+	@media (max-width: 750px) {
+		nav button { font-size: 1.2rem; }
+		.slide h1 { font-size: 2rem; }
+	}
 }
 
 .badgeHolder {
@@ -32,6 +39,14 @@
     position: fixed; width: 12rem;
   }
 }
+
+@media (max-width: 1000px) {
+	.badgeHolder, .rewardHolder {
+		display: none;
+	}
+	.iconNext, .frameNext { display: block; }
+}
+
 .rewardHolder > div {
 	border-radius: .314rem;
   margin-right: 2rem; padding-top: 1rem; position: relative;
@@ -67,9 +82,10 @@ input { width: 40rem; max-width: 80%; background: $shine3; }
 
 .icons, .frames, .materials {
   border-radius: .314rem; margin-top: 2rem;
+  grid-template-columns: repeat( auto-fill, minmax(8rem, 1fr) ); gap: 20px;
   figure {
-    padding: 1.2rem; box-sizing: border-box; border-radius: .314rem;
-    margin-right: 1rem; width: 8rem;
+    padding: 1rem; box-sizing: border-box; border-radius: .314rem;
+    width: 8rem; margin: auto;
     &:hover, &.selected {
       background: $azure; cursor: pointer;
       img { filter: invert(1) }
@@ -81,7 +97,10 @@ input { width: 40rem; max-width: 80%; background: $shine3; }
 .slider { -webkit-appearance: none; appearance: none; width: 100%;
   height: 25px; background: #d3d3d3; outline: none; opacity: 0.7;
   -webkit-transition: .2s; transition: opacity .2s; margin: 0;
-	width: calc(100% - 10rem); max-width: 35rem; margin: auto; 
+	width: calc(100% - 10rem); max-width: 35rem; margin: auto;
+	@media (max-width: 700px) {
+		width: 100%; max-width: 100%;
+	}
 }
 .slider:hover { opacity: 1; }
 .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;

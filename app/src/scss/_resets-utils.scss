@@ -66,6 +66,7 @@ figure { margin: 0; padding: 0 }
 
 .flex { 
   display: flex; 
+  &.align-top { align-items: flex-start; }
   &.align-bottom { align-items: flex-end; }
   &.align-center { align-items: center; }
   &.justify-left { justify-content: flex-start; }

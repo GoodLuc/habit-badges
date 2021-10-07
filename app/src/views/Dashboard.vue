@@ -279,6 +279,7 @@ export default {
     this.$store.dispatch('setCurrentDate')
     this.$store.dispatch('getMonth')
 		document.body.classList.remove('overlaid')
+		window.scrollTo(0, 0)
   }
 }
 </script>
@@ -286,10 +287,26 @@ export default {
 <style lang="scss" scoped>
 
 .container {
+	.dash-side:first-of-type { display: none; }
 	@media (max-width: 1200px) {
 		flex-wrap: wrap;
 		flex-direction: column-reverse;
 		.dash-side:last-of-type .reward-list { display: none; }
+		.dash-side:first-of-type {
+			display: block;
+			.bgcont { display: flex; justify-content: space-between; }
+			.reward-list { width: 50%; }
+			@media (max-width: 717px) {
+				.bgcont { flex-wrap: wrap; }
+				.reward-list { 
+					width: 100%; 
+					article {
+						padding-top: 2rem;
+						padding-bottom: 2rem;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -307,12 +324,7 @@ export default {
 	@media (max-width: 1200px) {
 		width: 100%;
 	}
-	h1 { 
-		font-size: 3.429rem;
-		font-weight: 300; margin-top: 4rem;
-	}
-	h2 { margin: 4rem 0 1rem; font-size: 1.714rem; font-weight: 400; }
-
+	
 	.top-habits {
 		.title {
 			display: flex; justify-content: space-between; align-items: flex-end;

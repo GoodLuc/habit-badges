@@ -3,9 +3,11 @@
     <div>
       <div v-if="getDayLoad" class="container medium mt4">
         <h1>What have you done to improve yourself <span v-if="getDayLoad.day == today.day">today</span><span v-else>on {{ dayName({day: getDayLoad.day, month: getDayLoad.month, year: getDayLoad.year}) }}</span>?</h1>
-        <div v-if="loading" class="flex align-center column padyMed">
-          <h2>Saving...</h2>
-          <pulse-loader :loading="loading"></pulse-loader>
+        <div v-if="loading" class="flex align-center justify-center fw column padyMed loader">
+          <div class="text-center pulse">
+						<h2>Saving...</h2>
+						<pulse-loader :loading="loading"></pulse-loader>
+					</div>
         </div>
         <div v-if="userHabits.length" class="grid">
           <div v-for="badge in userHabits" :key="badge._id" @click="toggleBadge(badge._id); coincount.cloneNode(true).play()">
@@ -66,7 +68,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-h1 { font-weight: 300; text-align: center; }
+h1 { font-weight: 300; text-align: center; padding: 0 4.5rem; }
 
 .badge { cursor: pointer; }
 .badge, .badge-add, .edit {
@@ -74,5 +76,17 @@ h1 { font-weight: 300; text-align: center; }
 }
 .toAdd { background: white !important; color: black !important; }
 .grid { margin-bottom: 3rem; }
+
+.loader {
+	position: fixed;
+	height: 100vh; width: 100vw;
+	z-index: 22; top: 0;
+	h2 { margin-top: 0; }
+	> div { background: #E8E5E5; padding: .5rem 1.5rem; border-radius: .314rem; }
+}
+
+.pulse {
+	animation: pulse 1s infinite;
+}
 
 </style>

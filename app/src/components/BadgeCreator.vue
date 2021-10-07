@@ -3,7 +3,7 @@
     <div>
       <div class="container medium">
         <div class="flex fw">
-          <div class="badgeHolder">
+          <div class="badgeHolder first">
             <div class="mt8">
 							<div class="badge grade1">
 								<figure>
@@ -58,12 +58,12 @@
 
             <div class="slide" v-if="slide == 1">
               <h1>Choose an icon</h1>
-							<p class="text-center">Or type a different term for your icon search. After selecting, click the 'Next' button under the badge.</p>
+							<p class="text-center">Or type a different term for your icon search. After selecting, click 'Next.'</p>
               <p class="input-button"><input @keyup.enter="getIcons(iconTerm)" v-model="iconTerm" type="text" placeholder="Search term"><button class="button" @click="getIcons(iconTerm)">Search</button></p>
               <div class="text-center">
 								<pulse-loader :loading="loading"></pulse-loader>
 							</div>
-              <div v-if="icons.length" class="box icons flex wrap">
+              <div v-if="icons.length" class="box icons grid">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
                   <img :src="icon.preview_url" :alt="icon.attribution" crossorigin="anonymous">
@@ -74,6 +74,9 @@
                 <p v-if="!loading">No icons found under '{{ iconSearchTerm }}.' Please enter another search term. <br>
                 Tip: Try a simple noun like "exercise" or "music".</p>
               </div>
+
+							<p ref="iconNext" class="iconNext"><button class="button medium pulse" @click="nextSlide">Next</button></p>
+
             </div>
 
             <div class="slide" v-if="slide == 2">
@@ -84,6 +87,7 @@
                   <img :src="'/assets/badges/frame/frame'+index+'.svg'">
                 </figure>
               </div>
+							<p ref="frameNext" class="frameNext"><button class="button medium pulse" @click="nextSlide">Next</button></p>
             </div>
 
             <div class="slide" v-if="slide == 3">
@@ -189,19 +193,22 @@ export default {
     },
     nextSlide: function() {
       if (this.slide == 0) { 
+      	this.warn = false
         this.selectIcon() 
       } else {
         this.slide++
+      	this.warn = false
       }
-      this.warn = false
     },
     setIcon: function(icon) {
       this.selectedIcon = icon
       this.iconSrc = icon.preview_url
+			this.$refs.iconNext.scrollIntoView({behavior: "smooth"});
     },
     setFrame: function(index) {
       this.badgeFrame = '/assets/badges/frame/frame'+index+'.svg'
       this.selectedFrameIndex = index
+			this.$refs.frameNext.scrollIntoView({behavior: "smooth"});
     },
     saveBadge: async function() {
       this.loading = true
@@ -254,8 +261,11 @@ export default {
 @import "~@/scss/_badge-maker.scss";
 @import "~@/scss/animate.css";
 
+.iconNext, .frameNext { display: none; }
+
 .pulse {
 	animation: pulse 2s infinite;
 }
+
 
 </style>
