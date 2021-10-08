@@ -21,7 +21,7 @@
           <pulse-loader :loading="loading"></pulse-loader>
         </div>
 
-				<article class="reward tremble mb8" v-if="!loading">
+				<article class="reward tremble mb8 grade1" v-if="!loading">
 					<div class="flex justify-center align-bottom">
 						<figure class="treasure glow" :class="{ 'hide': unlocked }">
 							<svg width="284" height="231" viewBox="0 0 284 231" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -140,6 +140,10 @@ button {
 	max-width: 50rem;
 	box-shadow: 0px 4px 3px 0px #CFCFCF8A;
 	margin: auto auto 2rem;
+}
+
+.reward {
+	background: $silver;
 }
 
 button[disabled], button[disabled]:hover { background: lightgray; }

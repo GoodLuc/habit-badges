@@ -6,7 +6,7 @@
 				<button class="button medium ml2" @click="showRegister">Register</button>
 				<button class="button medium" @click="showLogin">Login</button>
 			</div>
-      <p><small>v0.5b</small></p>
+      <p><small>v1.0b</small></p>
     </div>
     <div v-if="register" class="register flex wrap justify-center">
       <h2>Register</h2>

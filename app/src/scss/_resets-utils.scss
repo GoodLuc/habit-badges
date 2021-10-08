@@ -7,7 +7,7 @@ html {
 body { 
 	margin: 0; font-family: 'Roboto', sans-serif; font-feature-settings: "lnum";
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  color: $text; padding-bottom: 2.14rem; background: white;
+  color: $text; background: white;
   min-width: 320px;
   //box-shadow: inset 5px 5px 15px 5px rgba(0,0,0,0.7);
   &.overlaid { overflow: hidden; }

@@ -66,7 +66,12 @@
               <div v-if="icons.length" class="box icons grid">
                 <figure :class="[{ selected: icon.id == selectedIcon.id }]"
                   v-for="icon in icons" :key="icon.id" @click="setIcon(icon)">
-                  <img :src="icon.preview_url" :alt="icon.attribution" crossorigin="anonymous">
+									<w-tooltip top color="white" bg-color="grey-dark5">
+										<template #activator="{ on }">
+		                  <img v-on="on" :src="icon.preview_url" :alt="icon.attribution" crossorigin="anonymous">
+										</template>
+										{{ icon.attribution }}
+									</w-tooltip>
                 </figure>
               </div>
 

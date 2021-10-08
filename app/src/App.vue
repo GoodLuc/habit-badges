@@ -3,7 +3,7 @@
     <w-app>
 			<div id="nav">
 				<div :class="['container flex align-center',{ center: centerLogo }]">
-					<figure id="logo"><img src="@/assets/icons/wings.png" alt="Habit Badges"></figure> <h1>Habit Hero</h1>
+					<figure id="logo"><img src="@/assets/icons/wings.png" alt="Habit Hero Badge"></figure> <h1>Habit Hero Badge</h1>
 					<a v-if="user" @click="menuActive = true" id="toggl" href="#"><figure><img src="@/assets/icons/menu.svg" alt="Menu"></figure></a>
 					<div :class="['flex grow',{ overlay: menuActive, show: menuActive }]" id="menu" v-if="user">
 						<router-link @click="menuActive = false" to="/">Dashboard</router-link>
@@ -19,11 +19,14 @@
 				</div>
 			</div>
 			<router-view/>
+			<Links />
 		</w-app>
   </div>
 </template>
 
 <script>
+import Links from '@/components/Links.vue'
+
 import { mapState } from "vuex";
 export default {
   data() {
@@ -31,6 +34,7 @@ export default {
       menuActive: false
     }
   },
+	components: { Links },
   computed: {
     ...mapState(["user","centerLogo"]),
   },
