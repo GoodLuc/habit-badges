@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const mongoDB = require('mongodb');
 
-const { nounProject, client } = require('./keys.js');
+const { nounProject, client, secretkey } = require('./keys.js');
+const sha256 = require('js-sha256').sha256
+
 
 
 
@@ -93,7 +95,9 @@ async function getLogs() {
 //// New user
 router.post("/makeuser", async (req, res) => {
   console.log('Making user. Body is:')
-  console.log(req.body)
+  //console.log(req.body)
+	let hash = sha256(req.body.user.password + secretkey)
+	req.body.user.password = hash
   try {
     const users = await getUsers();
     await users.insertOne(
@@ -120,7 +124,8 @@ router.get('/checkuser/:email', async (req, res) => {
 
 //// Validate and Get user
 router.post("/validateuser", async (req, res) => {
-  const user = await getUser(req.body.email, req.body.password, 'full');
+	let hash = sha256(req.body.password + secretkey)
+	let user = await getUser(req.body.email, hash, 'full');
   if (user) {
     res.send(user) 
   } else {

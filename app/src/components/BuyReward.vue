@@ -23,7 +23,7 @@
 
 				<article class="reward tremble mb8" v-if="!loading">
 					<div class="flex justify-center align-bottom">
-						<figure class="glow mr8" :class="{ 'hide': unlocked }">
+						<figure class="treasure glow" :class="{ 'hide': unlocked }">
 							<svg width="284" height="231" viewBox="0 0 284 231" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M265.045 230.139H18.9547C13.7914 230.15 9.50552 226.15 9.16101 220.995L0 83.2422L146.897 68.5516L284 83.2422L274.815 220.995C274.471 226.139 270.2 230.137 265.045 230.139Z" fill="#F29C1F"/>
 							<path d="M252.27 117.86L250.654 142H33.3462L31.7298 117.86C31.6345 116.504 32.109 115.167 33.0364 114.175C33.9659 113.18 35.266 112.617 36.6267 112.621H247.373C248.734 112.617 250.034 113.18 250.964 114.175C251.891 115.167 252.365 116.504 252.27 117.86Z" fill="#AF8066"/>
@@ -39,14 +39,13 @@
 							<path d="M258.686 48.9665H25.3141C27.119 38.0287 32.0115 27.8342 39.4175 19.5875H244.583C251.988 27.8342 256.881 38.0287 258.686 48.9665V48.9665Z" fill="#AF8066"/>
 							</svg>
 						</figure>
-						<figure class="mr8" :class="{ 'hide': !unlocked, 'show': unlocked }"><img src="@/assets/icons/treasure.png" alt="Reward"></figure>
+						<figure class="treasure" :class="{ 'hide': !unlocked, 'show': unlocked }"><img src="@/assets/icons/treasure.png" alt="Reward"></figure>
 
 						<div class="flex column align-center justify-center">
-							<h2 class="flex align-center">
-								<div class="icon-content mr1">
-									<figure><img src="@/assets/icons/ruby.png" alt="Rubys"></figure>
-									<figcaption>{{ reward.value }}</figcaption>
-								</div>
+							<figure class="price mb4">
+								<figcaption>{{ reward.value }}</figcaption>
+							</figure>
+							<h2 class="text-center reward-title">
 								{{ reward.name }}
 							</h2>
 							<button :disabled="!((user.points - user.tab) > (reward.value * 100))" v-if="!unlocked" @click="unlock" class="button gold flex align-center">
@@ -128,7 +127,7 @@ button {
 	}
 }
 
-.balance {
+.balance, .reward {
 	text-align: center;
 	display: flex;
 	align-items: center;
@@ -137,7 +136,8 @@ button {
 	background: white;
 	border-radius: .314rem;
 	padding: .5rem;
-	width: 50%;
+	width: 100%;
+	max-width: 50rem;
 	box-shadow: 0px 4px 3px 0px #CFCFCF8A;
 	margin: auto auto 2rem;
 }
@@ -151,16 +151,31 @@ button[disabled], button[disabled]:hover { background: lightgray; }
 }
 
 .reward {
-	> div > figure {
+	margin: auto;
+	padding: 2rem;
+	h2 { margin-top: 0; }
+	.treasure {
 		width: 14rem;
 		height: 11rem;
-		svg { max-width: 100%; max-height: 100%; }
+		margin-right: 2rem;
+		svg {  max-width: 100%; max-height: 100%; }
+		&.show { margin-bottom: 2rem; }
 	}
-	h2 { margin-top: 0; }
-	margin: auto;
-	border-radius: .314rem;
-	width: 50%;
-	padding: 2rem;
+	@media (max-width: 1150px) {
+		h2 { font-size: 1.5rem; }
+	}
+	@media (max-width: 550px) {
+	 > div {
+		 flex-direction: column; align-items: center;
+	 }
+	 .treasure {
+			margin-right: 0;
+			margin-bottom: 1rem;
+			width: 100%;
+			max-width: 10rem;
+			&.show { margin-bottom: 1rem; }		
+	 }
+	}
 }
 
 .glow {

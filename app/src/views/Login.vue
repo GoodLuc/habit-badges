@@ -149,7 +149,7 @@ h1, p { margin-bottom: 2rem; width: 100%; }
   button { margin: 1rem; max-width: calc(50% - 2rem); }
 }
 
-.login, .register, .created { 
+.login, .register { 
   flex-direction: column; align-items: center; text-align: center;
   width: 100%; max-width: 35rem; margin: auto;
   button { max-width: 100%; width: 100%; }

@@ -80,9 +80,13 @@ h1 { font-weight: 300; text-align: center; padding: 0 4.5rem; }
 .loader {
 	position: fixed;
 	height: 100vh; width: 100vw;
-	z-index: 22; top: 0;
+	z-index: 22; top: 0; left: 0;
 	h2 { margin-top: 0; }
-	> div { background: #E8E5E5; padding: .5rem 1.5rem; border-radius: .314rem; }
+	> div { 
+		background: #E8E5E5; padding: 1rem 2.5rem; 
+		border-radius: .314rem; box-shadow: 0px 0px 15px 0px #FFFFFF;
+		border: 1px solid white;
+	}
 }
 
 .pulse {

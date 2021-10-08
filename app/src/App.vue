@@ -187,12 +187,14 @@ h3.dayTitle {
 		border-radius: 6px;
 		box-shadow: 0px 4px 3px 0px #CFCFCF8A;
 		figure { width: 3rem; flex-shrink: 0; min-height: 3rem; }
-		.price {
-			background: url('~@/assets/icons/ruby.png') center/contain no-repeat;
-			display: flex; justify-content: center; align-items: center;
-			color: white; font-weight: 600;
-		}
 	}
+}
+.price {
+	background: url('~@/assets/icons/ruby.png') center/contain no-repeat;
+	display: flex; justify-content: center; align-items: center;
+	color: white; font-weight: 600; font-size: 1.3rem;
+	flex-shrink: 0;
+	width: 3rem; height: 3rem;
 }
 
 </style>
