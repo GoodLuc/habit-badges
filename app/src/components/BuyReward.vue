@@ -80,7 +80,7 @@ export default {
 	setup(props) {
 		const store = useStore()
 		let unlocked = ref(false)		
-		let success = new Audio(require('@/assets/audio/heavencraft.wav'))
+		let success = new Audio(require('@/assets/audio/heavencraft.mp3'))
 		let loading = ref(false)
 
 		const saveReward = async function() {
