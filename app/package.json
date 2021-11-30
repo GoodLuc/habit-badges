@@ -10,7 +10,7 @@
 		"start": "electron ."
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bulma": "^0.9.3",
     "core-js": "^3.17.1",
     "fetch-base64": "^2.1.2",
