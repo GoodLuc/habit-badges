@@ -2,12 +2,12 @@
   "name": "habit-badge",
   "version": "1.0.0b",
   "private": true,
-	"main": "src/main.js",
+  "main": "src/main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-		"start": "electron ."
+    "start": "electron ."
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -17,7 +17,6 @@
     "postcss": "^7.0.35",
     "register-service-worker": "^1.7.1",
     "the-noun-project": "^2.1.0",
-    "vodal": "^2.4.0",
     "vue": "^3.0.0",
     "vue-confetti": "^2.2.2",
     "vue-over-body": "0.0.5",
@@ -37,8 +36,8 @@
     "electron": "^15.3.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.2",
+    "sass": "^1.54.5",
+    "sass-loader": "^10.0.5",
     "vue-template-compiler": "^2.6.14"
   }
 }
