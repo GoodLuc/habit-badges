@@ -1,3 +1,4 @@
 node_modules
 app/node_modules
-api/routes/api/keys.js
+api/.env
+app/.env
